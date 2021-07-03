@@ -1,0 +1,58 @@
+﻿<Window x:Class="CyberCAT.SimpleGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CyberCAT.SimpleGUI"
+        mc:Ignorable="d"
+        Title="Cyberpunk 2077 Save Editor (CyberCAT-SimpleGUI)" Height="640" Width="1150" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <RadialGradientBrush>
+            <GradientStop Color="#FF545454"/>
+            <GradientStop Color="#FF474747" Offset="1"/>
+        </RadialGradientBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Column="3" Grid.Row="1" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+            </Border.Effect>
+        </Border>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Column="1" Grid.Row="0" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+                </Border.Effect>
+            </Border>
+
+            <Border Grid.Column="1" Grid.Row="2" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+                </Border.Effect>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
