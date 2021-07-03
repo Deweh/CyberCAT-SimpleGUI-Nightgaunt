@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CyberCAT.SimpleGUI"
+        xmlns:viewModel="clr-namespace:CyberCAT.SimpleGUI.MVVM.ViewModel"
         mc:Ignorable="d"
+        FontFamily="Segoe UI Light"
         Title="Cyberpunk 2077 Save Editor (CyberCAT-SimpleGUI)" Height="640" Width="1150" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <RadialGradientBrush>
@@ -12,6 +14,11 @@
             <GradientStop Color="#FF474747" Offset="1"/>
         </RadialGradientBrush>
     </Window.Background>
+
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -26,23 +33,20 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="3" Grid.Row="1" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
-            <Border.Effect>
-                <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
-            </Border.Effect>
-        </Border>
-
+        <!-- Side Bar -->
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
+                <RowDefinition Height="80" />
                 <RowDefinition Height="20" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Column="1" Grid.Row="0" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+            <Border BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10">
+                <Button x:Name="loadSave" Content="Load Save" FontSize="18" Style="{StaticResource NormalButtonTheme}" Click="loadSave_Click"/>
+
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
                 </Border.Effect>
@@ -52,7 +56,55 @@
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
                 </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <RadioButton  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
+                        <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}"/>
+                        <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}"/>
+                        <RadioButton  Content="Unlocked Vehicles"  Style="{StaticResource TabButtonTheme}"/>
+                        <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
+                    </StackPanel>
+
+                    <Button Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomNormalButtonTheme}"/>
+                </Grid>
             </Border>
         </Grid>
+
+        <!-- Main Content View -->
+        <Border Grid.Column="3" Grid.Row="1" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="15"/>
+                </Grid.RowDefinitions>
+
+                <ContentControl Grid.Row="0"
+                                Margin="10"
+                                Content="{Binding CurrentView}"/>
+
+                <!-- Status Bar -->
+                <Border Grid.Row="1" Background="#FF646464" CornerRadius="0,0,10,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="No save file selected." Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
+                        <TextBlock Grid.Column="1" Text="v1.00-preview" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,10,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
