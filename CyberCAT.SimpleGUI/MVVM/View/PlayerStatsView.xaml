@@ -5,9 +5,123 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CyberCAT.SimpleGUI.MVVM.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
-    <Grid>
-            
-    </Grid>
+             Foreground="White"
+             d:DesignHeight="500" d:DesignWidth="950"
+             Background="Transparent">
+    <Canvas>
+        <Polygon Points="25,0,75,0,100,35,75,100,25,100,0,35"
+                 Fill="#FF505050"
+                 Stretch="Fill"
+                 Height="126"
+                 Width="176"
+                 local:CanvasExtensions.RelativeLeft="0.23"
+                 local:CanvasExtensions.RelativeTop="0.18">
+            <Polygon.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Polygon.Effect>
+        </Polygon>
+
+        <Grid local:CanvasExtensions.RelativeLeft="0.23"
+              local:CanvasExtensions.RelativeTop="0.18"
+              Height="126"
+              Width="176">
+            <TextBlock Text="BODY" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
+            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+        </Grid>
+
+        <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
+                 Fill="#FF505050"
+                 Stretch="Fill"
+                 Height="126"
+                 Width="176"
+                 local:CanvasExtensions.CenterRelative="True"
+                 local:CanvasExtensions.RelativeLeft="0.5"
+                 local:CanvasExtensions.RelativeTop="0.14">
+            <Polygon.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Polygon.Effect>
+        </Polygon>
+
+        <Grid local:CanvasExtensions.CenterRelative="True"
+              local:CanvasExtensions.RelativeLeft="0.5"
+              local:CanvasExtensions.RelativeTop="0.14"
+              Height="126"
+              Width="176">
+            <TextBlock Text="REFLEXES" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
+            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+        </Grid>
+
+        <Polygon Points="25,0,75,0,100,35,75,100,25,100,0,35"
+                 Fill="#FF505050"
+                 Stretch="Fill"
+                 Height="126"
+                 Width="176"
+                 local:CanvasExtensions.RelativeRight="0.23"
+                 local:CanvasExtensions.RelativeTop="0.18">
+            <Polygon.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Polygon.Effect>
+        </Polygon>
+
+        <Grid local:CanvasExtensions.RelativeRight="0.23"
+              local:CanvasExtensions.RelativeTop="0.18"
+              Height="126"
+              Width="176">
+            <TextBlock Text="TECHNICAL ABILITY" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
+            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+        </Grid>
+
+        <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
+                 Fill="#FF505050"
+                 Stretch="Fill"
+                 Height="126"
+                 Width="176"
+                 local:CanvasExtensions.RelativeLeft="0.23"
+                 local:CanvasExtensions.RelativeBottom="0.18">
+            <Polygon.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Polygon.Effect>
+        </Polygon>
+
+        <Grid local:CanvasExtensions.RelativeLeft="0.23"
+              local:CanvasExtensions.RelativeBottom="0.18"
+              Height="126"
+              Width="176">
+            <TextBlock Text="INTELLIGENCE" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
+            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+        </Grid>
+
+        <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
+                 Fill="#FF505050"
+                 Stretch="Fill"
+                 Height="126"
+                 Width="176"
+                 local:CanvasExtensions.RelativeRight="0.23"
+                 local:CanvasExtensions.RelativeBottom="0.18">
+            <Polygon.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Polygon.Effect>
+        </Polygon>
+
+        <Grid local:CanvasExtensions.RelativeRight="0.23"
+              local:CanvasExtensions.RelativeBottom="0.18"
+              Height="126"
+              Width="176">
+            <TextBlock Text="COOL" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
+            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+        </Grid>
+
+        <Border Background="#FF505050"
+                local:CanvasExtensions.CenterRelative="True"
+                local:CanvasExtensions.RelativeLeft="0.5"
+                local:CanvasExtensions.RelativeTop="0.5"
+                Height="180"
+                Width="126">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Border.Effect>
+        </Border>
+
+
+    </Canvas>
 </UserControl>

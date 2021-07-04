@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:CyberCAT.SimpleGUI.MVVM.ViewModel"
         mc:Ignorable="d"
         FontFamily="Segoe UI Light"
-        Title="Cyberpunk 2077 Save Editor (CyberCAT-SimpleGUI)" Height="640" Width="1150" WindowStartupLocation="CenterScreen">
+        Title="Cyberpunk 2077 Save Editor (CyberCAT-SimpleGUI)" Height="660" Width="1170" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <RadialGradientBrush>
             <GradientStop Color="#FF545454"/>
@@ -89,7 +89,6 @@
                 </Grid.RowDefinitions>
 
                 <ContentControl Grid.Row="0"
-                                Margin="10"
                                 Content="{Binding CurrentView}"/>
 
                 <!-- Status Bar -->
