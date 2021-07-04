@@ -5,16 +5,18 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 {
     class MainViewModel : ObservableObject
     {
+        private object _currentView;
 
         public RelayCommand PlayerStatsViewCommand { get; set; }
 
         public PlayerStatsViewModel PlayerStatsVM { get; set; }
 
-        private object _currentView;
-
         public object CurrentView
         {
-            get { return _currentView; }
+            get
+            {
+                return _currentView;
+            }
             set
             {
                 _currentView = value;

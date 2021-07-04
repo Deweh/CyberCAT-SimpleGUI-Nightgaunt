@@ -8,8 +8,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/ButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/RepeatButtonTheme.xaml"/>
                 <ResourceDictionary Source="Theme/TabButtonTheme.xaml"/>
-                <ResourceDictionary Source="Theme/NormalButtonTheme.xaml"/>
+                <ResourceDictionary Source="Controls/PickerStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:PlayerStatsViewModel}">

@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
 
             <Border BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10">
-                <Button x:Name="loadSave" Content="Load Save" FontSize="18" Style="{StaticResource NormalButtonTheme}" Click="loadSave_Click"/>
+                <Button x:Name="loadSave" Content="Load Save" FontSize="18" Click="loadSave_Click"/>
 
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
@@ -71,7 +71,7 @@
                         <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
                     </StackPanel>
 
-                    <Button Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomNormalButtonTheme}"/>
+                    <Button Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomButtonTheme}"/>
                 </Grid>
             </Border>
         </Grid>

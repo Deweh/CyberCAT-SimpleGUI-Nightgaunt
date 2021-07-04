@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CyberCAT.SimpleGUI.MVVM.View"
+             xmlns:custom="clr-namespace:CyberCAT.SimpleGUI.Controls"
              mc:Ignorable="d" 
              Foreground="White"
              d:DesignHeight="500" d:DesignWidth="950"
@@ -26,7 +27,7 @@
               Height="126"
               Width="176">
             <TextBlock Text="BODY" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
-            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+            <custom:Picker Value="{Binding BodyAttribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HideButtons="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
 
         <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
@@ -48,7 +49,7 @@
               Height="126"
               Width="176">
             <TextBlock Text="REFLEXES" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
-            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+            <custom:Picker Value="5" HideButtons="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
 
         <Polygon Points="25,0,75,0,100,35,75,100,25,100,0,35"
@@ -68,7 +69,7 @@
               Height="126"
               Width="176">
             <TextBlock Text="TECHNICAL ABILITY" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
-            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+            <custom:Picker Value="5" HideButtons="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
 
         <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
@@ -88,7 +89,7 @@
               Height="126"
               Width="176">
             <TextBlock Text="INTELLIGENCE" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
-            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+            <custom:Picker Value="5" HideButtons="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
 
         <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
@@ -108,7 +109,7 @@
               Height="126"
               Width="176">
             <TextBlock Text="COOL" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,35" FontSize="15"/>
-            <TextBlock Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="18" FontFamily="Segoe UI Semibold"/>
+            <custom:Picker Value="5" HideButtons="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
 
         <Border Background="#FF505050"
@@ -120,6 +121,44 @@
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
             </Border.Effect>
+        </Border>
+
+        <Border Background="#FF505050"
+                Canvas.Left="10"
+                Canvas.Top="10"
+                Height="50"
+                Width="160">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="LEVEL" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <custom:Picker Grid.Column="1" Value="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <Border Background="#FF505050"
+                Canvas.Right="10"
+                Canvas.Top="10"
+                Height="50"
+                Width="210">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="STREET CRED" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <custom:Picker Grid.Column="1" Value="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
         </Border>
 
 

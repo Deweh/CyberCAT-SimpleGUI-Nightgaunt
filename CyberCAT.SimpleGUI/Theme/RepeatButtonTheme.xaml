@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style TargetType="{x:Type Button}"
-           x:Key="NormalButtonTheme">
+    <Style TargetType="{x:Type RepeatButton}"
+           x:Key="DefaultRepeatButtonTheme">
         <Style.Setters>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
+                    <ControlTemplate TargetType="RepeatButton">
                         <Border x:Name="brd" VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch"
                                 Background="{TemplateBinding Background}"
@@ -62,9 +62,6 @@
         </Style.Setters>
     </Style>
 
-    <Style BasedOn="{StaticResource NormalButtonTheme}"
-           TargetType="{x:Type Button}"
-           x:Key="BottomNormalButtonTheme">
-        <Setter Property="Border.CornerRadius" Value="0,0,10,10"/>
-    </Style>
+    <Style TargetType="{x:Type RepeatButton}"
+           BasedOn="{StaticResource DefaultRepeatButtonTheme}"/>
 </ResourceDictionary>

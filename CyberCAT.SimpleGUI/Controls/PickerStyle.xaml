@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CyberCAT.SimpleGUI.Controls">
+    <Style TargetType="local:Picker">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Picker">
+                    <Grid x:Name="PART_BaseGrid" Height="30" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <RepeatButton x:Name="PART_DownButton" Content="-" Grid.Column="0" FontSize="15"/>
+                        <TextBlock x:Name="PART_ValueDisplay" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontFamily="Segoe UI Semibold"/>
+                        <RepeatButton x:Name="PART_UpButton" Content="+" Grid.Column="2" FontSize="15"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
