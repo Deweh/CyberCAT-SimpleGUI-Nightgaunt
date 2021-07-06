@@ -57,21 +57,21 @@
                     <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
                 </Border.Effect>
 
-                <Grid>
+                <Grid x:Name="sidebar" IsEnabled="False">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0">
-                        <RadioButton  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
+                        <RadioButton x:Name="playerStats"  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
                         <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}"/>
                         <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}"/>
                         <RadioButton  Content="Unlocked Vehicles"  Style="{StaticResource TabButtonTheme}"/>
                         <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
                     </StackPanel>
 
-                    <Button Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomButtonTheme}"/>
+                    <Button x:Name="saveChanges" Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomButtonTheme}" Click="saveChanges_Click"/>
                 </Grid>
             </Border>
         </Grid>
@@ -88,7 +88,9 @@
                     <RowDefinition Height="15"/>
                 </Grid.RowDefinitions>
 
-                <ContentControl Grid.Row="0"
+                <ContentControl x:Name="mainContent"
+                                IsEnabled="False"
+                                Grid.Row="0"
                                 Content="{Binding CurrentView}"/>
 
                 <!-- Status Bar -->
@@ -99,7 +101,7 @@
                             <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="No save file selected." Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
+                        <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
                         <TextBlock Grid.Column="1" Text="v1.00-preview" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,10,0"/>
                     </Grid>
                 </Border>

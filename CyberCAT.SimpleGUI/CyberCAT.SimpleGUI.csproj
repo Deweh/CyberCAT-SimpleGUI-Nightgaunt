@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Helpers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CyberCAT\CyberCAT.Core\CyberCAT.Core.csproj" />
     <ProjectReference Include="..\CyberCAT\CyberCAT.Extra\CyberCAT.Extra.csproj" />
   </ItemGroup>
