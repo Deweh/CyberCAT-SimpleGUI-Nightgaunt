@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,6 +24,34 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         public PlayerStatsView()
         {
             InitializeComponent();
+        }
+
+        private void pointsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (pointsPopup.Visibility == Visibility.Hidden)
+            {
+                pointsPopup.Visibility = Visibility.Visible;
+                pointsButton.Content = "«";
+            }
+            else
+            {
+                pointsPopup.Visibility = Visibility.Hidden;
+                pointsButton.Content = "»";
+            }
+        }
+
+        private void skillsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (skillsPopup.Visibility == Visibility.Hidden)
+            {
+                skillsPopup.Visibility = Visibility.Visible;
+                skillsButton.Content = "»";
+            }
+            else
+            {
+                skillsPopup.Visibility = Visibility.Hidden;
+                skillsButton.Content = "«";
+            }
         }
     }
 }

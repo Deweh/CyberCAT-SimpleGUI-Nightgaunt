@@ -7,7 +7,8 @@
         xmlns:viewModel="clr-namespace:CyberCAT.SimpleGUI.MVVM.ViewModel"
         mc:Ignorable="d"
         FontFamily="Segoe UI Light"
-        Title="Cyberpunk 2077 Save Editor (CyberCAT-SimpleGUI)" Height="660" Width="1170" WindowStartupLocation="CenterScreen">
+        Title="Cyberpunk 2077 Save Editor (CyberCAT-SimpleGUI)" Height="660" Width="1170" WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True">
     <Window.Background>
         <RadialGradientBrush>
             <GradientStop Color="#FF545454"/>

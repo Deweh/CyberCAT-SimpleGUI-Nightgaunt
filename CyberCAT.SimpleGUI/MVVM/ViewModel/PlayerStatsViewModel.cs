@@ -6,11 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using CyberCAT.SimpleGUI.MVVM.Model;
+using System.IO;
 
 namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 {
     class PlayerStatsViewModel : ObservableObject
     {
+        public string LifePath
+        {
+            get
+            {
+                return Path.Combine(Directory.GetCurrentDirectory(), "Images", "Nomad.png");
+            }
+        }
+
         public int BodyAttribute
         {
             get

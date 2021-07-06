@@ -14,4 +14,8 @@
     <ProjectReference Include="..\CyberCAT\CyberCAT.Extra\CyberCAT.Extra.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)\Images&quot; &quot;$(TargetDir)\Images\&quot; /S /Y /D" />
+  </Target>
+
 </Project>

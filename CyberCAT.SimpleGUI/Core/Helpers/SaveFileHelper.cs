@@ -21,10 +21,10 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 {
     public static class SaveFileHelper
     {
-        public static SaveFile ActiveFile;
-        public static bool DataAvailable = false;
-        public static bool IsLoading = false;
-        public static bool IsSaving = false;
+        public static SaveFile ActiveFile { get; private set; }
+        public static bool DataAvailable { get; private set; } = false;
+        public static bool IsLoading { get; private set; } = false;
+        public static bool IsSaving { get; private set; } = false;
 
         public delegate void LoadCompleteHandler();
         public static event LoadCompleteHandler LoadComplete;
@@ -47,16 +47,31 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
         {
             IsLoading = true;
             progressTimer.Start();
-            SaveFile bufferFile = new SaveFile(); Exception error = null;
+            Exception error = null;
+
+            var parsers = await Task.Run(() =>
+            {
+                return new List<INodeParser>
+                {
+                    new CharacterCustomizationAppearancesParser(), new InventoryParser(), new ItemDataParser(), new FactsDBParser(),
+                    new FactsTableParser(), new GameSessionConfigParser(), new ItemDropStorageManagerParser(), new ItemDropStorageParser(),
+                    new StatsSystemParser(), new ScriptableSystemsContainerParser(), new PSDataParser()
+                };
+            });
+
+            SaveFile bufferFile = new SaveFile(parsers); 
 
             try
             {
-                bufferFile = await LoadFile(filePath);
+                await Task.Run(() =>
+                {
+                    bufferFile.Load(new MemoryStream(File.ReadAllBytes(filePath)));
+                });
             }
             catch (Exception e)
             {
                 error = e;
-                MainModel.Status = "Load canceled";
+                MainModel.Status = "Load canceled.";
             }
 
             progressTimer.Stop();
@@ -80,25 +95,6 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             DataAvailable = true;
             LoadComplete?.Invoke();
             MainModel.Status = "Save file loaded.";
-        }
-
-        private static async Task<SaveFile> LoadFile(string filePath)
-        {
-            var parsers = new List<INodeParser>
-            {
-                new CharacterCustomizationAppearancesParser(), new InventoryParser(), new ItemDataParser(), new FactsDBParser(),
-                new FactsTableParser(), new GameSessionConfigParser(), new ItemDropStorageManagerParser(), new ItemDropStorageParser(),
-                new StatsSystemParser(), new ScriptableSystemsContainerParser(), new PSDataParser()
-            };
-
-            SaveFile bufferFile = new SaveFile(parsers);
-
-            await Task.Run(() =>
-            {
-                bufferFile.Load(new MemoryStream(File.ReadAllBytes(filePath)));
-            });
-
-            return bufferFile;
         }
 
         public static async Task SaveFileAsync(string filePath)

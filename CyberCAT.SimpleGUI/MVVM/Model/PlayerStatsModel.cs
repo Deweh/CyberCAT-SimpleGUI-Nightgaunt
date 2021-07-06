@@ -47,12 +47,18 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 return;
             }
 
+            if (value < 0) value = 0;
+
             if (statName.EndsWith("Attribute"))
             {
+                if (value > 20) value = 20;
+
                 SaveFileHelper.GetPlayerDevelopmentData().Value.Attributes.Where(x => x.AttributeName == (gamedataStatType)_bindings[statName]).FirstOrDefault().Value = value;
             }
             else if (statName.EndsWith("Profic"))
             {
+                if ((statName == "LevelProfic" || statName == "StreetCredProfic") && value > 50) value = 50;
+
                 SaveFileHelper.GetPlayerDevelopmentData().Value.Proficiencies.Where(x => x.Type == (gamedataProficiencyType)_bindings[statName]).FirstOrDefault().CurrentLevel = value;
             }
         }

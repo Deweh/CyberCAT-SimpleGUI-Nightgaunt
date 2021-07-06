@@ -17,7 +17,6 @@
             <DataTemplate DataType="{x:Type viewModel:PlayerStatsViewModel}">
                 <view:PlayerStatsView/>
             </DataTemplate>
-            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
