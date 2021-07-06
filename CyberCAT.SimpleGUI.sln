@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyberCAT.SimpleGUI", "CyberCAT.SimpleGUI\CyberCAT.SimpleGUI.csproj", "{9A5788A5-08BD-4356-A707-1B265630CE20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyberCAT.SimpleGUI", "CyberCAT.SimpleGUI\CyberCAT.SimpleGUI.csproj", "{9A5788A5-08BD-4356-A707-1B265630CE20}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyberCAT.Core", "CyberCAT\CyberCAT.Core\CyberCAT.Core.csproj", "{F1A35526-982E-419D-8979-872F5F682ABE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyberCAT.Extra", "CyberCAT\CyberCAT.Extra\CyberCAT.Extra.csproj", "{2791A5CB-3565-4F82-B3C7-450FFF778FAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{9A5788A5-08BD-4356-A707-1B265630CE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A5788A5-08BD-4356-A707-1B265630CE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A5788A5-08BD-4356-A707-1B265630CE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1A35526-982E-419D-8979-872F5F682ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A35526-982E-419D-8979-872F5F682ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A35526-982E-419D-8979-872F5F682ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A35526-982E-419D-8979-872F5F682ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2791A5CB-3565-4F82-B3C7-450FFF778FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2791A5CB-3565-4F82-B3C7-450FFF778FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2791A5CB-3565-4F82-B3C7-450FFF778FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2791A5CB-3565-4F82-B3C7-450FFF778FAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
