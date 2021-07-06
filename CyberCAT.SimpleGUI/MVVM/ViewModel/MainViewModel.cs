@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using CyberCAT.SimpleGUI.Core;
 using CyberCAT.SimpleGUI.MVVM.Model;
@@ -22,6 +23,15 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             {
                 _status = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public string Version
+        {
+            get
+            {
+                var ver = Assembly.GetExecutingAssembly().GetName().Version;
+                return $"v{ver.Major}.{ver.Minor}{ver.Build}";
             }
         }
 

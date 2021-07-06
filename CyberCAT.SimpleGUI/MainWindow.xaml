@@ -102,7 +102,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
-                        <TextBlock Grid.Column="1" Text="v1.00-preview" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,10,0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,10,0"/>
                     </Grid>
                 </Border>
             </Grid>
