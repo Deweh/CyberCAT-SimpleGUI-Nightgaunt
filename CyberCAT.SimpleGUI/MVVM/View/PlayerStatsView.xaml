@@ -10,7 +10,7 @@
              d:DesignHeight="500" d:DesignWidth="950"
              Background="Transparent"
              UseLayoutRounding="True">
-    <Canvas>
+    <Canvas x:Name="baseCanvas">
         <Polygon Points="25,0,75,0,100,35,75,100,25,100,0,35"
                  Fill="#FF505050"
                  Stretch="Fill"
@@ -129,9 +129,9 @@
                 </Grid.RowDefinitions>
 
 
-                <Button Grid.Row="1" Content="⇆" FontSize="14" Style="{StaticResource SquareButtonTheme}" />
+                <Button x:Name="swapLifePath" Grid.Row="1" Content="⇆" FontSize="14" Style="{StaticResource SquareButtonTheme}" Click="swapLifePath_Click"/>
                 <Border Grid.Row="0" Background="#FF505050">
-                    <Image Source="{Binding LifePath}"/>
+                    <Image Source="{Binding LifePathImage}"/>
                 </Border>
             </Grid>
         </Border>
@@ -225,7 +225,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Margin="10,0" Grid.Row="0" Text="ATTRIBUTE POINTS" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding AttrPoints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -234,7 +234,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Margin="10,0" Grid.Row="0" Text="PERK POINTS" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding PerkPoints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
             </StackPanel>
         </Border>
@@ -268,7 +268,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="ATHLETICS" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding AthleticsProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -277,7 +277,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="ANNIHILATION" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding AnnihilationProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -286,7 +286,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="STREET BRAWLER" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetBrawlerProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -295,7 +295,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="ASSAULT" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding AssaultProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
 
                 </StackPanel>
@@ -308,7 +308,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="HANDGUNS" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding HandgunsProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -317,7 +317,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="BLADES" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding BladesProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -326,7 +326,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="CRAFTING" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding CraftingProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -335,7 +335,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="ENGINEERING" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding EngineeringProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
 
                 </StackPanel>
@@ -348,7 +348,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="BREACH PROTOCOL" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding BreachProtocolProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -357,7 +357,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="QUICKHACKING" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding QuickhackingProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -366,7 +366,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="STEALTH" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StealthProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,0,0,30">
                         <Grid.RowDefinitions>
@@ -375,12 +375,108 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="10,0" Grid.Row="0" Text="COLD BLOOD" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding StreetCredProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <custom:Picker Margin="5,0" HideButtons="True" Grid.Row="1" Value="{Binding ColdBloodProfic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
 
                 </StackPanel>
             </Grid>
             
+        </Border>
+
+        <Border Canvas.Top="0"
+                Canvas.Left="0"
+                Panel.ZIndex="10"
+                Width="{Binding ActualWidth, ElementName=baseCanvas}"
+                Height="{Binding ActualHeight, ElementName=baseCanvas}"
+                Background="#F23C3C3C"
+                CornerRadius="10,10,0,0"
+                Visibility="Hidden"
+                Opacity="0"
+                x:Name="lifePathOverlay">
+            <Canvas>
+
+                <StackPanel local:CanvasExtensions.CenterRelative="True"
+                            local:CanvasExtensions.RelativeTop="0.5"
+                            local:CanvasExtensions.RelativeLeft="0.5">
+                    
+                    <TextBlock Text="LIFE PATH"
+                               HorizontalAlignment="Center"
+                               FontSize="25"
+                               FontFamily="Segoe UI Semibold"
+                               Margin="0,0,0,45"/>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="38"/>
+                            <RowDefinition Height="180"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="NOMAD"
+                                   Grid.Column="0"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+
+                        <TextBlock Text="STREET KID"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+
+                        <TextBlock Text="CORPO"
+                                   Grid.Column="2"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="20"/>
+
+                        <Border Width="123" Margin="30,0" Grid.Column="0" Grid.Row="1" Background="#FF505050">
+                            <Image x:Name="nomadSelection" Source="{Binding NomadLifePath}"/>
+                        </Border>
+
+                        <Border Width="123" Margin="30,0" Grid.Column="1" Grid.Row="1" Background="#FF505050">
+                            <Image x:Name="streetKidSelection" Source="{Binding StreetKidLifePath}"/>
+                        </Border>
+
+                        <Border Width="123" Margin="30,0" Grid.Column="2" Grid.Row="1" Background="#FF505050">
+                            <Image x:Name="corpoSelection" Source="{Binding CorpoLifePath}"/>
+                        </Border>
+
+                        <TextBlock Text="▲"
+                                   Grid.Column="0"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="10"
+                                   x:Name="nomadArrow"/>
+
+                        <TextBlock Text="▲"
+                                   Grid.Column="1"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="10"
+                                   x:Name="streetKidArrow"
+                                   Opacity="0"/>
+
+                        <TextBlock Text="▲"
+                                   Grid.Column="2"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="10"
+                                   x:Name="corpoArrow"
+                                   Opacity="0"/>
+                    </Grid>
+
+                    <Button x:Name="lifePathCloseButton" Margin="0,70,0,0" Width="123" Height="20" FontSize="11" Style="{StaticResource SquareButtonTheme}" Content="CLOSE" Click="lifePathCloseButton_Click" />
+                </StackPanel>
+            </Canvas>
         </Border>
     </Canvas>
 </UserControl>
