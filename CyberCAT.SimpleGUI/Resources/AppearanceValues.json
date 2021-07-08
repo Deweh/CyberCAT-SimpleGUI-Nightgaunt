@@ -1,0 +1,532 @@
+{
+	"EyeColors":
+	[
+		"01_blood_gradient_black",
+		"02_blood_gradient_blue",
+		"03_blood_gradient_brown",
+		"04_blood_gradient_green",
+		"05_blood_gradient_grey",
+		"06_blood_gradient_light_blue",
+		"07_blood_gradient_red",
+		"08_blood_gradient_violet",
+		"09_blood_gradient_yellow",
+		"10_gradient_black",
+		"11_gradient_blue",
+		"12_gradient_brown",
+		"13_gradient_green",
+		"14_gradient_grey",
+		"15_gradient_light_blue",
+		"16_gradient_red",
+		"17_gradient_violet",
+		"18_gradient_yellow",
+		"19_multilayer_arasaka",
+		"20_multilayer_arasaka_black",
+		"21_multilayer_black",
+		"22_multilayer_cpu",
+		"23_multilayer_cpu_black",
+		"24_multilayer_heart",
+		"25_multilayer_heart_black",
+		"26_multilayer_lizzard",
+		"27_multilayer_lizzard_black",
+		"28_multilayer_ring",
+		"29_multilayer_ring_black",
+		"30_multilayer_skull",
+		"31_multilayer_skull_black",
+		"32_multilayer_spider",
+		"33_multilayer_spider_black",
+		"34_multilayer_spiral",
+		"35_multilayer_spiral_black",
+		"36_multilayer_target",
+		"37_multilayer_target_black",
+		"38_multilayer_x_sign",
+		"39_multilayer_x_sign_black"
+	],
+	"HairColors":
+	[
+		"01_blonde_platinum",
+		"02_red_merlot",
+		"03_ginger_copper",
+		"04_teal_ombre",
+		"05_brown_liquorice",
+		"06_black_carbon",
+		"07_blonde_golden",
+		"08_blonde_dishwater",
+		"09_blue_sapphire",
+		"10_brown_ombre",
+		"11_red_apple",
+		"12_gray_gunmetal",
+		"13_ginger_strawberry",
+		"14_teal_ash",
+		"15_pink_magenta",
+		"16_pink_rose",
+		"17_blue_steel",
+		"18_blue_red_ombre",
+		"19_cold_white",
+		"20_cyberpunk_yellow",
+		"21_goblin_green",
+		"22_liliac",
+		"23_mermaid_aquamarine",
+		"24_purple_ombre"
+	],
+	"HairStyles":
+	{
+		"Shaved": 0,
+		"Male 01": 15380579400599425026,
+		"Male 02": 5984812588040213129,
+		"Male 03": 3969157183659188110,
+		"Male 04": 8293982515479886033,
+		"Male 05": 489179940800955688,
+		"Male 06": 17869284528227924120,
+		"Male 07": 9218839545645238688,
+		"Male 08": 14289422152790764376,
+		"Male 09": 12576467769371085804,
+		"Male 10": 17460733649327649186,
+		"Male 11": 15034475787780468953,
+		"Male 12": 7355532851366951590,
+		"Male 13": 11759469743560328903,
+		"Male 14": 3500425191302231725,
+		"Male 15": 14755788215633871742,
+		"Male 16": 7952981898860355650,
+		"Male 17": 857523826547037375,
+		"Male 18": 17141579411644195796,
+		"Male 19": 1121964340534844884,
+		"Male 20": 461744041584344406,
+		"Male 21": 2434503660913347015,
+		"Male 22": 16116482572126189143,
+		"Male 23": 18135273991035451833,
+		"Male 24": 13835054743291901821,
+		"Male 25": 18435178321397900179,
+		"Male 26": 13051344561829540069,
+		"Male 27": 15144581694894271057,
+		"Male 28": 14260035752771986116,
+		"Male 29": 1520767952230012292,
+		"Male 30": 9237935399756595345,
+		"Male 31": 9052256069229423275,
+		"Male 32": 5946009589643927403,
+		"Male 33": 9777151791735243921,
+		"Male 34": 8758217030184948795,
+		"Male 35": 2532987429439665884,
+		"Male 36": 1897484312860791060,
+		"Male 37": 10223079924578982696,
+		"Male 38": 3802598531712108471,
+		"Female 01": 7895661997983415896,
+		"Female 02": 2138553866577869977,
+		"Female 03": 3573962092730198331,
+		"Female 04": 8306576006584102334,
+		"Female 05": 5244001766329150055,
+		"Female 06": 16600726011468265684,
+		"Female 07": 4709032773623455240,
+		"Female 08": 13289575653785600296,
+		"Female 09": 1339934139401427872,
+		"Female 10": 4574931173449399679,
+		"Female 11": 8676620230388101395,
+		"Female 12": 4192740736844276411,
+		"Female 13": 9034451349636151189,
+		"Female 14": 7193495838579079509,
+		"Female 15": 1787479395333059933,
+		"Female 16": 13117079222888562418,
+		"Female 17": 17922434046255431218,
+		"Female 18": 550988250001886050,
+		"Female 19": 71834869338402942,
+		"Female 20": 16698047557593531592,
+		"Female 21": 847110689336862783,
+		"Female 22": 2953664546358140863,
+		"Female 23": 6393939417724502560,
+		"Female 24": 4062085481318917741,
+		"Female 25": 10821942379201421014,
+		"Female 26": 3567572543862455374,
+		"Female 27": 2143643901400169955,
+		"Female 28": 4054574856092288545,
+		"Female 29": 15965401536589295058,
+		"Female 30": 3425656365097010801,
+		"Female 31": 1785014510742544425,
+		"Female 32": 9199715406902566223,
+		"Female 33": 2242269653113487715,
+		"Female 34": 12652197010004652555,
+		"Female 36": 430711508673768473,
+		"Female 37": 15823294402219948458,
+		"Female 38": 1761403049000576133
+	},
+	"LipMakeups":
+	[
+		0,
+		16443790051565898736,
+		11864203057040013421,
+		11559435074004493110,
+		6896851583118726067,
+		12773586143696607324,
+		17362451834414880825,
+		4600199495370601058
+	],
+	"SkinTypes":
+	[
+		11127614498395143143,
+		8412290529705602186,
+		11919014591592170337,
+		4521080340864252184,
+		17283332679908531951
+	],
+	"SkinTones":
+	[
+		"01_ca_pale",
+		"01_ca_pale_00_warm_ivory",
+		"02_ca_limestone",
+		"02_ca_limestone_00_beige",
+		"03_ca_senna",
+		"03_ca_senna_00_amber",
+		"03_ca_senna_01_honey",
+		"03_ca_senna_02_band",
+		"04_ca_almond",
+		"04_ca_almond_00_umber",
+		"05_bl_espresso",
+		"06_bl_dark"
+	],
+	"Eyebrows":
+	[
+		0,
+		15853728649722767300,
+		11518989700611491553,
+		8012265638724923402,
+		16883307788927853167,
+		4121055449883573400,
+		18150380737470892309,
+		5580371224339221950,
+		14973320124358239091
+	],
+	"EyebrowColors":
+	[
+		"01_black",
+		"02_blonde",
+		"03_blue",
+		"04_brown",
+		"05_grey",
+		"06_green",
+		"07_pink",
+		"08_red"
+	],
+	"LipMakeupColors":
+	[
+		"01_black",
+		"02_blue",
+		"03_gold",
+		"04_green",
+		"05_pink",
+		"06_red",
+		"07_violet",
+		"08_white",
+		"09_yellow"
+	],
+	"EyeMakeups":
+	[
+		0,
+		8391042499748085024,
+		6794883740595689437,
+		357336662837631718,
+		17290848105010463971,
+		17087725449716732748,
+		80777682353228969,
+		12090009862676825618,
+		9727307414526349599
+	],
+	"EyeMakeupColors":
+	[
+		"01_black",
+		"02_blue",
+		"03_gold",
+		"04_green",
+		"05_pink",
+		"06_red",
+		"07_violet",
+		"08_white",
+		"09_yellow"
+	],
+	"BodyTattoos":
+	{
+		"TPP":
+		[
+			0,
+			11984479979002187525,
+			13497712610538906888,
+			13700835265832638111,
+			1899005284130321530,
+			14661257623174601297
+		],
+		"FPP":
+		[
+			0,
+			16305144275494937020,
+			8681373655619060633,
+			8323718978104718146,
+			8188511835839244455,
+			1475682230803751888
+		]
+	},
+	"FacialTattoos":
+	[
+		0,
+		7485051516532325788,
+		7597822964259955955,
+		16651618137950490430,
+		10774883577372609173,
+		8413255968948424195,
+		1730860845775756908,
+		6575386954898909869,
+		10910090719638082864,
+		17378318569863685127,
+		5546054106298543266,
+		18308024970366001017
+	],
+	"Piercings":
+	[
+		0,
+		13134131550013307257,
+		2311158096179632028,
+		2423929543907262195,
+		7086231559816207222,
+		1401493534546216109,
+		5736197299285389104,
+		12204425149510991367,
+		13909619131983498122,
+		17416343193870066273,
+		7222715382519008559,
+		13152371821947814744,
+		3575034056009919547,
+		203911709985233284,
+		14071033604796796833
+	],
+	"Teeth":
+	[
+		"",
+		"__silver",
+		"__gold",
+		"__cooper",
+		"__pink",
+		"__metal",
+		"__metal_rusty"
+	],
+	"FacialScars":
+	[
+		"scar_01",
+		"scar_02",
+		"scar_03",
+		"tribe_01",
+		"tribe_02",
+		"tribe_03",
+		"beatup_01",
+		"beatup_02",
+		"seal_01",
+		"witcher_01",
+		"burn_01"
+	],
+	"BodyScars":
+	[
+		0,
+		1270113483780776886,
+		10396116520949362435
+	],
+	"PiercingColors":
+	[
+		"01_silver",
+		"02_gold",
+		"07_pearl",
+		"04_cooper",
+		"05_red",
+		"06_pink",
+		"03_black"
+	],
+	"CheekMakeups":
+	[
+		0,
+		15044851071177008242,
+		7841373126957531331,
+		1403861233571576364,
+		9749724949095872061,
+		8451541948618851386
+	],
+	"CheekMakeupColors":
+	[
+		"02_very_light_brown",
+		"03_light_brown",
+		"04_brown",
+		"01_black",
+		"01_brown",
+		"02_pink",
+		"03_red"
+	],
+	"Blemishes":
+	[
+		0,
+		10193113560071498966,
+		15077468537632904592,
+		4316414183865720461
+	],
+	"Genitals":
+	[
+		"vagina",
+		"penis",
+		"penis_circumcised"
+	],
+	"PenisSizes":
+	[
+		"penis_small",
+		"",
+		"penis_big"
+	],
+	"PubicHairStyles":
+	[
+		0,
+		18336588252420113172,
+		7330615484494113969,
+		13452233274858707546,
+		13041426945966874239,
+		6604196527557741288
+	],
+	"NailColors":
+	[
+		"beige",
+		"01_all_brown__multilayer",
+		"01_all_crimson__multilayer",
+		"01_all_gradient_black_red__multilayer",
+		"01_all_gradient_gold__multilayer",
+		"01_all_gradient_turquoise__multilayer",
+		"01_all_green__multilayer",
+		"01_all_pink__multilayer",
+		"01_all_purple__multilayer",
+		"01_all_red__multilayer",
+		"01_all_white__multilayer",
+		"01_all_yellow__multilayer",
+		"01_black_gold__multilayer",
+		"01_blue_silver__multilayer",
+		"01_chrome_and_black__multilayer",
+		"01_chrome_and_white__multilayer",
+		"01_chrome_strap__multilayer",
+		"01_color_end__multilayer",
+		"01_five_colors__multilayer",
+		"01_gradient_chrome__multilayer",
+		"01_green_heart__multilayer",
+		"01_ragged_black__multilayer",
+		"01_ragged_pink__multilayer",
+		"01_red_gold__multilayer",
+		"01_red_heart__multilayer",
+		"01_white_strap__multilayer",
+		"01_zygzag__multilayer",
+		"02_blue__multilayer",
+		"02_default_02__multilayer",
+		"02_default__multilayer",
+		"02_fire__multilayer",
+		"03_default__multilayer",
+		"01_all_black__multilayer",
+		"beige_dark",
+		"checker",
+		"dots_01",
+		"grey_light"
+	],
+	"Beards":
+	[
+		"shadowbase_01",
+		"big_beard_afro",
+		"default",
+		"handlebar_stache",
+		"jesse_beard",
+		"fu_manchu",
+		"logan",
+		"maelstrom_full",
+		"maelstrom_goatie",
+		"patmc",
+		"short_afro",
+		"thick_beard_afro"
+	],
+	"BeardStyles":
+	{
+		"shadowbase_01":
+		[
+			""
+		],
+		"big_beard_afro":
+		[
+			"",
+			"chin",
+			"mustache"
+		],
+		"default":
+		[
+			"",
+			"chin",
+			"chin_mustache",
+			"chin_sides",
+			"mustache",
+			"mustache_sides",
+			"sides"
+		],
+		"handlebar_stache":
+			[
+				""
+			],
+		"jesse_beard":
+		[
+			"",
+			"chin",
+			"mustache"
+		],
+		"fu_manchu":
+		[
+			"",
+			"chin",
+			"chin_mustache",
+			"chin_sides",
+			"mustache",
+			"mustache_sides",
+			"sides"
+		],
+		"logan":
+		[
+			"",
+			"chin",
+			"chin_mustache",
+			"chin_sides",
+			"mustache",
+			"mustache_sides",
+			"sides"
+		],
+		"maelstrom_full":
+		[
+			"",
+			"chin",
+			"chin_mustache",
+			"chin_sides",
+			"mustache",
+			"mustache_sides",
+			"sides"
+		],
+		"maelstrom_goatie":
+		[
+			""
+		],
+		"patmc":
+		[
+			"",
+			"chin",
+			"chin_mustache",
+			"chin_sides",
+			"mustache",
+			"mustache_sides",
+			"sides"
+		],
+		"short_afro":
+		[
+			"",
+			"chin",
+			"mustache"
+		],
+		"thick_beard_afro":
+		[
+			"",
+			"chin",
+			"chin_mustache",
+			"chin_sides",
+			"mustache",
+			"mustache_sides",
+			"sides"
+		]
+	}
+}

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY &quot;$(ProjectDir)\Images&quot; &quot;$(TargetDir)\Images\&quot; /S /Y /D" />
+    <Exec Command="XCOPY &quot;$(ProjectDir)\Images&quot; &quot;$(TargetDir)\Images\&quot; /S /Y /D&#xD;&#xA;XCOPY &quot;$(ProjectDir)\Resources&quot; &quot;$(TargetDir)\Resources\&quot; /S /Y /D" />
   </Target>
 
 </Project>
