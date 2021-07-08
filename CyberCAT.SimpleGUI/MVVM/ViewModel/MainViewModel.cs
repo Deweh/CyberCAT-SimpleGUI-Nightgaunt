@@ -13,6 +13,8 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 
         public RelayCommand PlayerStatsViewCommand { get; set; }
 
+        public RelayCommand AppearanceViewCommand { get; set; }
+
         public string StatusMessage
         {
             get
@@ -54,6 +56,11 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             PlayerStatsViewCommand = new RelayCommand(o =>
             {
                 CurrentView = new PlayerStatsViewModel();
+            });
+
+            AppearanceViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = new AppearanceViewModel();
             });
 
             StatusMessage = MainModel.Status;

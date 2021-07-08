@@ -11,13 +11,13 @@
                     </ControlTemplate.Resources>
                     <Grid x:Name="PART_BaseGrid" Height="{TemplateBinding Height}" Background="Transparent">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.33*"/>
-                            <ColumnDefinition Width="0.33*"/>
-                            <ColumnDefinition Width="0.33*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
 
                         <RepeatButton x:Name="PART_DownButton" Content="⮜" Grid.Column="0" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SubtractionConverter}, ConverterParameter=11}"/>
-                        <TextBlock x:Name="PART_ValueDisplay" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{TemplateBinding FontSize}" FontFamily="Segoe UI Semibold"/>
+                        <TextBlock x:Name="PART_ValueDisplay" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}"/>
                         <RepeatButton x:Name="PART_UpButton" Content="⮞" Grid.Column="2" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SubtractionConverter}, ConverterParameter=11}"/>
                     </Grid>
                 </ControlTemplate>
@@ -26,5 +26,7 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Width" Value="90"/>
         <Setter Property="Height" Value="30"/>
+        <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+        <Setter Property="Tag" Value="0.33*"/>
     </Style>
 </ResourceDictionary>

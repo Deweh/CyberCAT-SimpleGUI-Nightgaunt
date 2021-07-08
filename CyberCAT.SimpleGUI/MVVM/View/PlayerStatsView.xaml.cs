@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -27,6 +28,24 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         private Image selectedLifePath;
         private Dictionary<Image, TextBlock> lifePathUI;
         private Dictionary<string, Image> lifePathBindings;
+
+        private DoubleAnimation fadeInAnim = new DoubleAnimation
+        {
+            To = 1,
+            Duration = TimeSpan.FromMilliseconds(200)
+        };
+
+        private DoubleAnimation fadeOutAnim = new DoubleAnimation
+        {
+            To = 0,
+            Duration = TimeSpan.FromMilliseconds(200)
+        };
+
+        private DoubleAnimation fadeMidAnim = new DoubleAnimation
+        {
+            To = 0.4,
+            Duration = TimeSpan.FromMilliseconds(200)
+        };
 
         public PlayerStatsView()
         {
@@ -78,11 +97,11 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         {
             if (sender != selectedLifePath && !SaveFileHelper.IsLoading && !SaveFileHelper.IsSaving)
             {
-                lifePathUI[selectedLifePath].Opacity = 0;
+                lifePathUI[selectedLifePath].BeginAnimation(UIElement.OpacityProperty, fadeOutAnim);
                 var selection = sender as Image;
 
                 selectedLifePath = selection;
-                lifePathUI[selection].Opacity = 1;
+                lifePathUI[selection].BeginAnimation(UIElement.OpacityProperty, fadeInAnim);
                 PlayerStatsModel.SetLifePath(lifePathBindings.Where(x => x.Value == selection).FirstOrDefault().Key);
             }
         }
@@ -91,7 +110,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         {
             if (sender != selectedLifePath)
             {
-                lifePathUI[(Image)sender].Opacity = 0;
+                lifePathUI[(Image)sender].BeginAnimation(UIElement.OpacityProperty, fadeOutAnim);
             }
         }
 
@@ -99,7 +118,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         {
             if (sender != selectedLifePath)
             {
-                lifePathUI[(Image)sender].Opacity = 0.4;
+                lifePathUI[(Image)sender].BeginAnimation(UIElement.OpacityProperty, fadeMidAnim);
             }
         }
 
@@ -133,15 +152,16 @@ namespace CyberCAT.SimpleGUI.MVVM.View
 
         private void swapLifePath_Click(object sender, RoutedEventArgs e)
         {
-            lifePathOverlay.Visibility = Visibility.Visible;
-
             var anim = new DoubleAnimation
             {
-                To = 1,
-                Duration = TimeSpan.FromMilliseconds(200)
+                To = 10,
+                Duration = TimeSpan.FromMilliseconds(300)
             };
 
-            lifePathOverlay.BeginAnimation(UIElement.OpacityProperty, anim);
+            lifePathOverlay.Visibility = Visibility.Visible;
+            baseCanvas.Effect.BeginAnimation(BlurEffect.RadiusProperty, anim);
+
+            lifePathOverlay.BeginAnimation(UIElement.OpacityProperty, fadeInAnim);
         }
 
         private void lifePathCloseButton_Click(object sender, RoutedEventArgs e)
@@ -157,6 +177,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
                 lifePathOverlay.Visibility = Visibility.Hidden;
             };
 
+            baseCanvas.Effect.BeginAnimation(BlurEffect.RadiusProperty, fadeOutAnim);
             lifePathOverlay.BeginAnimation(UIElement.OpacityProperty, anim);
         }
     }

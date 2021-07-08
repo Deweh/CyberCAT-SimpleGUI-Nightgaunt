@@ -17,6 +17,14 @@
             <DataTemplate DataType="{x:Type viewModel:PlayerStatsViewModel}">
                 <view:PlayerStatsView/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:AppearanceViewModel}">
+                <view:AppearanceView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:AppearanceSliderViewModel}">
+                <view:AppearanceSliderView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

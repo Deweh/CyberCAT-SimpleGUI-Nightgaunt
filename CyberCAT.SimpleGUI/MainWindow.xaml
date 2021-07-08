@@ -66,7 +66,7 @@
 
                     <StackPanel Grid.Row="0">
                         <RadioButton x:Name="playerStats"  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
-                        <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}"/>
+                        <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}" Command="{Binding AppearanceViewCommand}"/>
                         <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}"/>
                         <RadioButton  Content="Unlocked Vehicles"  Style="{StaticResource TabButtonTheme}"/>
                         <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
@@ -92,7 +92,8 @@
                 <ContentControl x:Name="mainContent"
                                 IsEnabled="False"
                                 Grid.Row="0"
-                                Content="{Binding CurrentView}"/>
+                                Content="{Binding CurrentView}"
+                                ClipToBounds="True"/>
 
                 <!-- Status Bar -->
                 <Border Grid.Row="1" Background="#FF646464" CornerRadius="0,0,10,10">
