@@ -170,15 +170,30 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             MainModel.Status = status.ToString();
         }
 
+        public static NodeEntry GetNode(string nodeName)
+        {
+            return ActiveFile.Nodes.Where(x => x.Name == nodeName).FirstOrDefault();
+        }
+
+        public static CharacterCustomizationAppearances GetAppearanceContainer()
+        {
+            return GetNode("CharacetrCustomization_Appearances").Value as CharacterCustomizationAppearances;
+        }
+
         public static GenericUnknownStruct GetScriptableContainer()
         {
-            return ActiveFile.Nodes.Where(x => x.Name == "ScriptableSystemsContainer").FirstOrDefault().Value as GenericUnknownStruct;
+            return GetNode("ScriptableSystemsContainer").Value as GenericUnknownStruct;
         }
 
         public static Handle<PlayerDevelopmentData> GetPlayerDevelopmentData()
         {
             var devSystem = GetScriptableContainer().ClassList.Where(x => x.GetType().Name == "PlayerDevelopmentSystem").FirstOrDefault() as PlayerDevelopmentSystem;
             return devSystem.PlayerData.Where(x => x.Value.OwnerID.Hash == 1).FirstOrDefault();
+        }
+
+        public static GenericUnknownStruct GetPSDataContainer()
+        {
+            return (GenericUnknownStruct)GetNode("PersistencySystem").Children.Where(x => x.Name == "PSData").FirstOrDefault().Value;
         }
     }
 }

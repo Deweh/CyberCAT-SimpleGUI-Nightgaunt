@@ -14,20 +14,12 @@ namespace CyberCAT.SimpleGUI.Controls
     {
         private RepeatButton downButton;
         private RepeatButton upButton;
-        public TextBlock valueDisplay;
         private Grid baseGrid;
         private bool _hideBtns = false;
 
-        public int Value
+        static Picker()
         {
-            get
-            {
-                return GetValue(this);
-            }
-            set
-            {
-                SetValue(this, value);
-            }
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Picker), new FrameworkPropertyMetadata(typeof(Picker)));
         }
 
         public bool HideButtons
@@ -56,29 +48,66 @@ namespace CyberCAT.SimpleGUI.Controls
             }
         }
 
-        static Picker()
+        public int Value
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Picker), new FrameworkPropertyMetadata(typeof(Picker)));
+            get { return (int)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        public string StringValue
+        {
+            get { return (string)GetValue(StringValueProperty); }
+            set { SetValue(StringValueProperty, value); }
+        }
+
+        public string[] StringCollection
+        {
+            get { return (string[])GetValue(StringCollectionProperty); }
+            set { SetValue(StringCollectionProperty, value); }
+        }
+
+        public DisplayDataType DataType
+        {
+            get { return (DisplayDataType)GetValue(DataTypeProperty); }
+            set { SetValue(DataTypeProperty, value); }
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.RegisterAttached("Value", typeof(int), typeof(Picker), new PropertyMetadata(0, OnValueChanged));
+            DependencyProperty.Register("Value", typeof(int), typeof(Picker), new PropertyMetadata(0, ValueChanged));
 
-        public static int GetValue(DependencyObject obj)
+        public static readonly DependencyProperty StringValueProperty =
+            DependencyProperty.Register("StringValue", typeof(string), typeof(Picker), new PropertyMetadata("0"));
+
+        public static readonly DependencyProperty StringCollectionProperty =
+            DependencyProperty.Register("StringCollection", typeof(string[]), typeof(Picker), new PropertyMetadata(Array.Empty<string>(), ValueDependencyChanged));
+
+        public static readonly DependencyProperty DataTypeProperty =
+            DependencyProperty.Register("DataType", typeof(DisplayDataType), typeof(Picker), new PropertyMetadata(DisplayDataType.Integer, ValueDependencyChanged));
+
+        private static void ValueDependencyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            return (int)obj.GetValue(ValueProperty);
+            var p = d as Picker;
+            ValidateValue(p, p.Value);
         }
 
-        public static void SetValue(DependencyObject obj, int value)
+        private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            obj.SetValue(ValueProperty, value);
+            ValidateValue(d as Picker, (int)e.NewValue);
         }
 
-        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ValidateValue(Picker p, int newValue)
         {
-            if (((Picker)d).valueDisplay != null)
+            if (p.DataType == DisplayDataType.Integer)
             {
-                ((Picker)d).valueDisplay.Text = e.NewValue.ToString();
+                p.StringValue = newValue.ToString();
+            }
+            else if (p.DataType == DisplayDataType.String)
+            {
+                if (p.StringCollection.Length < 1) { p.StringValue = string.Empty; return; }
+                if (newValue >= p.StringCollection.Length) { p.Value = 0; return; }
+                if (newValue < 0) { p.Value = p.StringCollection.Length - 1; return; }
+
+                p.StringValue = p.StringCollection[newValue];
             }
         }
 
@@ -86,10 +115,9 @@ namespace CyberCAT.SimpleGUI.Controls
         {
             downButton = Template.FindName("PART_DownButton", this) as RepeatButton;
             upButton = Template.FindName("PART_UpButton", this) as RepeatButton;
-            valueDisplay = Template.FindName("PART_ValueDisplay", this) as TextBlock;
             baseGrid = Template.FindName("PART_BaseGrid", this) as Grid;
 
-            if (_hideBtns)
+            if (HideButtons)
             {
                 downButton.Opacity = 0;
                 upButton.Opacity = 0;
@@ -99,8 +127,7 @@ namespace CyberCAT.SimpleGUI.Controls
             upButton.Click += upButton_Click;
             baseGrid.MouseEnter += baseGrid_MouseEnter;
             baseGrid.MouseLeave += baseGrid_MouseLeave;
-
-            valueDisplay.Text = Value.ToString();
+            ValidateValue(this, Value);
 
             base.OnApplyTemplate();
         }
@@ -148,5 +175,11 @@ namespace CyberCAT.SimpleGUI.Controls
         {
             Value--;
         }
+    }
+
+    public enum DisplayDataType
+    {
+        Integer,
+        String
     }
 }

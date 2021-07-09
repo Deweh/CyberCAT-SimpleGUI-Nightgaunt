@@ -4,17 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CyberCAT.SimpleGUI.Core;
+using CyberCAT.SimpleGUI.Controls;
 
 namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 {
     class AppearanceViewModel : ObservableObject
     {
+        private List<AppearanceSliderViewModel> _sliders = new();
+        private string _previewImg = string.Empty;
 
         public string PreviewImage
         {
             get
             {
                 return System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Images", "Appearance", "BodyGender", "00.jpg");
+            }
+            set
+            {
+                _previewImg = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Images", "Appearance", value);
+                OnPropertyChanged();
             }
         }
 
@@ -26,8 +34,9 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
                 {
                     new AppearanceSliderViewModel
                     {
+                        StringCollection = new string[] { "FEMALE", "MALE" },
                         Name = "BodyGender",
-                        Value = 22
+                        DataType = DisplayDataType.String
                     },
                     new AppearanceSliderViewModel
                     {

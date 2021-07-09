@@ -14,6 +14,6 @@
         </Grid.RowDefinitions>
 
         <TextBlock Margin="10,12" Grid.Row="0" Text="{Binding FormattedName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <custom:Picker Width="140" FontSize="19" Margin="5,0" Grid.Row="1" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <custom:Picker Width="140" FontSize="19" Margin="5,0" Grid.Row="1" DataType="{Binding DataType}" StringCollection="{Binding StringCollection}" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

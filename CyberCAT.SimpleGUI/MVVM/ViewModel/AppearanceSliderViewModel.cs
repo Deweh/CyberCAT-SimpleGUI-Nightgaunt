@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CyberCAT.SimpleGUI.Core;
+using CyberCAT.SimpleGUI.Controls;
 
 namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 {
@@ -13,6 +14,8 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
         private string _name = string.Empty;
         private string _formattedName = string.Empty;
         private int _value = 0;
+        private DisplayDataType _dataType = DisplayDataType.Integer;
+        private string[] _stringCol = Array.Empty<string>();
 
         public string FormattedName
         {
@@ -51,6 +54,32 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             set
             {
                 _value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DisplayDataType DataType
+        {
+            get
+            {
+                return _dataType;
+            }
+            set
+            {
+                _dataType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] StringCollection
+        {
+            get
+            {
+                return _stringCol;
+            }
+            set
+            {
+                _stringCol = value;
                 OnPropertyChanged();
             }
         }

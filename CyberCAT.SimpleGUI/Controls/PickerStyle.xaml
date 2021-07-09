@@ -17,7 +17,7 @@
                         </Grid.ColumnDefinitions>
 
                         <RepeatButton x:Name="PART_DownButton" Content="⮜" Grid.Column="0" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SubtractionConverter}, ConverterParameter=11}"/>
-                        <TextBlock x:Name="PART_ValueDisplay" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}"/>
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" Text="{Binding Path=StringValue, RelativeSource={RelativeSource AncestorType={x:Type local:Picker}}}"/>
                         <RepeatButton x:Name="PART_UpButton" Content="⮞" Grid.Column="2" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource SubtractionConverter}, ConverterParameter=11}"/>
                     </Grid>
                 </ControlTemplate>
