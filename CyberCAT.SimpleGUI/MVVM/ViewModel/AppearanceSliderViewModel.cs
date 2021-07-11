@@ -16,6 +16,9 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
         private int _value = 0;
         private DisplayDataType _dataType = DisplayDataType.Integer;
         private string[] _stringCol = Array.Empty<string>();
+        private RelayCommand _onHoverCmd = new RelayCommand((o) => {});
+
+        public Action RefreshValue { get; set; } = () => {};
 
         public string FormattedName
         {
@@ -80,6 +83,19 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             set
             {
                 _stringCol = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand OnHoverCommand
+        {
+            get
+            {
+                return _onHoverCmd;
+            }
+            set
+            {
+                _onHoverCmd = value;
                 OnPropertyChanged();
             }
         }

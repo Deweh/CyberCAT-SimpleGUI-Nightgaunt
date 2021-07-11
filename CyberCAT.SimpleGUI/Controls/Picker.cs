@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media.Animation;
 
 namespace CyberCAT.SimpleGUI.Controls
@@ -48,6 +49,8 @@ namespace CyberCAT.SimpleGUI.Controls
             }
         }
 
+        public string Formatting { get; set; } = null;
+
         public int Value
         {
             get { return (int)GetValue(ValueProperty); }
@@ -72,8 +75,17 @@ namespace CyberCAT.SimpleGUI.Controls
             set { SetValue(DataTypeProperty, value); }
         }
 
+        public UpdateStringMode UpdateStringValueMode
+        {
+            get { return (UpdateStringMode)GetValue(UpdateStringValueModeProperty); }
+            set { SetValue(UpdateStringValueModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpdateStringValueModeProperty =
+            DependencyProperty.Register("UpdateStringValueMode", typeof(UpdateStringMode), typeof(Picker), new PropertyMetadata(UpdateStringMode.Auto));
+
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(Picker), new PropertyMetadata(0, ValueChanged));
+            DependencyProperty.Register("Value", typeof(int), typeof(Picker), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal, ValueChanged, ValueCoerced, false, UpdateSourceTrigger.Explicit));
 
         public static readonly DependencyProperty StringValueProperty =
             DependencyProperty.Register("StringValue", typeof(string), typeof(Picker), new PropertyMetadata("0"));
@@ -88,26 +100,79 @@ namespace CyberCAT.SimpleGUI.Controls
         {
             var p = d as Picker;
             ValidateValue(p, p.Value);
+            UpdateStringValue(p);
+        }
+
+        private static object ValueCoerced(DependencyObject d, object newValue)
+        {
+            return newValue;
         }
 
         private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ValidateValue(d as Picker, (int)e.NewValue);
+            Picker p = d as Picker;
+            if (p == null)
+            {
+                return;
+            }
+
+            var res = ValidateValue(p, (int)e.NewValue);
+
+            BindingExpression b = p.GetBindingExpression(ValueProperty);
+            if (b != null && res) b.UpdateSource();
+            if (res && p.UpdateStringValueMode == UpdateStringMode.Auto) UpdateStringValue(p);
         }
 
-        private static void ValidateValue(Picker p, int newValue)
+        private static bool ValidateValue(Picker p, int newValue)
         {
+            var res = true;
+
             if (p.DataType == DisplayDataType.Integer)
             {
                 p.StringValue = newValue.ToString();
             }
             else if (p.DataType == DisplayDataType.String)
             {
-                if (p.StringCollection.Length < 1) { p.StringValue = string.Empty; return; }
-                if (newValue >= p.StringCollection.Length) { p.Value = 0; return; }
-                if (newValue < 0) { p.Value = p.StringCollection.Length - 1; return; }
+                if (p.StringCollection.Length < 1) { p.StringValue = string.Empty; }
 
-                p.StringValue = p.StringCollection[newValue];
+                if (newValue >= p.StringCollection.Length) { p.Value = 0; res = false; }
+                else if (newValue < 0) { p.Value = p.StringCollection.Length - 1; res = false; }
+
+                if (p.Value <= p.StringCollection.Length - 1)
+                {
+                    p.StringValue = p.StringCollection[p.Value];
+                }
+                else
+                {
+                    p.StringValue = string.Empty;
+                }
+            }
+            return res;
+        }
+
+        public static void UpdateStringValue(Picker p)
+        {
+            if (p.DataType == DisplayDataType.Integer)
+            {
+                if (p.Formatting != null)
+                {
+                    p.StringValue = p.Value.ToString(p.Formatting);
+                }
+                else
+                {
+                    p.StringValue = p.Value.ToString();
+                }
+            }
+            else if (p.DataType == DisplayDataType.String)
+            {
+                if (p.Value <= p.StringCollection.Length - 1)
+                {
+                    p.StringValue = p.StringCollection[p.Value];
+                }
+                else
+                {
+                    p.StringValue = string.Empty;
+                }
             }
         }
 
@@ -128,6 +193,7 @@ namespace CyberCAT.SimpleGUI.Controls
             baseGrid.MouseEnter += baseGrid_MouseEnter;
             baseGrid.MouseLeave += baseGrid_MouseLeave;
             ValidateValue(this, Value);
+            UpdateStringValue(this);
 
             base.OnApplyTemplate();
         }
@@ -181,5 +247,11 @@ namespace CyberCAT.SimpleGUI.Controls
     {
         Integer,
         String
+    }
+
+    public enum UpdateStringMode
+    {
+        Auto,
+        Explicit
     }
 }

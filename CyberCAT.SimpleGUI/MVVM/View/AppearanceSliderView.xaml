@@ -5,15 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CyberCAT.SimpleGUI.MVVM.View"
              xmlns:custom="clr-namespace:CyberCAT.SimpleGUI.Controls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="130" d:DesignWidth="200">
-    <Grid Margin="0, 20">
+    <Grid Margin="0, 20" Background="Transparent" local:CommandExtensions.MouseOverCommand="{Binding OnHoverCommand}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Margin="10,12" Grid.Row="0" Text="{Binding FormattedName}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <custom:Picker Width="140" FontSize="19" Margin="5,0" Grid.Row="1" DataType="{Binding DataType}" StringCollection="{Binding StringCollection}" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <custom:Picker x:Name="mainPicker" Formatting="00" Width="170" FontSize="19" Margin="5,0" Grid.Row="1" UpdateStringValueMode="Auto" DataType="{Binding DataType}" StringCollection="{Binding StringCollection}" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>
