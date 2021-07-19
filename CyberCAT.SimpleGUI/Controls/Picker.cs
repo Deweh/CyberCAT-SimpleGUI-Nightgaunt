@@ -154,6 +154,12 @@ namespace CyberCAT.SimpleGUI.Controls
         {
             if (p.DataType == DisplayDataType.Integer)
             {
+                if (p.Formatting == "00" && p.Value < 0)
+                {
+                    p.StringValue = string.Empty;
+                    return;
+                }
+
                 if (p.Formatting != null)
                 {
                     p.StringValue = p.Value.ToString(p.Formatting);

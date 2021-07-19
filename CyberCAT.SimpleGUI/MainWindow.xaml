@@ -104,7 +104,17 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,10,0"/>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,2,0"/>
+                            <Button Grid.Column="2" IsEnabled="False" Foreground="#FFC8C8C8" Background="#FF646464" Style="{StaticResource SquareButtonTheme}" Content="ⓘ" FontSize="14"/>
+                        </Grid>
                     </Grid>
                 </Border>
             </Grid>

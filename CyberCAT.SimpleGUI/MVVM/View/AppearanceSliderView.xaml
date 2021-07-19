@@ -7,7 +7,7 @@
              xmlns:custom="clr-namespace:CyberCAT.SimpleGUI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="130" d:DesignWidth="200">
-    <Grid Margin="0, 20" Background="Transparent" local:CommandExtensions.MouseOverCommand="{Binding OnHoverCommand}">
+    <Grid Margin="0, 20" Background="Transparent" local:CommandExtensions.MouseOverCommand="{Binding OnHoverCommand}" IsEnabled="{Binding Enabled}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>

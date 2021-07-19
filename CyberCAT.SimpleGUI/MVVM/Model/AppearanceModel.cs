@@ -17,143 +17,375 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
 {
     public static class AppearanceModel
     {
-        #region Events
-
-        public delegate void AppearanceChangedHandler();
-        public static event AppearanceChangedHandler AppearanceChanged;
-
-        #endregion
-
         #region Properties
 
-        public static AppearanceProperty<Gender> BodyGender
+        public static AppearanceProperty<Gender> BodyGender => new()
         {
-            get
+            HasWarning = true,
+            Warning = "Changing body gender will reset all appearance options to default.",
+            GetSchema = new GenderFromByte(4),
+            SetSchema = (Gender value) =>
             {
-                return new()
+                appearanceNode.UnknownFirstBytes[4] = (byte)value;
+                var playerPuppet = SaveFileHelper.GetPSDataContainer().ClassList.Where(x => x is PlayerPuppetPS).FirstOrDefault() as PlayerPuppetPS;
+
+                if (value == Gender.Female)
                 {
-                    HasWarning = true,
-                    Warning = "Changing body gender will reset all appearance options to default.",
-                    GetSchema = new GenderFromByte(4),
-                    SetSchema = (Gender value) =>
-                    {
-                        appearanceNode.UnknownFirstBytes[4] = (byte)value;
-                        var playerPuppet = SaveFileHelper.GetPSDataContainer().ClassList.Where(x => x is PlayerPuppetPS).FirstOrDefault() as PlayerPuppetPS;
-
-                        if (value == Gender.Female)
-                        {
-                            playerPuppet.Gender = "Female";
-                        }
-                        else
-                        {
-                            playerPuppet.Gender = "Male";
-                        }
-                    },
-                    AfterSet = () =>
-                    {
-                        if (BodyGender.Get() == Gender.Female)
-                        {
-                            SetAllValues(ResourceHelper.FemaleDefault);
-                        }
-                        else
-                        {
-                            SetAllValues(ResourceHelper.MaleDefault);
-                        }
-                    }
-                };
+                    playerPuppet.Gender = "Female";
+                }
+                else
+                {
+                    playerPuppet.Gender = "Male";
+                }
+            },
+            AfterSet = () =>
+            {
+                if (BodyGender.Get() == Gender.Female)
+                {
+                    SetAllValues(FemaleDefault);
+                }
+                else
+                {
+                    SetAllValues(MaleDefault);
+                }
             }
-        }
+        };
 
-        public static AppearanceProperty<Gender> VoiceTone
+        public static AppearanceProperty<Gender> VoiceTone => new()
         {
-            get
+            GetSchema = new GenderFromByte(5),
+            SetSchema = (Gender value) =>
             {
-                return new()
-                {
-                    GetSchema = new GenderFromByte(5),
-                    SetSchema = (Gender value) =>
-                    {
-                        appearanceNode.UnknownFirstBytes[5] = (byte)value;
-                    }
-                };
+                appearanceNode.UnknownFirstBytes[5] = (byte)value;
             }
-        }
+        };
 
-        public static AppearanceProperty<int> SkinTone
+        public static AppearanceProperty<int> SkinTone => new()
         {
-            get
+            MaxValue = LL.SkinTones.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.SkinTones,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "third.main.first.body_color"
+            ),
+            SetSchema = (int value) =>
             {
-                return new()
-                {
-                    MaxValue = LL.SkinTones.Count,
-                    MinValue = 1,
-                    GetSchema = new IndexFromList<string>
-                    (
-                        LL.SkinTones,
-                        RetrievalModifier.PlusOne,
-                        GetConcatedValue,
-                        "third.main.first.body_color"
-                    ),
-                    SetSchema = (int value) =>
-                    {
-                        SetConcatedValue("third.main.first.body_color", LL.SkinTones[value - 1], -1, true, LL.SkinTones);
-                    }
-                };
+                SetConcatedValue("third.main.first.body_color", LL.SkinTones[value - 1], -1, true, LL.SkinTones);
             }
-        }
+        };
 
-        public static AppearanceProperty<int> SkinType
+        public static AppearanceProperty<int> SkinType => new()
         {
-            get
+            MaxValue = LL.SkinTypes.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.SkinTypes,
+                RetrievalModifier.PlusOne,
+                GetValue<ulong>,
+                "first.main.hash.skin_type_"
+            ),
+            SetSchema = (int value) =>
             {
-                return new()
-                {
-                    MaxValue = LL.SkinTypes.Count,
-                    MinValue = 1,
-                    GetSchema = new IndexFromList<ulong>
-                    (
-                        LL.SkinTypes,
-                        RetrievalModifier.PlusOne,
-                        GetValue<ulong>,
-                        "first.main.hash.skin_type_"
-                    ),
-                    SetSchema = (int value) =>
-                    {
-                        SetAllEntries(EntryType.MainListEntry, "skin_type_", (object entry) => { ((HashValueEntry)entry).Hash = LL.SkinTypes[value - 1]; });
-                    }
-                };
+                SetAllEntries(EntryType.MainListEntry, "skin_type_", (object entry) => { ((HashValueEntry)entry).Hash = LL.SkinTypes[value - 1]; });
             }
-        }
+        };
 
-        public static AppearanceProperty<int> HairStyle
+        public static AppearanceProperty<int> HairStyle => new()
         {
-            get
+            MaxValue = LL.HairStyles.Count,
+            MinValue = 0,
+            StringCollection = LL.HairStyles.Keys.ToArray(),
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.HairStyles.Values.ToList(),
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.hair_color"
+            ),
+            SetSchema = (int value) =>
             {
-                return new()
+                SetNullableHashEntry("hair_color", new HashValueEntry()
                 {
-                    MaxValue = LL.HairStyles.Count,
-                    MinValue = 0,
-                    StringCollection = LL.HairStyles.Keys.ToArray(),
-                    GetSchema = new IndexFromList<ulong>
-                    (
-                        LL.HairStyles.Values.ToList(),
-                        RetrievalModifier.None,
-                        GetValue<ulong>,
-                        "first.main.hash.hair_color"
-                    ),
-                    SetSchema = (int value) =>
-                    {
-                        SetNullableHashEntry("hair_color", new HashValueEntry()
-                        {
-                            FirstString = LL.HairColors[0],
-                            Hash = LL.HairStyles.Values.ToList()[value],
-                            SecondString = "hair_color1"
-                        },
-                        new[] { "hairs" });
-                    }
-                };
+                    FirstString = LL.HairColors[0],
+                    Hash = LL.HairStyles.Values.ToList()[value],
+                    SecondString = "hair_color1"
+                },
+                new[] { "hairs" });
             }
-        }
+        };
+
+        public static AppearanceProperty<int> HairColor => new()
+        {
+            MaxValue = LL.HairColors.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.HairColors,
+                RetrievalModifier.PlusOne,
+                GetValue<string>,
+                "first.main.first.hair_color"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetValue(Field.FirstString, "first.main.hair_color", LL.HairColors[value - 1]);
+
+                if (appearanceNode.Strings.Count < 1)
+                {
+                    appearanceNode.Strings.Add(LL.HairColors[value - 1].Substring(3));
+                    appearanceNode.Strings.Add("Short");
+                }
+                else
+                {
+                    appearanceNode.Strings[0] = LL.HairColors[value - 1].Substring(3);
+                }
+            }
+        };
+
+        public static AppearanceProperty<int> Eyes => new()
+        {
+            MaxValue = 21,
+            MinValue = 1,
+            GetSchema = new FacialValue("eyes"),
+            SetSchema = (int value) =>
+            {
+                SetFacialValue("eyes", 1, value);
+            }
+        };
+
+        public static AppearanceProperty<int> EyeColor => new()
+        {
+            MaxValue = LL.EyeColors.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.EyeColors,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.eyes_color"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetConcatedValue("first.main.first.eyes_color", LL.EyeColors[value - 1]);
+            }
+        };
+
+        public static AppearanceProperty<int> Eyebrows => new()
+        {
+            MaxValue = LL.Eyebrows.Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.Eyebrows,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.eyebrows_color"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("eyebrows_color", new HashValueEntry()
+                {
+                    FirstString = $"heb_p{wmGender}a__basehead__01_black",
+                    Hash = LL.Eyebrows[value],
+                    SecondString = "eyebrows_color1"
+                },
+                new[] { "TPP", "character_customization" }, Field.Hash, null, true);
+            }
+        };
+
+        public static AppearanceProperty<int> EyebrowColor => new()
+        {
+            MaxValue = LL.EyebrowColors.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.EyebrowColors,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.eyebrows_color"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetConcatedValue("first.main.first.eyebrows_color", LL.EyebrowColors[value - 1]);
+            }
+        };
+
+        public static AppearanceProperty<int> Nose => new()
+        {
+            MaxValue = 21,
+            MinValue = 1,
+            GetSchema = new FacialValue("nose"),
+            SetSchema = (int value) =>
+            {
+                SetFacialValue("nose", 2, value);
+            }
+        };
+
+        public static AppearanceProperty<int> Mouth => new()
+        {
+            MaxValue = 21,
+            MinValue = 1,
+            GetSchema = new FacialValue("mouth"),
+            SetSchema = (int value) =>
+            {
+                SetFacialValue("mouth", 3, value);
+            }
+        };
+
+        public static AppearanceProperty<int> Jaw => new()
+        {
+            MaxValue = 21,
+            MinValue = 1,
+            GetSchema = new FacialValue("jaw"),
+            SetSchema = (int value) =>
+            {
+                SetFacialValue("jaw", 4, value);
+            }
+        };
+
+        public static AppearanceProperty<int> Ears => new()
+        {
+            MaxValue = 21,
+            MinValue = 1,
+            GetSchema = new FacialValue("ear"),
+            SetSchema = (int value) =>
+            {
+                SetFacialValue("ear", 5, value);
+            }
+        };
+
+        public static AppearanceProperty<int> Cyberware => new()
+        {
+            MaxValue = 8,
+            MinValue = 0,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                var value = GetConcatedValue("first.main.first.cyberware_", 1);
+                return value == "default" ? 0 : int.Parse(value.Split("_").Last());
+            }),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("cyberware_", new HashValueEntry()
+                {
+                    FirstString = value > 0 ? $"hx_000_p{wmGender}a__cyberware_{value:00}__{LL.SkinTones[SkinTone.Get() - 1]}" : null,
+                    Hash = 6513893019731746558,
+                    SecondString = "cyberware_" + value.ToString("00")
+                },
+                new[] { "TPP", "character_customization" }, Field.FirstString, null, true);
+            }
+        };
+
+        public static AppearanceProperty<int> FacialScars => new()
+        {
+            MaxValue = LL.FacialScars.Count,
+            MinValue = 0,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.FacialScars,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.scars",
+                -1,
+                true
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("scars", new HashValueEntry
+                {
+                    FirstString = value > 0 ? $"h0_000_p{wmGender}a__scars_01__{LL.FacialScars[value - 1]}" : null,
+                    Hash = 5491315604699331944,
+                    SecondString = "scars"
+                },
+                new[] { "TPP", "character_customization" }, Field.FirstString);
+            }
+        };
+
+        public static AppearanceProperty<int> FacialTattoos => new()
+        {
+            MaxValue = LL.FacialTattoos.Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.FacialTattoos,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.facial_tattoo_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("facial_tattoo_", new HashValueEntry
+                {
+                    FirstString =  $"{wmGender}__{LL.SkinTones[SkinTone.Get() - 1]}",
+                    Hash = LL.FacialTattoos[value],
+                    SecondString = $"facial_tattoo_{value:00}"
+                },
+                new[] { "TPP", "character_customization" }, Field.Hash, null, false, true);
+
+                SetNullableHashEntry("tattoo", new HashValueEntry
+                {
+                    FirstString = value == 0 ? null : $"h0_000_p{wmGender}a__tattoo_{value:00}",
+                    Hash = 2355758180805363120,
+                    SecondString = "tattoo"
+                },
+                new[] { "TPP", "character_customization" }, Field.FirstString);
+            }
+        };
+
+        public static AppearanceProperty<int> Piercings => new()
+        {
+            MaxValue = LL.Piercings.Count - 1,
+            MinValue = 0,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                var index = LL.Piercings.FindIndex(x => x == GetValue<ulong>("first.main.hash.piercings_"));
+                return index < 0 ? 1 : index;
+            }),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("piercings_", new HashValueEntry
+                {
+                    FirstString = $"i0_000_p{wmGender}a__earring__07_pearl",
+                    Hash = LL.Piercings[value],
+                    SecondString = "piercings_01"
+                },
+                new[] { "TPP", "character_customization" }, Field.Hash);
+            }
+        };
+
+        public static AppearanceProperty<int> PiercingColor => new()
+        {
+            MaxValue = LL.PiercingColors.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.PiercingColors,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.piercings_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetConcatedValue("first.main.first.piercings_", LL.PiercingColors[value - 1]);
+            }
+        };
+
+        public static AppearanceProperty<int> Teeth => new()
+        {
+            MaxValue = LL.Teeth.Count - 1,
+            MinValue = 0,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                var value = GetValue<string>("first.main.first.teeth");
+                return value.EndsWith("basehead") ? 0 : LL.Teeth.FindIndex(x => x == $"__{value.Split("__", StringSplitOptions.None).Last()}");
+            }),
+            SetSchema = (int value) =>
+            {
+                SetValue(Field.FirstString, "first.main.first.teeth",  $"{(BodyGender.Get() == Gender.Female ? "female" : "male")}_ht_000__basehead{LL.Teeth[value]}");
+            }
+        };
 
         #endregion
 
@@ -161,6 +393,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
 
         private static CharacterCustomizationAppearances appearanceNode;
         private static Section[] mainSections;
+        private static string wmGender;
 
         static AppearanceModel()
         {
@@ -180,6 +413,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
         {
             appearanceNode = SaveFileHelper.GetAppearanceContainer();
             mainSections = new[] { appearanceNode.FirstSection, appearanceNode.SecondSection, appearanceNode.ThirdSection };
+            wmGender = BodyGender.Get() == Gender.Female ? "w" : "m";
         }
 
         public static List<object> GetEntries(Section appearanceSection, EntryType _entryType, string searchString)
@@ -743,7 +977,6 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             public void RunAfterSet()
             {
                 AfterSet();
-                AppearanceChanged?.Invoke();
             }
 
             public T Get()
@@ -753,9 +986,13 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
 
             public void SetInt(int value)
             {
-                if ((MaxValue > -1 && value > MaxValue) || (MinValue > -1 && value < MinValue))
+                if (MaxValue > -1 && value > MaxValue)
                 {
-                    return;
+                    value = MinValue;
+                }
+                else if(MinValue > -1 && value < MinValue)
+                {
+                    value = MaxValue;
                 }
 
                 if (typeof(T).IsEnum)
@@ -801,19 +1038,26 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             private Func<string, int, T> _lookupMethod;
             private string _lookupStr;
             private int _lookupInt;
+            private bool _overrideDefault;
 
-            public IndexFromList(List<T> lookupList, RetrievalModifier modifier, Func<string, int, T> lookupMethod, string lookupString, int lookupInt = -1)
+            public IndexFromList(List<T> lookupList, RetrievalModifier modifier, Func<string, int, T> lookupMethod, string lookupString, int lookupInt = -1, bool overrideDefaultBehavior = false)
             {
                 _lookupList = lookupList;
                 _modifier = modifier;
                 _lookupMethod = lookupMethod;
                 _lookupStr = lookupString;
                 _lookupInt = lookupInt;
+                _overrideDefault = overrideDefaultBehavior;
             }
 
             public int Get()
             {
                 var val = _lookupList.FindIndex(x => EqualityComparer<T>.Default.Equals(x, _lookupMethod(_lookupStr, _lookupInt)));
+
+                if (val < 0 && !_overrideDefault)
+                {
+                    return val;
+                }
 
                 if (_modifier == RetrievalModifier.PlusOne)
                 {
@@ -825,6 +1069,36 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 }
 
                 return val;
+            }
+        }
+
+        public class FacialValue : RetrievalSchema<int>
+        {
+            private string _feature;
+
+            public FacialValue(string facialFeature)
+            {
+                _feature = facialFeature;
+            }
+
+            public int Get()
+            {
+                return GetFacialValue(_feature);
+            }
+        }
+
+        public class CustomGet<T> : RetrievalSchema<T>
+        {
+            private Func<T> _get;
+
+            public CustomGet(Func<T> getFunc)
+            {
+                _get = getFunc;
+            }
+
+            public T Get()
+            {
+                return _get();
             }
         }
 

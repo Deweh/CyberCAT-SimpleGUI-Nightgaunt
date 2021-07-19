@@ -155,7 +155,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
             var anim = new DoubleAnimation
             {
                 To = 10,
-                Duration = TimeSpan.FromMilliseconds(300)
+                Duration = TimeSpan.FromMilliseconds(200)
             };
 
             lifePathOverlay.Visibility = Visibility.Visible;

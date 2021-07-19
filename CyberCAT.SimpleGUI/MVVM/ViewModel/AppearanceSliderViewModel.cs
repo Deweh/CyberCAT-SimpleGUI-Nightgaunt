@@ -17,6 +17,20 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
         private DisplayDataType _dataType = DisplayDataType.Integer;
         private string[] _stringCol = Array.Empty<string>();
         private RelayCommand _onHoverCmd = new RelayCommand((o) => {});
+        private bool _enabled = true;
+
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                _enabled = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Action RefreshValue { get; set; } = () => {};
 

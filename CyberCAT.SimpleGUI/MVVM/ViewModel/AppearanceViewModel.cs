@@ -60,6 +60,7 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
                 slider.RefreshValue = () =>
                 {
                     slider.Value = (int)prop.PropertyType.GetMethod("GetInt").Invoke(propVal, null);
+                    slider.Enabled = slider.Value > -1;
                 };
 
                 slider.RefreshValue();
