@@ -82,11 +82,11 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                 try
                 {
                     File.WriteAllText("error.txt", error.Message + Environment.NewLine + error.StackTrace);
-                    MessageBox.Show("Failed to parse save file: " + error.Message + " An error.txt file has been generated with additional information.");
+                    await MainModel.OpenNotification("Failed to parse save file: " + error.Message + " An error.txt file has been generated with additional information.", "Error");
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Failed to parse save file: " + error.Message + " \n\n Stack Trace: \n" + error.StackTrace);
+                    await MainModel.OpenNotification("Failed to parse save file: " + error.Message + " \n\n Stack Trace: \n" + error.StackTrace, "Error");
                 }
                 return;
             }

@@ -14,7 +14,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using CyberCAT.SimpleGUI.Core.Helpers;
+using CyberCAT.SimpleGUI.MVVM.Model;
 using CyberCAT.SimpleGUI.MVVM.ViewModel;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 
 namespace CyberCAT.SimpleGUI
 {
@@ -23,9 +26,105 @@ namespace CyberCAT.SimpleGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private NotifyButtons _notifyButtons;
+
+        private DoubleAnimation fadeInAnim = new DoubleAnimation
+        {
+            To = 1,
+            Duration = TimeSpan.FromMilliseconds(200)
+        };
+
+        private DoubleAnimation fadeOutAnim = new DoubleAnimation
+        {
+            To = 0,
+            Duration = TimeSpan.FromMilliseconds(200)
+        };
+
         public MainWindow()
         {
             InitializeComponent();
+            MainModel.NotificationOpened += MainModel_NotificationOpened;
+            SaveFileHelper.LoadComplete += SaveFileHelper_LoadComplete;
+        }
+
+        private void SaveFileHelper_LoadComplete()
+        {
+            if (SaveFileHelper.DataAvailable)
+            {
+                ((MainViewModel)DataContext).PlayerStatsViewCommand.Execute(null);
+                playerStats.IsChecked = true;
+            }
+        }
+
+        private void MainModel_NotificationOpened(string text, string title, NotifyButtons buttons)
+        {
+            notifyText.Text = text;
+            notifyTitle.Text = title;
+            _notifyButtons = buttons;
+
+            if (buttons == NotifyButtons.OK)
+            {
+                notifyButton1.SetValue(Grid.ColumnSpanProperty, 2);
+                notifyButton1.Content = "OK";
+                notifyButton1.Style = FindResource("BottomButtonTheme") as Style;
+
+                notifyButton2.Visibility = Visibility.Hidden;
+            }
+            else if (buttons == NotifyButtons.YesNo)
+            {
+                notifyButton1.SetValue(Grid.ColumnSpanProperty, 1);
+                notifyButton1.Content = "No";
+                notifyButton1.Style = FindResource("LeftBottomButtonTheme") as Style;
+
+                notifyButton2.Visibility = Visibility.Visible;
+            }
+
+            var anim = new DoubleAnimation
+            {
+                To = 15,
+                Duration = TimeSpan.FromMilliseconds(200)
+            };
+
+            notifyGrid.Visibility = Visibility.Visible;
+            uiGrid.Effect.BeginAnimation(BlurEffect.RadiusProperty, anim);
+
+            notifyGrid.BeginAnimation(UIElement.OpacityProperty, fadeInAnim);
+        }
+
+        private void HideNotifyGrid()
+        {
+            var anim = new DoubleAnimation
+            {
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(200)
+            };
+
+            anim.Completed += (object o, EventArgs e) =>
+            {
+                notifyGrid.Visibility = Visibility.Hidden;
+            };
+
+            uiGrid.Effect.BeginAnimation(BlurEffect.RadiusProperty, fadeOutAnim);
+            notifyGrid.BeginAnimation(UIElement.OpacityProperty, anim);
+        }
+
+        private void notifyButton1_Click(object sender, RoutedEventArgs e)
+        {
+            if (_notifyButtons == NotifyButtons.OK)
+            {
+                MainModel.CloseNotification(NotifyResult.OK);
+            }
+            else if (_notifyButtons == NotifyButtons.YesNo)
+            {
+                MainModel.CloseNotification(NotifyResult.No);
+            }
+            HideNotifyGrid();
+        }
+
+        private void notifyButton2_Click(object sender, RoutedEventArgs e)
+        {
+            MainModel.CloseNotification(NotifyResult.Yes);
+            HideNotifyGrid();
         }
 
         private async void loadSave_Click(object sender, RoutedEventArgs e)
@@ -44,13 +143,11 @@ namespace CyberCAT.SimpleGUI
 
                 await SaveFileHelper.LoadFileAsync(openDialog.FileName);
 
+                loadSave.IsEnabled = true;
                 if (SaveFileHelper.DataAvailable)
                 {
-                    loadSave.IsEnabled = true;
                     sidebar.IsEnabled = true;
                     mainContent.IsEnabled = true;
-                    playerStats.IsChecked = true;
-                    ((MainViewModel)DataContext).PlayerStatsViewCommand.Execute(null);
                 }
             }
         }

@@ -19,105 +19,153 @@
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="220" />
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
 
-        <!-- Side Bar -->
-        <Grid Grid.Column="1" Grid.Row="1">
+    <Grid>
+        <Grid x:Name="notifyGrid" Visibility="Hidden" Opacity="0" Panel.ZIndex="1" Background="#59000000">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
-                <RowDefinition Height="20" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10">
-                <Button x:Name="loadSave" Content="Load Save" FontSize="18" Click="loadSave_Click"/>
-
-                <Border.Effect>
-                    <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
-                </Border.Effect>
-            </Border>
-
-            <Border Grid.Column="1" Grid.Row="2" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+            <Border Grid.Column="1" Grid.Row="1" Background="#FF646464" CornerRadius="10">
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
                 </Border.Effect>
 
-                <Grid x:Name="sidebar" IsEnabled="False">
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0">
-                        <RadioButton x:Name="playerStats"  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
-                        <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}" Command="{Binding AppearanceViewCommand}"/>
-                        <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}"/>
-                        <RadioButton  Content="Unlocked Vehicles"  Style="{StaticResource TabButtonTheme}"/>
-                        <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
-                    </StackPanel>
+                    <Border Grid.Row="0" Background="#FF505050" CornerRadius="10,10,0,0">
+                        <TextBlock x:Name="notifyTitle" FontFamily="Segoe UI Semibold" Text="Notice" Foreground="White" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
 
-                    <Button x:Name="saveChanges" Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomButtonTheme}" Click="saveChanges_Click"/>
-                </Grid>
-            </Border>
-        </Grid>
+                    <TextBlock x:Name="notifyText" FontFamily="Segoe UI" VerticalAlignment="Center" TextAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Foreground="White" FontSize="15" Padding="20" Text=""/>
 
-        <!-- Main Content View -->
-        <Border Grid.Column="3" Grid.Row="1" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
-            <Border.Effect>
-                <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
-            </Border.Effect>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="15"/>
-                </Grid.RowDefinitions>
-
-                <ContentControl x:Name="mainContent"
-                                IsEnabled="False"
-                                Grid.Row="0"
-                                Content="{Binding CurrentView}"
-                                ClipToBounds="True"/>
-
-                <!-- Status Bar -->
-                <Border Grid.Row="1" Background="#FF646464" CornerRadius="0,0,10,10">
-                    <Grid>
+                    <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>
                             <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
-                        <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="10"/>
-                            </Grid.ColumnDefinitions>
+                        <Button x:Name="notifyButton1" Click="notifyButton1_Click" FontFamily="Segoe UI" Grid.Column="0" Content="No" FontSize="15" Style="{StaticResource LeftBottomButtonTheme}"/>
+                        <Button x:Name="notifyButton2" Click="notifyButton2_Click" FontFamily="Segoe UI" Grid.Column="1" Content="Yes" FontSize="15" Style="{StaticResource RightBottomButtonTheme}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
 
-                            <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,2,0"/>
-                            <Button Grid.Column="2" IsEnabled="False" Foreground="#FFC8C8C8" Background="#FF646464" Style="{StaticResource SquareButtonTheme}" Content="ⓘ" FontSize="14"/>
-                        </Grid>
+        <Grid x:Name="uiGrid" Panel.ZIndex="0">
+            <Grid.Effect>
+                <BlurEffect Radius="0"/>
+            </Grid.Effect>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <!-- Side Bar -->
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10">
+                    <Button x:Name="loadSave" Content="Load Save" FontSize="18" Click="loadSave_Click"/>
+
+                    <Border.Effect>
+                        <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+                    </Border.Effect>
+                </Border>
+
+                <Border Grid.Column="1" Grid.Row="2" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+                    <Border.Effect>
+                        <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+                    </Border.Effect>
+
+                    <Grid x:Name="sidebar" IsEnabled="False">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <RadioButton x:Name="playerStats"  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
+                            <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}" Command="{Binding AppearanceViewCommand}"/>
+                            <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}"/>
+                            <RadioButton  Content="Unlocked Vehicles"  Style="{StaticResource TabButtonTheme}"/>
+                            <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
+                        </StackPanel>
+
+                        <Button x:Name="saveChanges" Grid.Row="1" Content="Save Changes" FontSize="17" Style="{StaticResource BottomButtonTheme}" Click="saveChanges_Click"/>
                     </Grid>
                 </Border>
             </Grid>
-        </Border>
+
+            <!-- Main Content View -->
+            <Border Grid.Column="3" Grid.Row="1" Background="#FF444444" BorderThickness="1" BorderBrush="#FF646464" CornerRadius="10" >
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="15"/>
+                    </Grid.RowDefinitions>
+
+                    <ContentControl x:Name="mainContent"
+                                    IsEnabled="False"
+                                    Grid.Row="0"
+                                    Content="{Binding CurrentView}"
+                                    ClipToBounds="True"/>
+
+                    <!-- Status Bar -->
+                    <Border Grid.Row="1" Background="#FF646464" CornerRadius="0,0,10,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.5*"/>
+                                <ColumnDefinition Width="0.5*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" Padding="10,0,0,0"/>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="10"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#FFC8C8C8" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,2,0"/>
+                                <Button Grid.Column="2" IsEnabled="False" Foreground="#FFC8C8C8" Background="#FF646464" Style="{StaticResource SquareButtonTheme}" Content="ⓘ" FontSize="14"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

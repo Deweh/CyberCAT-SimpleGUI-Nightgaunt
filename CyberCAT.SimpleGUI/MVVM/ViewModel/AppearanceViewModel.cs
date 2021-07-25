@@ -65,7 +65,7 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 
                 slider.RefreshValue();
 
-                slider.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+                slider.PropertyChanged += async (object sender, PropertyChangedEventArgs e) =>
                 {
                     if (e.PropertyName == "Value")
                     {
@@ -73,7 +73,7 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
                         {
                             if ((bool)prop.PropertyType.GetField("HasWarning").GetValue(propVal) == true)
                             {
-                                if (MessageBox.Show(((string)prop.PropertyType.GetField("Warning").GetValue(propVal)) + " Do you wish to continue?", "Warning", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                                if (await MainModel.OpenNotification(((string)prop.PropertyType.GetField("Warning").GetValue(propVal)) + " Do you wish to continue?", "Warning", NotifyButtons.YesNo) == NotifyResult.No)
                                 {
                                     slider.RefreshValue();
                                     return;

@@ -89,6 +89,18 @@
 
     <Style TargetType="{x:Type Button}"
            BasedOn="{StaticResource DefaultButtonTheme}"
+           x:Key="RightBottomButtonTheme">
+        <Setter Property="Border.CornerRadius" Value="0,0,10,0"/>
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           BasedOn="{StaticResource DefaultButtonTheme}"
+           x:Key="LeftBottomButtonTheme">
+        <Setter Property="Border.CornerRadius" Value="0,0,0,10"/>
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           BasedOn="{StaticResource DefaultButtonTheme}"
            x:Key="SquareButtonTheme">
         <Setter Property="Border.CornerRadius" Value="0"/>
     </Style>

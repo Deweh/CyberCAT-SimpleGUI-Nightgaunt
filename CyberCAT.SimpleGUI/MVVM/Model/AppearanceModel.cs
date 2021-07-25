@@ -387,6 +387,80 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             }
         };
 
+        public static AppearanceProperty<int> EyeMakeup => new()
+        {
+            MaxValue = LL.EyeMakeups.Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.EyeMakeups,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.makeupEyes_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("makeupEyes_", new HashValueEntry()
+                {
+                    FirstString = $"hx_000_p{wmGender}a__basehead_makeup_eyes__01_black",
+                    Hash = LL.EyeMakeups[value],
+                    SecondString = "makeupEyes_01"
+                },
+                new[] { "TPP", "character_customization" }, Field.Hash, null, true);
+
+                SetAllEntries(EntryType.MainListEntry, "makeupEyes_", (object entry) => { ((HashValueEntry)entry).SecondString = $"makeupEyes_{value:00}"; });
+            }
+        };
+
+        public static AppearanceProperty<int> EyeMakeupColor => new()
+        {
+            MaxValue = LL.EyeMakeupColors.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.EyeMakeupColors,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.makeupEyes_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetConcatedValue("first.main.first.makeupEyes_", LL.EyeMakeupColors[value - 1]);
+            }
+        };
+
+        public static AppearanceProperty<int> LipMakeup => new()
+        {
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.LipMakeups,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.makeupLips_"
+            ),
+            SetSchema = (int value) =>
+            {
+                var max = LL.LipMakeups.Count - (BodyGender.Get() == Gender.Male ? 2 : 1);
+
+                if (value > max)
+                {
+                    value = 0;
+                }
+                else if (value < 0)
+                {
+                    value = max;
+                }
+
+                SetNullableHashEntry("makeupLips_", new HashValueEntry()
+                {
+                    FirstString = $"hx_000_p{wmGender}a__basehead__makeup_lips_01__01_black",
+                    Hash = LL.LipMakeups[value],
+                    SecondString = "makeupLips_01"
+                },
+                new[] { "TPP", "character_customization" }, Field.Hash, null, true);
+            }
+        };
+
         #endregion
 
         #region Body
