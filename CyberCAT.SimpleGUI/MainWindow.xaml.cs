@@ -31,13 +31,15 @@ namespace CyberCAT.SimpleGUI
         private DoubleAnimation fadeInAnim = new DoubleAnimation
         {
             To = 1,
-            Duration = TimeSpan.FromMilliseconds(200)
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CircleEase()
         };
 
         private DoubleAnimation fadeOutAnim = new DoubleAnimation
         {
             To = 0,
-            Duration = TimeSpan.FromMilliseconds(200)
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CircleEase()
         };
 
         public MainWindow()
@@ -73,39 +75,60 @@ namespace CyberCAT.SimpleGUI
             else if (buttons == NotifyButtons.YesNo)
             {
                 notifyButton1.SetValue(Grid.ColumnSpanProperty, 1);
-                notifyButton1.Content = "No";
+                notifyButton1.Content = "Yes";
                 notifyButton1.Style = FindResource("LeftBottomButtonTheme") as Style;
 
                 notifyButton2.Visibility = Visibility.Visible;
             }
 
-            var anim = new DoubleAnimation
+            var blurAnim = new DoubleAnimation
             {
                 To = 15,
-                Duration = TimeSpan.FromMilliseconds(200)
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CircleEase()
+            };
+
+            var scaleAnim = new DoubleAnimation
+            {
+                From = 0.8,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CircleEase()
             };
 
             notifyGrid.Visibility = Visibility.Visible;
-            uiGrid.Effect.BeginAnimation(BlurEffect.RadiusProperty, anim);
+            uiGrid.Effect.BeginAnimation(BlurEffect.RadiusProperty, blurAnim);
 
+            notifyBox.RenderTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnim);
+            notifyBox.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnim);
             notifyGrid.BeginAnimation(UIElement.OpacityProperty, fadeInAnim);
         }
 
         private void HideNotifyGrid()
         {
-            var anim = new DoubleAnimation
+            var blurAnim = new DoubleAnimation
             {
                 To = 0,
-                Duration = TimeSpan.FromMilliseconds(200)
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CircleEase()
             };
 
-            anim.Completed += (object o, EventArgs e) =>
+            blurAnim.Completed += (object o, EventArgs e) =>
             {
                 notifyGrid.Visibility = Visibility.Hidden;
             };
 
+            var scaleAnim = new DoubleAnimation
+            {
+                To = 0.8,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CircleEase()
+            };
+
             uiGrid.Effect.BeginAnimation(BlurEffect.RadiusProperty, fadeOutAnim);
-            notifyGrid.BeginAnimation(UIElement.OpacityProperty, anim);
+            notifyBox.RenderTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnim);
+            notifyBox.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnim);
+            notifyGrid.BeginAnimation(UIElement.OpacityProperty, blurAnim);
         }
 
         private void notifyButton1_Click(object sender, RoutedEventArgs e)
@@ -116,14 +139,14 @@ namespace CyberCAT.SimpleGUI
             }
             else if (_notifyButtons == NotifyButtons.YesNo)
             {
-                MainModel.CloseNotification(NotifyResult.No);
+                MainModel.CloseNotification(NotifyResult.Yes);
             }
             HideNotifyGrid();
         }
 
         private void notifyButton2_Click(object sender, RoutedEventArgs e)
         {
-            MainModel.CloseNotification(NotifyResult.Yes);
+            MainModel.CloseNotification(NotifyResult.No);
             HideNotifyGrid();
         }
 

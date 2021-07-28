@@ -1,5 +1,9 @@
-﻿using System;
+﻿using CyberCAT.Core.Classes.NodeRepresentations;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +16,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CyberCAT.SimpleGUI.MVVM.Model;
+using CyberCAT.SimpleGUI.MVVM.ViewModel;
+using CyberCAT.SimpleGUI.Core.Helpers;
 
 namespace CyberCAT.SimpleGUI.MVVM.View
 {
@@ -23,6 +30,63 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         public AppearanceView()
         {
             InitializeComponent();
+        }
+
+        private async void loadPreset_Click(object sender, RoutedEventArgs e)
+        {
+            var openDialog = new OpenFileDialog
+            {
+                Filter = "Cyberpunk 2077 Character Preset|*.preset"
+            };
+
+            if (openDialog.ShowDialog() == true)
+            {
+                CharacterCustomizationAppearances preset = null;
+                try
+                {
+                    preset = JsonConvert.DeserializeObject<CharacterCustomizationAppearances>(File.ReadAllText(openDialog.FileName));
+                }
+                catch(Exception error)
+                {
+                    await MainModel.OpenNotification("Failed to parse preset: " + error.Message, "Error");
+                    return;
+                }
+
+                if (preset.UnknownFirstBytes.Length > 6)
+                {
+                    preset.UnknownFirstBytes = preset.UnknownFirstBytes.Skip(preset.UnknownFirstBytes.Length - 6).ToArray();
+                }
+
+                if (preset.UnknownFirstBytes[4] != SaveFileHelper.GetAppearanceContainer().UnknownFirstBytes[4])
+                {
+                    AppearanceModel.BodyGender.Set((AppearanceModel.Gender)preset.UnknownFirstBytes[4]);
+                }
+
+                AppearanceModel.SetAllValues(preset);
+                var viewModel = (AppearanceViewModel)DataContext;
+
+                foreach (var slider in viewModel.Sliders)
+                {
+                    slider.RefreshValue();
+                }
+
+                viewModel.PreviewImage = System.IO.Path.Combine("BodyGender", viewModel.Sliders[0].Value.ToString("00") + ".jpg");
+                await MainModel.OpenNotification("Appearance preset applied.");
+            }
+        }
+
+        private async void savePreset_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = "Cyberpunk 2077 Character Preset|*.preset"
+            };
+
+            if (saveDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveDialog.FileName, JsonConvert.SerializeObject(SaveFileHelper.GetAppearanceContainer()));
+                await MainModel.OpenNotification("Appearance preset saved.");
+            }
         }
     }
 }

@@ -461,6 +461,486 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             }
         };
 
+        public static AppearanceProperty<int> LipMakeupColor => new()
+        {
+            MaxValue = LL.LipMakeupColors.Count,
+            MinValue = 1,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.LipMakeupColors,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.makeupLips_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetConcatedValue("first.main.first.makeupLips_", LL.LipMakeupColors[value - 1]);
+            }
+        };
+
+        public static AppearanceProperty<int> CheekMakeup => new()
+        {
+            MaxValue = LL.CheekMakeups.Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.CheekMakeups,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.makeupCheeks_"
+            ),
+            SetSchema = (int value) =>
+            {
+
+                if (CheekMakeup.Get() != 5 && value == 5)
+                {
+                    SetConcatedValue("first.main.first.makeupCheeks_", "02_pink");
+                }
+                else if (CheekMakeup.Get() == 5 && value < 5 && value > 0)
+                {
+                    SetConcatedValue("first.main.first.makeupCheeks_", "03_light_brown");
+                }
+
+                SetNullableHashEntry("makeupCheeks_", new HashValueEntry
+                {
+                    FirstString = $"hx_000_p{wmGender}a__morphs_makeup_freckles_01__{(value == 5 ? "02_pink" : "03_light_brown")}",
+                    Hash = LL.CheekMakeups[value],
+                    SecondString = "makeupCheeks_01"
+                },
+                new[] { "TPP", "character_customization" });
+            }
+        };
+
+        public static AppearanceProperty<int> CheekMakeupColor => new()
+        {
+            GetSchema = new IndexFromList<string>
+            (
+                LL.CheekMakeupColors,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "first.main.first.makeupCheeks_"
+            ),
+            SetSchema = (int value) =>
+            {
+                var isBlush = CheekMakeup.Get() == 5;
+
+                if (value > (isBlush ? 7 : 4))
+                {
+                    value = isBlush ? 5 : 1;
+                }
+                else if (value < (isBlush ? 5 : 1))
+                {
+                    value = isBlush ? 7 : 4;
+                }
+
+                SetConcatedValue("first.main.first.makeupCheeks_", LL.CheekMakeupColors[value - 1]);
+            }
+        };
+
+        public static AppearanceProperty<int> Blemishes => new()
+        {
+            MaxValue = LL.Blemishes.Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.Blemishes,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "first.main.hash.makeupPimples_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("makeupPimples_", new HashValueEntry
+                {
+                    FirstString = $"hx_000_p{wmGender}a__basehead_pimples_01__brown_01",
+                    Hash = LL.Blemishes[value],
+                    SecondString = "makeupPimples_01"
+                },
+                new[] { "TPP", "character_customization" });
+            }
+        };
+
+        public static AppearanceProperty<NailLength> Nails => new()
+        {
+            GetSchema = new CustomGet<NailLength>(() =>
+            {
+                return GetValue<string>("second.additional.second.nails_l") == "default" ? NailLength.Short : NailLength.Long;
+            }),
+            SetSchema = (NailLength value) =>
+            {
+                var entries = GetEntries("second.additional.nails_l"); entries.AddRange(GetEntries("second.additional.nails_r"));
+                if (value == NailLength.Short)
+                {
+                    RemoveEntries(entries);
+                }
+                else
+                {
+                    if (entries.Count < 1)
+                    {
+                        var sectionNames = new[]
+                        {
+                            "holstered_default",
+                            "holstered_nanowire",
+                            "unholstered_nanowire",
+                            "character_customization",
+                            "holstered_launcher",
+                            "unholstered_launcher",
+                            "holstered_mantis",
+                            "unholstered_mantis"
+                        };
+
+                        if (BodyGender.Get() == Gender.Female)
+                        {
+                            sectionNames = new[]
+                            {
+                                "holstered_default_tpp",
+                                "holstered_default_fpp",
+                                "holstered_nanowire_tpp",
+                                "holstered_nanowire_fpp",
+                                "unholstered_nanowire",
+                                "character_customization",
+                                "holstered_launcher_tpp",
+                                "holstered_launcher_fpp",
+                                "unholstered_launcher",
+                                "holstered_mantis_tpp",
+                                "holstered_mantis_fpp",
+                                "unholstered_mantis"
+                            };
+                        }
+
+                        var leftRight = new[] { "l", "r" };
+
+                        foreach (string side in leftRight)
+                        {
+                            CreateEntry(new ValueEntry()
+                            {
+                                FirstString = $"nails_{side}",
+                                SecondString = $"a0_000_p{wmGender}a_base__nails_{side}{(BodyGender.Get() == Gender.Male ? "_001" : string.Empty)}"
+                            }, sectionNames, mainSections[1]);
+                        }
+                    }
+                }
+            }
+        };
+
+        public static AppearanceProperty<int> NailColor => new()
+        {
+            MaxValue = LL.NailColors.Count,
+            MinValue = 1,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                var value = GetValue<string>($"second.main.first.nails_color{(BodyGender.Get() == Gender.Female ? "_tpp" : string.Empty)}").Substring("a0_000_pwa_base__nails_".Length);
+                return LL.NailColors.FindIndex(x => x == value) + 1;
+            }),
+            SetSchema = (int value) =>
+            {
+                List<object> entries;
+                if (BodyGender.Get() == Gender.Female)
+                {
+                    entries = GetEntries("second.main.nails_color_tpp");
+                    entries.AddRange(GetEntries("second.main.nails_color_fpp"));
+                }
+                else
+                {
+                    entries = GetEntries("second.main.nails_color");
+                }
+
+                entries.AddRange(GetEntries("second.main.u_launcher_nails_color"));
+                entries.AddRange(GetEntries("second.main.u_mantise_nails_color"));
+
+                SetAllEntries(entries, (object entry) =>
+                {
+                    var entryValue = entry as HashValueEntry;
+                    entryValue.FirstString = $"a0_000_p{wmGender}a_{(entryValue.FirstString.Contains("fpp") ? "fpp" : "base")}__nails_{LL.NailColors[value - 1]}";
+                });
+            }
+        };
+
+        public static AppearanceProperty<int> Chest => new()
+        {
+            MaxValue = 3,
+            MinValue = 1,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                if (BodyGender.Get() == Gender.Male)
+                {
+                    return -1;
+                }
+
+                var result = GetConcatedValue("third.additional.second.breast");
+                switch (result)
+                {
+                    case "full_breast_big":
+                        return 3;
+                    case "full_breast_small":
+                        return 1;
+                    default:
+                        return 2;
+                }
+            }),
+            SetSchema = (int value) =>
+            {
+                var entries = GetEntries("third.additional.breast");
+                if (value == 2)
+                {
+                    RemoveEntries(entries);
+                }
+                else
+                {
+                    var valueString = (value == 1 ? "full_breast_small" : "full_breast_big");
+
+                    if (entries.Count < 1)
+                    {
+                        CreateEntry(new ValueEntry() { FirstString = "breast", SecondString = string.Empty }, new[] { "breast", "character_creation" }, mainSections[2]);
+                        entries = GetEntries("third.additional.breast");
+                    }
+
+                    foreach (ValueEntry entry in entries)
+                    {
+                        entry.SecondString = $"t0_000_wa_base__{valueString}";
+                        entry.TrailingBytes[0] = 1;
+                        entry.TrailingBytes[4] = 1;
+                    }
+                }
+            }
+        };
+
+        public static AppearanceProperty<int> Nipples => new()
+        {
+            GetSchema = new CustomGet<int>(() =>
+            {
+                var value = GetConcatedValue("third.main.first.nipples_", 0);
+                if (value == "default")
+                {
+                    return 1;
+                }
+                else
+                {
+                    var num = int.Parse(value.Split("_")[2]);
+                    return (num == 0 ? 0 : (num + 1));
+                }
+            }),
+            SetSchema = (int value) =>
+            {
+                if (value > (BodyGender.Get() == Gender.Female ? 3 : 1))
+                {
+                    value = 0;
+                }
+                else if (value < 0)
+                {
+                    value = BodyGender.Get() == Gender.Female ? 3 : 1;
+                }
+
+                string first = null;
+                if (value != 1)
+                {
+                    first =  $"{(BodyGender.Get() == Gender.Female ? "female" : "male")}_i0_00{(value == 0 ? 0 : (value - 1))}_base__nipple__{LL.SkinTones[SkinTone.Get() - 1]}";
+                }
+
+                SetNullableHashEntry("fpp_nipples_", new HashValueEntry
+                {
+                    FirstString = first == null ? null : first.Replace("base", "fpp"),
+                    Hash = 8383615550749140678,
+                    SecondString = "fpp_nipples_01"
+                },
+                new[] { "FPP_Body" }, Field.FirstString, mainSections[2]);
+
+                SetNullableHashEntry("nipples_", new HashValueEntry
+                {
+                    FirstString = first,
+                    Hash = 17949477145130904651,
+                    SecondString = "nipples_01"
+                },
+                new[] { "TPP_Body", "character_creation" }, Field.FirstString, mainSections[2]);
+            }
+        };
+
+        public static AppearanceProperty<int> BodyTattoos => new()
+        {
+            MaxValue = LL.BodyTattoos["TPP"].Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.BodyTattoos["TPP"],
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "third.main.hash.body_tattoo_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("body_tattoo_", new HashValueEntry()
+                {
+                    FirstString = $"{wmGender}__{LL.SkinTones[SkinTone.Get() - 1]}",
+                    Hash = LL.BodyTattoos["TPP"][value],
+                    SecondString = "body_tattoo_01"
+                },
+                new[] { "TPP_Body", "character_creation" }, Field.Hash, mainSections[2]);
+
+                SetNullableHashEntry("fpp_body_tattoo_", new HashValueEntry()
+                {
+                    FirstString = $"{wmGender}__{LL.SkinTones[SkinTone.Get() - 1]}",
+                    Hash = LL.BodyTattoos["FPP"][value],
+                    SecondString = "fpp_body_tattoo_01"
+                },
+                new[] { "FPP_Body" }, Field.Hash, mainSections[2]);
+            }
+        };
+
+        public static AppearanceProperty<int> BodyScars => new()
+        {
+            MaxValue = LL.BodyScars.Count - 1,
+            MinValue = 0,
+            GetSchema = new IndexFromList<ulong>
+            (
+                LL.BodyScars,
+                RetrievalModifier.None,
+                GetValue<ulong>,
+                "third.main.hash.body_scars_"
+            ),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry("body_scars_", new HashValueEntry
+                {
+                    FirstString = $"scars_p{wmGender}a_001__{LL.SkinTones[SkinTone.Get() - 1]}",
+                    Hash = LL.BodyScars[value],
+                    SecondString = "body_scars_" + value.ToString("00")
+                },
+                new[] { "FPP_Body", "TPP_Body", "character_creation" }, Field.Hash, mainSections[2], false, true);
+            }
+        };
+
+        public static AppearanceProperty<int> Genitals => new()
+        {
+            MaxValue = LL.Genitals.Count,
+            MinValue = 0,
+            GetSchema = new IndexFromList<string>
+            (
+                LL.Genitals,
+                RetrievalModifier.PlusOne,
+                GetConcatedValue,
+                "third.main.first.genitals_",
+                1,
+                true
+            ),
+            SetSchema = (int value) =>
+            {
+                string first = null;
+                if (value > 0)
+                {
+                    first = $"i0_000_p{wmGender}a_base__{LL.Genitals[value - 1]}__{LL.SkinTones[SkinTone.Get() - 1]}";
+                }
+
+                if (value < 2)
+                {
+                    RemoveEntries(GetEntries("third.additional.penis_base"));
+                }
+
+                if (Genitals.Get() > 0)
+                {
+                    var entries = GetEntries($"third.main.{LL.Genitals[Genitals.Get() - 1]}_hairstyle_");
+                    if (value < 1)
+                    {
+                        RemoveEntries(entries);
+                    }
+                    else
+                    {
+                        SetAllEntries(entries, (object entry) =>
+                        {
+                            var entryValue = entry as HashValueEntry;
+
+                            var parts = entryValue.FirstString.Split("__", StringSplitOptions.None);
+                            parts[1] = LL.Genitals[value - 1] + "_hairstyle";
+                            entryValue.FirstString = string.Join("__", parts);
+
+                            entryValue.SecondString = LL.Genitals[value - 1] + "_hairstyle_01";
+                        });
+                    }
+                }
+
+                SetNullableHashEntry("genitals_", new HashValueEntry
+                {
+                    FirstString = first,
+                    Hash = 3178724759333055970,
+                    SecondString = $"genitals_{value:00}"
+                },
+                new[] { "character_creation", "genitals" }, Field.FirstString, mainSections[2], false, true);
+            }
+        };
+
+        public static AppearanceProperty<int> PenisSize => new()
+        {
+            MaxValue = LL.PenisSizes.Count,
+            MinValue = 1,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                if (Genitals.Get() < 2)
+                {
+                    return -1;
+                }
+
+                var value = GetValue<string>("third.additional.second.penis_base");
+                if (value == "default")
+                {
+                    return 2;
+                }
+                else
+                {
+                    return LL.PenisSizes.FindIndex(x => x == value.Split("__", StringSplitOptions.None)[1]) + 1;
+                }
+            }),
+            SetSchema = (int value) =>
+            {
+                var entries = GetEntries("third.additional.penis_base");
+                if (value == 2)
+                {
+                    RemoveEntries(entries);
+                }
+                else
+                {
+                    var newValue = $"i0_000_p{wmGender}a_base__{LL.PenisSizes[value - 1]}";
+                    if (entries.Count < 1)
+                    {
+                        CreateEntry(new ValueEntry
+                        {
+                            FirstString = "penis_base",
+                            SecondString = newValue
+                        },
+                        new[] { "character_creation", "genitals" }, mainSections[2]);
+                    }
+                    else
+                    {
+                        SetValue(Field.SecondString, "third.additional.penis_base", newValue);
+                    }
+                }
+            }
+        };
+
+        public static AppearanceProperty<int> PubicHairStyle => new()
+        {
+            MaxValue = LL.PubicHairStyles.Count - 1,
+            MinValue = 0,
+            GetSchema = new CustomGet<int>(() =>
+            {
+                if (Genitals.Get() < 1)
+                {
+                    return -1;
+                }
+
+                var hash = GetValue<ulong>($"third.main.hash.{LL.Genitals[Genitals.Get() - 1]}_hairstyle_");
+                return hash == 0 ? 0 : LL.PubicHairStyles.FindIndex(x => x == hash);
+            }),
+            SetSchema = (int value) =>
+            {
+                SetNullableHashEntry($"{LL.Genitals[Genitals.Get() - 1]}_hairstyle_", new HashValueEntry
+                {
+                    FirstString = $"i0_000_p{wmGender}a_base__{LL.Genitals[Genitals.Get() - 1]}_hairstyle__01_black",
+                    Hash = LL.PubicHairStyles[value],
+                    SecondString = $"{LL.Genitals[Genitals.Get() - 1]}_hairstyle_01"
+                },
+                new[] { "character_creation", "genitals" }, Field.Hash, mainSections[2]);
+            }
+        };
+
         #endregion
 
         #region Body
@@ -1184,6 +1664,12 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
         {
             Female,
             Male
+        }
+
+        public enum NailLength
+        {
+            Short,
+            Long
         }
 
         public enum EntryType

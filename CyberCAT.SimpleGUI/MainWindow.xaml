@@ -33,10 +33,18 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Column="1" Grid.Row="1" Background="#FF646464" CornerRadius="10">
+            <Border x:Name="notifyBox" Grid.Column="1" Grid.Row="1" Background="#FF646464" CornerRadius="10">
+                <Border.RenderTransform>
+                    <ScaleTransform />
+                </Border.RenderTransform>
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.5075" Color="#FF323232" BlurRadius="10" Direction="0" ShadowDepth="1"/>
                 </Border.Effect>
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+                    </Style>
+                </Border.Style>
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -57,8 +65,8 @@
                             <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="notifyButton1" Click="notifyButton1_Click" FontFamily="Segoe UI" Grid.Column="0" Content="No" FontSize="15" Style="{StaticResource LeftBottomButtonTheme}"/>
-                        <Button x:Name="notifyButton2" Click="notifyButton2_Click" FontFamily="Segoe UI" Grid.Column="1" Content="Yes" FontSize="15" Style="{StaticResource RightBottomButtonTheme}"/>
+                        <Button x:Name="notifyButton1" Click="notifyButton1_Click" FontFamily="Segoe UI" Grid.Column="0" Content="Yes" FontSize="15" Style="{StaticResource LeftBottomButtonTheme}"/>
+                        <Button x:Name="notifyButton2" Click="notifyButton2_Click" FontFamily="Segoe UI" Grid.Column="1" Content="No" FontSize="15" Style="{StaticResource RightBottomButtonTheme}"/>
                     </Grid>
                 </Grid>
             </Border>

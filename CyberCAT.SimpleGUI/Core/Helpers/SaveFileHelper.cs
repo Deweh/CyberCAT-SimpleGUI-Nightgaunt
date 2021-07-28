@@ -41,6 +41,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
             progressTimer.Tick += progressTimer_Tick;
             SaveFile.ProgressChanged += SaveFile_ProgressChanged;
+            GenericUnknownStructParser.WrongDefaultValue += (object sender, WrongDefaultValueEventArgs e) => e.Ignore = true;
         }
 
         public static async Task LoadFileAsync(string filePath)
@@ -59,7 +60,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                 };
             });
 
-            SaveFile bufferFile = new SaveFile(parsers); 
+            SaveFile bufferFile = new SaveFile(parsers);
 
             try
             {

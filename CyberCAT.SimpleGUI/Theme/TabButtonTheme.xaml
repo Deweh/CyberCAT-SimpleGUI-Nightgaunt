@@ -53,6 +53,22 @@
                                     </BeginStoryboard>
                                 </Trigger.ExitActions>
                             </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FF4E4E4E" Duration="0:0:0.05"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.12"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>

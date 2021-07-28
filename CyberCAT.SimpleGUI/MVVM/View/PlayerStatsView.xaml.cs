@@ -32,19 +32,22 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         private DoubleAnimation fadeInAnim = new DoubleAnimation
         {
             To = 1,
-            Duration = TimeSpan.FromMilliseconds(200)
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CircleEase()
         };
 
         private DoubleAnimation fadeOutAnim = new DoubleAnimation
         {
             To = 0,
-            Duration = TimeSpan.FromMilliseconds(200)
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CircleEase()
         };
 
         private DoubleAnimation fadeMidAnim = new DoubleAnimation
         {
             To = 0.4,
-            Duration = TimeSpan.FromMilliseconds(200)
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CircleEase()
         };
 
         public PlayerStatsView()
@@ -154,8 +157,9 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         {
             var anim = new DoubleAnimation
             {
-                To = 10,
-                Duration = TimeSpan.FromMilliseconds(200)
+                To = 15,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CircleEase()
             };
 
             lifePathOverlay.Visibility = Visibility.Visible;
@@ -169,7 +173,8 @@ namespace CyberCAT.SimpleGUI.MVVM.View
             var anim = new DoubleAnimation
             {
                 To = 0,
-                Duration = TimeSpan.FromMilliseconds(200)
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CircleEase()
             };
 
             anim.Completed += (object o, EventArgs e) =>
