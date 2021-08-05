@@ -145,6 +145,20 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             }
         };
 
+        public static AppearanceProperty<HairLength> HeadwearHairLength => new()
+        {
+            MaxValue = 2,
+            MinValue = 0,
+            GetSchema = new CustomGet<HairLength>(() =>
+            {
+                return Enum.Parse<HairLength>(appearanceNode.Strings[1]);
+            }),
+            SetSchema = (HairLength value) =>
+            {
+                appearanceNode.Strings[1] = value.ToString();
+            }
+        };
+
         public static AppearanceProperty<int> Eyes => new()
         {
             MaxValue = 21,
@@ -1668,6 +1682,13 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
 
         public enum NailLength
         {
+            Short,
+            Long
+        }
+
+        public enum HairLength
+        {
+            Buzz,
             Short,
             Long
         }
