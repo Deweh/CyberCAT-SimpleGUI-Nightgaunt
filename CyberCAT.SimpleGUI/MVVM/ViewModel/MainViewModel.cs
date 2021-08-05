@@ -15,6 +15,8 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 
         public RelayCommand AppearanceViewCommand { get; set; }
 
+        public RelayCommand InventoryViewCommand { get; set; }
+
         public string StatusMessage
         {
             get
@@ -61,6 +63,11 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             AppearanceViewCommand = new RelayCommand(o =>
             {
                 CurrentView = new AppearanceViewModel();
+            });
+
+            InventoryViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = new InventoryViewModel();
             });
 
             StatusMessage = MainModel.Status;

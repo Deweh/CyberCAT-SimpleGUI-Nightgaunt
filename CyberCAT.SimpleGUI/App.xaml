@@ -25,6 +25,10 @@
             <DataTemplate DataType="{x:Type viewModel:AppearanceSliderViewModel}">
                 <view:AppearanceSliderView/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:InventoryViewModel}">
+                <view:InventoryView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

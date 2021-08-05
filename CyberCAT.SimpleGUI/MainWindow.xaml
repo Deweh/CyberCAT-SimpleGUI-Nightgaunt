@@ -122,7 +122,7 @@
                         <StackPanel Grid.Row="0">
                             <RadioButton x:Name="playerStats"  Content="Player Stats"  Style="{StaticResource FirstTabButtonTheme}" Command="{Binding PlayerStatsViewCommand}"/>
                             <RadioButton  Content="Appearance"  Style="{StaticResource TabButtonTheme}" Command="{Binding AppearanceViewCommand}"/>
-                            <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}"/>
+                            <RadioButton  Content="Inventory"  Style="{StaticResource TabButtonTheme}" Command="{Binding InventoryViewCommand}"/>
                             <RadioButton  Content="Unlocked Vehicles"  Style="{StaticResource TabButtonTheme}"/>
                             <RadioButton  Content="Quest Facts"  Style="{StaticResource TabButtonTheme}"/>
                         </StackPanel>
