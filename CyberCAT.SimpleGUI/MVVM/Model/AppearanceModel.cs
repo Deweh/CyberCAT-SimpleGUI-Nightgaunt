@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using CyberCAT.Core.Classes.DumpedClasses;
 using CyberCAT.Core.Classes.NodeRepresentations;
-using static CyberCAT.Core.Classes.NodeRepresentations.CharacterCustomizationAppearances;
+using CyberCAT.SimpleGUI.Core.Extensions;
 using CyberCAT.SimpleGUI.Core.Helpers;
+using static CyberCAT.Core.Classes.NodeRepresentations.CharacterCustomizationAppearances;
 using static CyberCAT.SimpleGUI.Core.Helpers.ResourceHelper;
-using CyberCAT.SimpleGUI.Core;
-using System.Windows;
 
 namespace CyberCAT.SimpleGUI.MVVM.Model
 {
@@ -26,6 +22,11 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             GetSchema = new GenderFromByte(4),
             SetSchema = (Gender value) =>
             {
+                if (!SaveFileHelper.PSDataEnabled())
+                {
+                    return;
+                }
+
                 appearanceNode.UnknownFirstBytes[4] = (byte)value;
                 var playerPuppet = SaveFileHelper.GetPSDataContainer().ClassList.Where(x => x is PlayerPuppetPS).FirstOrDefault() as PlayerPuppetPS;
 
@@ -40,6 +41,11 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             },
             AfterSet = () =>
             {
+                if (!SaveFileHelper.PSDataEnabled())
+                {
+                    return;
+                }
+
                 if (BodyGender.Get() == Gender.Female)
                 {
                     SetAllValues(FemaleDefault);

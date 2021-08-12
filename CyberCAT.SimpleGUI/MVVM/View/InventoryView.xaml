@@ -38,9 +38,23 @@
             </Grid>
         </Border>
 
-        <ListBox Grid.Row="1" Grid.Column="0" Background="Transparent" BorderThickness="0,0,1,0" BorderBrush="#FF505050"/>
+        <ListBox Grid.Row="1" Grid.Column="0" Background="Transparent" BorderThickness="0,0,1,0" BorderBrush="#FF505050" ItemsSource="{Binding Items}" />
 
-        <ListView Grid.Row="1" Grid.Column="1" Background="Transparent" BorderThickness="0"/>
+        <ListView Grid.Row="1" Grid.Column="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=ActiveInventory.Items}" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.Resources>
+                <local:ItemToTypeStringConverter x:Key="ItemToTypeStringConverter"/>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Item Name" Width="100" DisplayMemberBinding="{Binding Path=ItemTdbId.GameNameFallback}"/>
+                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Converter={StaticResource ItemToTypeStringConverter}}"/>
+                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Path=ItemTdbId.Name}"/>
+                    <GridViewColumn Header="Slot" Width="100"/>
+                    <GridViewColumn Header="Quantity" Width="50"/>
+                    <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Path=ItemTdbId.GameDescription}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </UserControl>

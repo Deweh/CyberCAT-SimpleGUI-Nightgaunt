@@ -67,7 +67,7 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 
             InventoryViewCommand = new RelayCommand(o =>
             {
-                CurrentView = new InventoryViewModel();
+                //CurrentView = new InventoryViewModel();
             });
 
             StatusMessage = MainModel.Status;

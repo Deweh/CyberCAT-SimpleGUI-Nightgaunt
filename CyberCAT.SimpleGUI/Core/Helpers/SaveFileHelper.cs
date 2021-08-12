@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using CyberCAT.Core;
 using CyberCAT.Core.Classes;
 using CyberCAT.Core.Classes.DumpedClasses;
 using CyberCAT.Core.Classes.Interfaces;
@@ -16,6 +14,7 @@ using CyberCAT.Core.Classes.Mapping;
 using CyberCAT.Core.Classes.NodeRepresentations;
 using CyberCAT.Core.Classes.Parsers;
 using CyberCAT.SimpleGUI.MVVM.Model;
+using CyberCAT.SimpleGUI.Core.Extensions;
 
 namespace CyberCAT.SimpleGUI.Core.Helpers
 {
@@ -32,8 +31,24 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
         private static int _currentProgress = 0;
         private static int _maxProgress = 0;
         private static string _currentNode = "";
+        private static BinaryResolver _tdbidResolver;
+        private static WrongDefaultValueEventArgs wrongDefaultValue;
 
         private static DispatcherTimer progressTimer = new DispatcherTimer();
+        private static List<INodeParser> activeParsers = new()
+        {
+            new CharacterCustomizationAppearancesParser(),
+            new InventoryParser(),
+            new ItemDataParser(),
+            new FactsDBParser(),
+            new FactsTableParser(),
+            new GameSessionConfigParser(),
+            new ItemDropStorageManagerParser(),
+            new ItemDropStorageParser(),
+            new ScriptableSystemsContainerParser()
+            //new StatsSystemParser(),
+            //new PSDataParser()
+        };
 
         static SaveFileHelper()
         {
@@ -41,33 +56,33 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
             progressTimer.Tick += progressTimer_Tick;
             SaveFile.ProgressChanged += SaveFile_ProgressChanged;
-            GenericUnknownStructParser.WrongDefaultValue += (object sender, WrongDefaultValueEventArgs e) => e.Ignore = true;
+            GenericUnknownStructParser.WrongDefaultValue += (object sender, WrongDefaultValueEventArgs e) =>
+            {
+                e.Ignore = true;
+                wrongDefaultValue = e;
+            };
         }
 
         public static async Task LoadFileAsync(string filePath)
         {
             IsLoading = true;
-            progressTimer.Start();
             Exception error = null;
 
-            var parsers = await Task.Run(() =>
-            {
-                return new List<INodeParser>
-                {
-                    new CharacterCustomizationAppearancesParser(), new InventoryParser(), new ItemDataParser(), new FactsDBParser(),
-                    new FactsTableParser(), new GameSessionConfigParser(), new ItemDropStorageManagerParser(), new ItemDropStorageParser(),
-                    new StatsSystemParser(), new ScriptableSystemsContainerParser(), new PSDataParser()
-                };
-            });
+            progressTimer.Start();
 
-            SaveFile bufferFile = new SaveFile(parsers);
+            if (_tdbidResolver == null)
+            {
+                _tdbidResolver = await Task.Run(() => new BinaryResolver(ResourceHelper.ItemsDB));
+                NameResolver.TweakDbResolver = _tdbidResolver;
+            }
+
+            FactResolver.UseDictionary(ResourceHelper.Facts);
+
+            var bufferFile = new SaveFile(activeParsers);
 
             try
             {
-                await Task.Run(() =>
-                {
-                    bufferFile.Load(new MemoryStream(File.ReadAllBytes(filePath)));
-                });
+                await Task.Run(() => bufferFile.Load(new MemoryStream(File.ReadAllBytes(filePath))));
             }
             catch (Exception e)
             {
@@ -77,6 +92,12 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
             progressTimer.Stop();
             IsLoading = false;
+
+            if (wrongDefaultValue != null)
+            {
+                await MainModel.OpenNotification($"WrongDefaultValue\n\nClass Name: {wrongDefaultValue.ClassName}\nProperty Name: {wrongDefaultValue.PropertyName}\nValue: {wrongDefaultValue.Value}\n\nYou can safely ignore this warning.", "Warning");
+                wrongDefaultValue = null;
+            }
 
             if (error != null)
             {
@@ -102,7 +123,8 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
         {
             IsSaving = true;
             progressTimer.Start();
-            byte[] newFile = new byte[0]; Exception error = null;
+            byte[] newFile = Array.Empty<byte>();
+            Exception error = null;
 
             try
             {
@@ -122,11 +144,11 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                 try
                 {
                     File.WriteAllText("error.txt", error.Message + Environment.NewLine + error.StackTrace);
-                    MessageBox.Show("Failed to save changes: " + error.Message + " An error.txt file has been generated with additional information.");
+                    await MainModel.OpenNotification("Failed to save changes: " + error.Message + " An error.txt file has been generated with additional information.", "Error");
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Failed to save changes: " + error.Message + " \n\n Stack Trace: \n" + error.StackTrace);
+                    await MainModel.OpenNotification("Failed to save changes: " + error.Message + " \n\n Stack Trace: \n" + error.StackTrace, "Error");
                 }
                 return;
             }
@@ -188,13 +210,28 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static Handle<PlayerDevelopmentData> GetPlayerDevelopmentData()
         {
-            var devSystem = GetScriptableContainer().ClassList.Where(x => x.GetType().Name == "PlayerDevelopmentSystem").FirstOrDefault() as PlayerDevelopmentSystem;
+            var devSystem = GetScriptableContainer().ClassList.Where(x => x is PlayerDevelopmentSystem).FirstOrDefault() as PlayerDevelopmentSystem;
             return devSystem.PlayerData.Where(x => x.Value.OwnerID.Hash == 1).FirstOrDefault();
+        }
+
+        public static bool PSDataEnabled()
+        {
+            return activeParsers.Any(x => x is PSDataParser);
         }
 
         public static GenericUnknownStruct GetPSDataContainer()
         {
             return (GenericUnknownStruct)GetNode("PersistencySystem").Children.Where(x => x.Name == "PSData").FirstOrDefault().Value;
+        }
+
+        public static Inventory GetInventoriesContainer()
+        {
+            return GetNode("inventory").Value as Inventory;
+        }
+
+        public static Inventory.SubInventory GetInventory(ulong id)
+        {
+            return GetInventoriesContainer().SubInventories.Where(x => x.InventoryId == id).FirstOrDefault();
         }
     }
 }

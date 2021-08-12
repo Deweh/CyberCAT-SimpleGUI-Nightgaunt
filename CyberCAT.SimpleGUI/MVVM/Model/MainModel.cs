@@ -11,6 +11,8 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
     {
         private static string _status = "No save file selected.";
         private static TaskCompletionSource<NotifyResult> _notifyCompleted;
+        private static bool _notifyOpen = false;
+        private static Queue<TaskCompletionSource> _notifyQueue = new Queue<TaskCompletionSource>();
 
         public delegate void StatusChangedHandler(string status);
         public static event StatusChangedHandler StatusChanged;
@@ -36,7 +38,15 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
 
         public static async Task<NotifyResult> OpenNotification(string text, string title = "Notice", NotifyButtons buttons = NotifyButtons.OK)
         {
+            if (_notifyOpen)
+            {
+                var queuePosition = new TaskCompletionSource();
+                _notifyQueue.Enqueue(queuePosition);
+                await queuePosition.Task;
+            }
+
             _notifyCompleted = new TaskCompletionSource<NotifyResult>();
+            _notifyOpen = true;
             NotificationOpened?.Invoke(text, title, buttons);
             NotifyResult result = await _notifyCompleted.Task;
 
@@ -47,6 +57,12 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
         {
             _notifyCompleted?.TrySetResult(result);
             NotificationClosed?.Invoke(result);
+            _notifyOpen = false;
+
+            if (_notifyQueue.Count > 0)
+            {
+                _notifyQueue.Dequeue()?.TrySetResult();
+            }
         }
     }
 

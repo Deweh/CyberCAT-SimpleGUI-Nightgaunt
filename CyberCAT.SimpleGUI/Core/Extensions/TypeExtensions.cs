@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyberCAT.SimpleGUI.Core
+namespace CyberCAT.SimpleGUI.Core.Extensions
 {
     public static class StringExtensions
     {

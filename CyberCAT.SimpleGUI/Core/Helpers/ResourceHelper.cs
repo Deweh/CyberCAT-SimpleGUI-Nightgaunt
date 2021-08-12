@@ -20,6 +20,8 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static readonly byte[] ItemsDB;
 
+        public static readonly Dictionary<ulong, string> Facts;
+
         static ResourceHelper()
         {
             AppearancePaths = LoadJsonResource<string[]>("AppearancePaths.json");
@@ -29,6 +31,8 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             MaleDefault = LoadJsonResource<CharacterCustomizationAppearances>("MaleDefault.preset");
 
             ItemsDB = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "ItemsDB.bin"));
+
+            Facts = LoadJsonResource<Dictionary<ulong, string>>("Facts.json");
         }
 
         private static T LoadJsonResource<T>(string name)
