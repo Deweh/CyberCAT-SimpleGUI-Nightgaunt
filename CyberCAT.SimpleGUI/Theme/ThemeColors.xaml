@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="DefaultText" Color="#FFF"/>
+    <SolidColorBrush x:Key="DefaultButton" Color="#FF505050"/>
+    <Color x:Key="DefaultButtonHover" R="85" G="85" B="85" A="255"/>
+    <Color x:Key="DefaultButtonPressed" R="75" G="75" B="75" A="255"/>
+    <Color x:Key="DefaultButtonDisabled" R="98" G="98" B="98" A="255"/>
+    <Color x:Key="MainBackgroundGradientStart" R="84" G="84" B="84" A="255"/>
+    <Color x:Key="MainBackgroundGradientEnd" R="71" G="71" B="71" A="255"/>
+    <SolidColorBrush x:Key="DefaultBorder" Color="#FF646464"/>
+    <SolidColorBrush x:Key="MainPanelBackground" Color="#FF444444"/>
+    <SolidColorBrush x:Key="SecondaryPanelBackground" Color="#FF646464"/>
+    <SolidColorBrush x:Key="TertiaryPanelBackground" Color="#FF505050"/>
+    <SolidColorBrush x:Key="NotificationTitleBackground" Color="#FF505050"/>
+    <SolidColorBrush x:Key="NotificationWindowOverlay" Color="#59000000"/>
+    <SolidColorBrush x:Key="LifePathPanelOverlay" Color="#E53C3C3C"/>
+    <Color x:Key="DefaultShadow" R="50" G="50" B="50" A="255"/>
+    <SolidColorBrush x:Key="SecondaryText" Color="#FFC8C8C8"/>
+    <SolidColorBrush x:Key="DefaultListItem" Color="#FF444444"/>
+    <SolidColorBrush x:Key="DefaultListItemHover" Color="#FF555555"/>
+    <SolidColorBrush x:Key="DefaultListItemSelected" Color="#FF626262"/>
+</ResourceDictionary>

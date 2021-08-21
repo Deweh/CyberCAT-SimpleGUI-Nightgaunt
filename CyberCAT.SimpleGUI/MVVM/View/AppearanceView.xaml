@@ -19,9 +19,9 @@
             <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#FF505050" Panel.ZIndex="10" CornerRadius="10,10,0,0">
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource TertiaryPanelBackground}" Panel.ZIndex="10" CornerRadius="10,10,0,0">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Border.Effect>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -67,14 +67,14 @@
             </Image.Effect>
         </Image>
         
-        <ScrollViewer Background="#FF505050" Grid.Column="1" Grid.Row="2" Grid.RowSpan="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Background="{StaticResource TertiaryPanelBackground}" Grid.Column="1" Grid.Row="2" Grid.RowSpan="1" VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Style>
                 <Style>
                     <Setter Property="Border.CornerRadius" Value="10"/>
                 </Style>
             </ScrollViewer.Style>
             <ScrollViewer.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="180" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="180" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </ScrollViewer.Effect>
             <ItemsControl ItemsSource="{Binding Sliders}" HorizontalAlignment="Center" Padding="0,15"/>
         </ScrollViewer>

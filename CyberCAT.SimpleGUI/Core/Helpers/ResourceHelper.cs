@@ -7,6 +7,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using CyberCAT.Core.Classes.NodeRepresentations;
+using System.Windows;
 
 namespace CyberCAT.SimpleGUI.Core.Helpers
 {
@@ -14,32 +15,96 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
     {
         public static readonly string[] AppearancePaths;
         public static readonly JObject AppearanceValues;
-
         public static readonly CharacterCustomizationAppearances FemaleDefault;
         public static readonly CharacterCustomizationAppearances MaleDefault;
-
         public static readonly byte[] ItemsDB;
-
         public static readonly Dictionary<ulong, string> Facts;
+        public static readonly Dictionary<string, string> ItemClasses;
+        public static readonly JObject Config;
+        public static readonly Dictionary<string, RGBAColor> Theme;
 
         static ResourceHelper()
         {
-            AppearancePaths = LoadJsonResource<string[]>("AppearancePaths.json");
-            AppearanceValues = LoadJsonResource<JObject>("AppearanceValues.json");
-
-            FemaleDefault = LoadJsonResource<CharacterCustomizationAppearances>("FemaleDefault.preset");
-            MaleDefault = LoadJsonResource<CharacterCustomizationAppearances>("MaleDefault.preset");
-
-            ItemsDB = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "ItemsDB.bin"));
-
-            Facts = LoadJsonResource<Dictionary<ulong, string>>("Facts.json");
+            LoadJsonResource("AppearancePaths.json", ref AppearancePaths);
+            LoadJsonResource("AppearanceValues.json", ref AppearanceValues);
+            LoadJsonResource("FemaleDefault.preset", ref FemaleDefault);
+            LoadJsonResource("MaleDefault.preset", ref MaleDefault);
+            LoadBinaryResource("ItemsDB.bin", ref ItemsDB);
+            LoadJsonResource("Facts.json", ref Facts);
+            LoadJsonResource("ItemClasses.json", ref ItemClasses);
+            LoadJsonResource("Config\\Config.json", ref Config, false);
+            LoadJsonResource("Config\\Theme.json", ref Theme, false);
         }
 
-        private static T LoadJsonResource<T>(string name)
+        private static void LoadJsonResource<T>(string name, ref T output, bool essential = true)
         {
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", name)));
+            try
+            {
+                output = JsonConvert.DeserializeObject<T>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", name)));
+            }
+            catch(Exception)
+            {
+                if (essential)
+                {
+                    MessageBox.Show("Failed to load required resource: " + name, "Critical Error");
+                    Application.Current.Shutdown();
+                }
+            }
         }
 
+        private static void LoadBinaryResource(string name, ref byte[] output, bool essential = true)
+        {
+            try
+            {
+                output = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "Resources", name));
+            }
+            catch (Exception)
+            {
+                if (essential)
+                {
+                    MessageBox.Show("Failed to load required resource: " + name, "Critical Error");
+                    Application.Current.Shutdown();
+                }
+            }
+        }
+
+        public struct RGBAColor
+        {
+            public int R;
+            public int G;
+            public int B;
+            public int A;
+        }
+
+        /// <summary>
+        /// User Configuration
+        /// </summary>
+        public static class Settings
+        {
+            public static readonly double GUIScale;
+            public static readonly bool CheckForUpdates;
+            public static readonly bool PSDataEnabled;
+
+            static Settings()
+            {
+                GUIScale = ReadSetting("GUI_Scale", 1.0, JTokenType.Float, JTokenType.Integer);
+                CheckForUpdates = ReadSetting("Check_For_Updates", true, JTokenType.Boolean);
+                PSDataEnabled = ReadSetting("Enable_PSData", true, JTokenType.Boolean);
+            }
+
+            private static T ReadSetting<T>(string name, T defaultValue, JTokenType settingType, JTokenType? secondaryType = null)
+            {
+                if (Config.TryGetValue(name, StringComparison.OrdinalIgnoreCase, out JToken value) && (value.Type == settingType || (secondaryType != null && value.Type == secondaryType)))
+                {
+                    return value.ToObject<T>();
+                }
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Lookup Lists
+        /// </summary>
         public static class LL
         {
             private static JObject Values = AppearanceValues;

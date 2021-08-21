@@ -15,7 +15,7 @@
                             <TextBlock Text="{TemplateBinding Property=Content}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
-                                    Foreground="White"/>
+                                    Foreground="{StaticResource DefaultText}"/>
 
                         </Border>
                         <ControlTemplate.Triggers>
@@ -23,7 +23,7 @@
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FF555555" Duration="0:0:0.12"/>
+                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{StaticResource DefaultButtonHover}" Duration="0:0:0.12"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.EnterActions>
@@ -39,7 +39,7 @@
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FF4B4B4B" Duration="0:0:0.05"/>
+                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{StaticResource DefaultButtonPressed}" Duration="0:0:0.05"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.EnterActions>
@@ -55,7 +55,7 @@
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FF626262" Duration="0:0:0.12" />
+                                            <ColorAnimation Storyboard.TargetName="brd" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{StaticResource DefaultButtonDisabled}" Duration="0:0:0.12" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.EnterActions>
@@ -72,7 +72,7 @@
                 </Setter.Value>
             </Setter>
 
-            <Setter Property="Background" Value="#FF505050"/>
+            <Setter Property="Background" Value="{StaticResource DefaultButton}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Border.CornerRadius" Value="10"/>
         </Style.Setters>

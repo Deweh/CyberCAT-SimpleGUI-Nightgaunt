@@ -135,16 +135,13 @@ namespace CyberCAT.SimpleGUI.Controls
             {
                 if (p.StringCollection.Length < 1) { p.StringValue = string.Empty; }
 
-                if (newValue >= p.StringCollection.Length) { p.Value = 0; res = false; }
-                else if (newValue < 0) { p.Value = p.StringCollection.Length - 1; res = false; }
-
-                if (p.Value <= p.StringCollection.Length - 1)
+                if (p.Value <= p.StringCollection.Length - 1 && p.Value > -1)
                 {
                     p.StringValue = p.StringCollection[p.Value];
                 }
                 else
                 {
-                    p.StringValue = string.Empty;
+                    p.StringValue = "<OutOfRange>";
                 }
             }
             return res;
@@ -152,14 +149,14 @@ namespace CyberCAT.SimpleGUI.Controls
 
         public static void UpdateStringValue(Picker p)
         {
+            if (p.Formatting == "00" && p.Value < 0)
+            {
+                p.StringValue = string.Empty;
+                return;
+            }
+
             if (p.DataType == DisplayDataType.Integer)
             {
-                if (p.Formatting == "00" && p.Value < 0)
-                {
-                    p.StringValue = string.Empty;
-                    return;
-                }
-
                 if (p.Formatting != null)
                 {
                     p.StringValue = p.Value.ToString(p.Formatting);

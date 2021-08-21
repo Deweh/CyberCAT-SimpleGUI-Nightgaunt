@@ -1543,6 +1543,20 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             public int MinValue = -1;
             public string[] StringCollection = null;
 
+            public AppearanceProperty()
+            {
+                if (typeof(T).IsEnum)
+                {
+                    MaxValue = Enum.GetNames(typeof(T)).Length - 1;
+                    MinValue = 0;
+                }
+                else if (StringCollection != null)
+                {
+                    MaxValue = StringCollection.Length - 1;
+                    MinValue = 0;
+                }
+            }
+
             public void Set(T value)
             {
                 SetSchema(value);
@@ -1564,7 +1578,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 {
                     value = MinValue;
                 }
-                else if(MinValue > -1 && value < MinValue)
+                else if (MinValue > -1 && value < MinValue)
                 {
                     value = MaxValue;
                 }

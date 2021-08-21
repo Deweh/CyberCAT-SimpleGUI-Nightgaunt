@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using CyberCAT.Core.Classes.NodeRepresentations;
+using CyberCAT.SimpleGUI.Core.Helpers;
 
 namespace CyberCAT.SimpleGUI.MVVM.View
 {
@@ -36,18 +37,24 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var valItm = value as ItemData;
+            var itmClass = "Unknown";
+            var strTdbid = valItm.ItemTdbId.ToString();
+            if (ResourceHelper.ItemClasses.ContainsKey(strTdbid))
+            {
+                itmClass = ResourceHelper.ItemClasses[strTdbid];
+            }
 
             if (valItm.Data is ItemData.ModableItemData)
             {
-                return "[M]";
+                return $"[M] {itmClass}";
             }
             else if (valItm.Data is ItemData.ModableItemWithQuantityData)
             {
-                return "[M+]";
+                return $"[M+] {itmClass}";
             }
             else
             {
-                return "[S]";
+                return $"[S] {itmClass}";
             }
 
         }

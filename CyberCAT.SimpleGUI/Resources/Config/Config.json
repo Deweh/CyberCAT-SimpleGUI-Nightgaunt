@@ -1,3 +1,5 @@
 {
-  "GUI_Scale": 1
+  "GUI_Scale": 1.0,
+  "Check_For_Updates": true,
+  "Enable_PSData": true
 }

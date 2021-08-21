@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CyberCAT.SimpleGUI.MVVM.View"
              xmlns:custom="clr-namespace:CyberCAT.SimpleGUI.Controls"
              mc:Ignorable="d" 
-             Foreground="White"
+             Foreground="{StaticResource DefaultText}"
              d:DesignHeight="500" d:DesignWidth="950"
              Background="Transparent"
              UseLayoutRounding="True">
@@ -20,14 +20,14 @@
         </Canvas.Effect>
         
         <Polygon Points="25,0,75,0,100,35,75,100,25,100,0,35"
-                 Fill="#FF505050"
+                 Fill="{StaticResource TertiaryPanelBackground}"
                  Stretch="Fill"
                  Height="126"
                  Width="176"
                  local:CanvasExtensions.RelativeLeft="0.23"
                  local:CanvasExtensions.RelativeTop="0.18">
             <Polygon.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Polygon.Effect>
         </Polygon>
 
@@ -40,7 +40,7 @@
         </Grid>
 
         <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
-                 Fill="#FF505050"
+                 Fill="{StaticResource TertiaryPanelBackground}"
                  Stretch="Fill"
                  Height="126"
                  Width="176"
@@ -48,7 +48,7 @@
                  local:CanvasExtensions.RelativeLeft="0.5"
                  local:CanvasExtensions.RelativeTop="0.14">
             <Polygon.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Polygon.Effect>
         </Polygon>
 
@@ -62,14 +62,14 @@
         </Grid>
 
         <Polygon Points="25,0,75,0,100,35,75,100,25,100,0,35"
-                 Fill="#FF505050"
+                 Fill="{StaticResource TertiaryPanelBackground}"
                  Stretch="Fill"
                  Height="126"
                  Width="176"
                  local:CanvasExtensions.RelativeRight="0.23"
                  local:CanvasExtensions.RelativeTop="0.18">
             <Polygon.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Polygon.Effect>
         </Polygon>
 
@@ -82,14 +82,14 @@
         </Grid>
 
         <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
-                 Fill="#FF505050"
+                 Fill="{StaticResource TertiaryPanelBackground}"
                  Stretch="Fill"
                  Height="126"
                  Width="176"
                  local:CanvasExtensions.RelativeLeft="0.23"
                  local:CanvasExtensions.RelativeBottom="0.18">
             <Polygon.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Polygon.Effect>
         </Polygon>
 
@@ -102,14 +102,14 @@
         </Grid>
 
         <Polygon Points="25,0,75,0,100,65,75,100,25,100,0,65"
-                 Fill="#FF505050"
+                 Fill="{StaticResource TertiaryPanelBackground}"
                  Stretch="Fill"
                  Height="126"
                  Width="176"
                  local:CanvasExtensions.RelativeRight="0.23"
                  local:CanvasExtensions.RelativeBottom="0.18">
             <Polygon.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Polygon.Effect>
         </Polygon>
 
@@ -121,13 +121,13 @@
             <custom:Picker Value="{Binding CoolAttribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HideButtons="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
 
-        <Border Background="#FF505050"
+        <Border Background="{StaticResource TertiaryPanelBackground}"
                 local:CanvasExtensions.CenterRelative="True"
                 local:CanvasExtensions.RelativeLeft="0.5"
                 local:CanvasExtensions.RelativeTop="0.5"
                 Width="123">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Border.Effect>
 
             <Grid>
@@ -138,20 +138,20 @@
 
 
                 <Button x:Name="swapLifePath" Grid.Row="1" Content="⇆" FontSize="14" Style="{StaticResource SquareButtonTheme}" Click="swapLifePath_Click"/>
-                <Border Grid.Row="0" Background="#FF505050">
+                <Border Grid.Row="0" Background="{StaticResource TertiaryPanelBackground}">
                     <Image Source="{Binding LifePathImage}"/>
                 </Border>
             </Grid>
         </Border>
         
 
-        <Border Background="#FF505050"
+        <Border Background="{StaticResource TertiaryPanelBackground}"
                 Canvas.Left="10"
                 Canvas.Top="10"
                 Width="auto"
                 Padding="8">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
@@ -164,13 +164,13 @@
             </Grid>
         </Border>
 
-        <Border Background="#FF505050"
+        <Border Background="{StaticResource TertiaryPanelBackground}"
                 Canvas.Right="10"
                 Canvas.Top="10"
                 Width="auto"
                 Padding="8">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
@@ -193,7 +193,7 @@
                 FontSize="20"
                 Style="{StaticResource SquareButtonTheme}">
             <Button.Effect>
-                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Button.Effect>
         </Button>
 
@@ -207,13 +207,13 @@
                 FontSize="20"
                 Style="{StaticResource SquareButtonTheme}">
             <Button.Effect>
-                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="3" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Button.Effect>
         </Button>
 
         <Border x:Name="pointsPopup"
                 Visibility="Hidden"
-                Background="#FF505050"
+                Background="{StaticResource TertiaryPanelBackground}"
                 Canvas.Left="60"
                 local:CanvasExtensions.CenterRelative="True"
                 local:CanvasExtensions.RelativeTop="0.5"
@@ -221,9 +221,9 @@
                 Width="180"
                 Padding="8,30"
                 BorderThickness="1"
-                BorderBrush="#FF646464">
+                BorderBrush="{StaticResource DefaultBorder}">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="15" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="15" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Border.Effect>
             <StackPanel>
                 <Grid Margin="0,0,0,30">
@@ -249,7 +249,7 @@
 
             <Border x:Name="skillsPopup"
                 Visibility="Hidden"
-                Background="#FF505050"
+                Background="{StaticResource TertiaryPanelBackground}"
                 Canvas.Right="60"
                 local:CanvasExtensions.CenterRelative="True"
                 local:CanvasExtensions.RelativeTop="0.5"
@@ -257,9 +257,9 @@
                 Width="540"
                 Padding="8,30"
                 BorderThickness="1"
-                BorderBrush="#FF646464">
+                BorderBrush="{StaticResource DefaultBorder}">
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="15" Direction="0" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                    <DropShadowEffect BlurRadius="15" Direction="0" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
                 </Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -393,7 +393,7 @@
         </Canvas>
         <Border Grid.Column="0"
                 Panel.ZIndex="10"
-                Background="#E53C3C3C"
+                Background="{StaticResource LifePathPanelOverlay}"
                 CornerRadius="10,10,0,0"
                 Visibility="Hidden"
                 Opacity="0"
@@ -440,15 +440,15 @@
                                    HorizontalAlignment="Center"
                                    FontSize="20"/>
 
-                        <Border Width="123" Margin="30,0" Grid.Column="0" Grid.Row="1" Background="#FF505050">
+                        <Border Width="123" Margin="30,0" Grid.Column="0" Grid.Row="1" Background="{StaticResource TertiaryPanelBackground}">
                             <Image x:Name="nomadSelection" Source="{Binding NomadLifePath}"/>
                         </Border>
 
-                        <Border Width="123" Margin="30,0" Grid.Column="1" Grid.Row="1" Background="#FF505050">
+                        <Border Width="123" Margin="30,0" Grid.Column="1" Grid.Row="1" Background="{StaticResource TertiaryPanelBackground}">
                             <Image x:Name="streetKidSelection" Source="{Binding StreetKidLifePath}"/>
                         </Border>
 
-                        <Border Width="123" Margin="30,0" Grid.Column="2" Grid.Row="1" Background="#FF505050">
+                        <Border Width="123" Margin="30,0" Grid.Column="2" Grid.Row="1" Background="{StaticResource TertiaryPanelBackground}">
                             <Image x:Name="corpoSelection" Source="{Binding CorpoLifePath}"/>
                         </Border>
 

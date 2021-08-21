@@ -8,9 +8,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/ThemeColors.xaml"/>
                 <ResourceDictionary Source="Theme/ButtonTheme.xaml"/>
                 <ResourceDictionary Source="Theme/RepeatButtonTheme.xaml"/>
                 <ResourceDictionary Source="Theme/TabButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/ListViewTheme.xaml"/>
                 <ResourceDictionary Source="Controls/PickerStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 

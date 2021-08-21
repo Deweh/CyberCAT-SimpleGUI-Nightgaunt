@@ -9,6 +9,7 @@ using CyberCAT.SimpleGUI.Core;
 using CyberCAT.SimpleGUI.Controls;
 using CyberCAT.SimpleGUI.MVVM.Model;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 {
@@ -59,7 +60,15 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 
                 slider.RefreshValue = () =>
                 {
-                    slider.Value = (int)prop.PropertyType.GetMethod("GetInt").Invoke(propVal, null);
+                    try
+                    {
+                        slider.Value = (int)prop.PropertyType.GetMethod("GetInt").Invoke(propVal, null);
+                    }
+                    catch (Exception)
+                    {
+                        slider.Value = -1;
+                    }
+                    
                     slider.Enabled = slider.Value > -1;
                 };
 
@@ -69,7 +78,18 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
                 {
                     if (e.PropertyName == "Value")
                     {
-                        if (slider.Value != (int)prop.PropertyType.GetMethod("GetInt").Invoke(propVal, null))
+                        var currentValue = 0;
+
+                        try
+                        {
+                            currentValue = (int)prop.PropertyType.GetMethod("GetInt").Invoke(propVal, null);
+                        }
+                        catch (Exception)
+                        {
+                            return;
+                        }
+
+                        if (slider.Value != currentValue)
                         {
                             if ((bool)prop.PropertyType.GetField("HasWarning").GetValue(propVal) == true)
                             {

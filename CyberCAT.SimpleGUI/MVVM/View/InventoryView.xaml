@@ -20,9 +20,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#FF505050" Panel.ZIndex="10" CornerRadius="10,10,0,0">
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource TertiaryPanelBackground}" Panel.ZIndex="10" CornerRadius="10,10,0,0">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="0" Opacity="0.5" Color="#FF323232"/>
+                <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="0" Opacity="0.5" Color="{StaticResource DefaultShadow}"/>
             </Border.Effect>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -34,24 +34,24 @@
                     <ColumnDefinition Width="20"/>
                 </Grid.ColumnDefinitions>
 
-                
+
             </Grid>
         </Border>
 
-        <ListBox Grid.Row="1" Grid.Column="0" Background="Transparent" BorderThickness="0,0,1,0" BorderBrush="#FF505050" ItemsSource="{Binding Items}" />
+        <!-- <ListBox Grid.Row="1" Grid.Column="0" Background="Transparent" BorderThickness="0,0,1,0" BorderBrush="#FF505050" ItemsSource="{Binding Items}" /> -->
 
-        <ListView Grid.Row="1" Grid.Column="1" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=ActiveInventory.Items}" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=ActiveInventory.Items}" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.Resources>
                 <local:ItemToTypeStringConverter x:Key="ItemToTypeStringConverter"/>
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Item Name" Width="100" DisplayMemberBinding="{Binding Path=ItemTdbId.GameNameFallback}"/>
+                    <GridViewColumn Header="Item Name" Width="180" DisplayMemberBinding="{Binding Path=ItemTdbId.GameNameFallback}"/>
                     <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Converter={StaticResource ItemToTypeStringConverter}}"/>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Path=ItemTdbId.Name}"/>
+                    <GridViewColumn Header="ID" Width="150" DisplayMemberBinding="{Binding Path=ItemTdbId.Name}"/>
                     <GridViewColumn Header="Slot" Width="100"/>
                     <GridViewColumn Header="Quantity" Width="50"/>
-                    <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Path=ItemTdbId.GameDescription}"/>
+                    <GridViewColumn Header="Description" Width="300" DisplayMemberBinding="{Binding Path=ItemTdbId.GameDescription}"/>
                 </GridView>
             </ListView.View>
         </ListView>

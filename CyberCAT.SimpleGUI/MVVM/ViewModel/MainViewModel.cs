@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using CyberCAT.SimpleGUI.Core;
+using CyberCAT.SimpleGUI.Core.Helpers;
 using CyberCAT.SimpleGUI.MVVM.Model;
 
 namespace CyberCAT.SimpleGUI.MVVM.ViewModel
@@ -11,11 +12,20 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
         private object _currentView;
         private string _status;
 
-        public RelayCommand PlayerStatsViewCommand { get; set; }
+        public RelayCommand PlayerStatsViewCommand => new(o =>
+        {
+            CurrentView = new PlayerStatsViewModel();
+        });
 
-        public RelayCommand AppearanceViewCommand { get; set; }
+        public RelayCommand AppearanceViewCommand => new(o =>
+        {
+            CurrentView = new AppearanceViewModel();
+        });
 
-        public RelayCommand InventoryViewCommand { get; set; }
+        public RelayCommand InventoryViewCommand => new(o =>
+        {
+            CurrentView = new InventoryViewModel();
+        });
 
         public string StatusMessage
         {
@@ -52,24 +62,10 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             }
         }
 
+        public double GUIScale => ResourceHelper.Settings.GUIScale;
+
         public MainViewModel()
         {
-
-            PlayerStatsViewCommand = new RelayCommand(o =>
-            {
-                CurrentView = new PlayerStatsViewModel();
-            });
-
-            AppearanceViewCommand = new RelayCommand(o =>
-            {
-                CurrentView = new AppearanceViewModel();
-            });
-
-            InventoryViewCommand = new RelayCommand(o =>
-            {
-                //CurrentView = new InventoryViewModel();
-            });
-
             StatusMessage = MainModel.Status;
             MainModel.StatusChanged += OnStatusChanged;
         }

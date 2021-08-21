@@ -28,11 +28,12 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
         public delegate void LoadCompleteHandler();
         public static event LoadCompleteHandler LoadComplete;
 
-        private static int _currentProgress = 0;
-        private static int _maxProgress = 0;
-        private static string _currentNode = "";
+        private static int _currentProgress;
+        private static int _maxProgress;
+        private static string _currentNode = string.Empty;
         private static BinaryResolver _tdbidResolver;
-        private static WrongDefaultValueEventArgs wrongDefaultValue;
+        private static StringBuilder _statusBuilder = new();
+        private static WrongDefaultValueEventArgs _wrongDefaultBuffer;
 
         private static DispatcherTimer progressTimer = new DispatcherTimer();
         private static List<INodeParser> activeParsers = new()
@@ -59,7 +60,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             GenericUnknownStructParser.WrongDefaultValue += (object sender, WrongDefaultValueEventArgs e) =>
             {
                 e.Ignore = true;
-                wrongDefaultValue = e;
+                _wrongDefaultBuffer = e;
             };
         }
 
@@ -93,10 +94,10 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             progressTimer.Stop();
             IsLoading = false;
 
-            if (wrongDefaultValue != null)
+            if (_wrongDefaultBuffer != null)
             {
-                await MainModel.OpenNotification($"WrongDefaultValue\n\nClass Name: {wrongDefaultValue.ClassName}\nProperty Name: {wrongDefaultValue.PropertyName}\nValue: {wrongDefaultValue.Value}\n\nYou can safely ignore this warning.", "Warning");
-                wrongDefaultValue = null;
+                await MainModel.OpenNotification($"WrongDefaultValue\n\nClass Name: {_wrongDefaultBuffer.ClassName}\nProperty Name: {_wrongDefaultBuffer.PropertyName}\nValue: {_wrongDefaultBuffer.Value}\n\nYou can safely ignore this warning.", "Warning");
+                _wrongDefaultBuffer = null;
             }
 
             if (error != null)
@@ -157,7 +158,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             MainModel.Status = "File saved.";
         }
 
-        private static void SaveFile_ProgressChanged(object sender, CyberCAT.Core.Classes.Mapping.SaveProgressChangedEventArgs e)
+        private static void SaveFile_ProgressChanged(object sender, SaveProgressChangedEventArgs e)
         {
             if (e.NodeName != string.Empty)
             {
@@ -174,28 +175,28 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         private static void progressTimer_Tick(object sender, EventArgs e)
         {
-            StringBuilder status = new StringBuilder();
-            status.Append(IsLoading ? "Parsing" : "Rebuilding");
+            _statusBuilder.Clear();
+            _statusBuilder.Append(IsLoading ? "Parsing" : "Rebuilding");
 
             if (_currentNode != string.Empty)
             {
-                status.Append(" ");
-                status.Append(_currentNode);
+                _statusBuilder.Append(" ");
+                _statusBuilder.Append(_currentNode);
                 if (_maxProgress > 0 && _currentProgress < _maxProgress)
                 {
-                    status.Append(" (");
-                    status.Append(Math.Round((Decimal.Divide(_currentProgress, _maxProgress) * 100), 0).ToString());
-                    status.Append("%)");
+                    _statusBuilder.Append(" (");
+                    _statusBuilder.Append(Math.Round((Decimal.Divide(_currentProgress, _maxProgress) * 100), 0).ToString());
+                    _statusBuilder.Append("%)");
                 }
             }
 
-            status.Append("...");
-            MainModel.Status = status.ToString();
+            _statusBuilder.Append("...");
+            MainModel.Status = _statusBuilder.ToString();
         }
 
         public static NodeEntry GetNode(string nodeName)
         {
-            return ActiveFile.Nodes.Where(x => x.Name == nodeName).FirstOrDefault();
+            return ActiveFile.Nodes.FirstOrDefault(x => x.Name == nodeName);
         }
 
         public static CharacterCustomizationAppearances GetAppearanceContainer()
@@ -210,8 +211,8 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static Handle<PlayerDevelopmentData> GetPlayerDevelopmentData()
         {
-            var devSystem = GetScriptableContainer().ClassList.Where(x => x is PlayerDevelopmentSystem).FirstOrDefault() as PlayerDevelopmentSystem;
-            return devSystem.PlayerData.Where(x => x.Value.OwnerID.Hash == 1).FirstOrDefault();
+            var devSystem = GetScriptableContainer().ClassList.FirstOrDefault(x => x is PlayerDevelopmentSystem) as PlayerDevelopmentSystem;
+            return devSystem.PlayerData.FirstOrDefault(x => x.Value.OwnerID.Hash == 1);
         }
 
         public static bool PSDataEnabled()
@@ -221,7 +222,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static GenericUnknownStruct GetPSDataContainer()
         {
-            return (GenericUnknownStruct)GetNode("PersistencySystem").Children.Where(x => x.Name == "PSData").FirstOrDefault().Value;
+            return (GenericUnknownStruct)GetNode("PersistencySystem").Children.FirstOrDefault(x => x.Name == "PSData").Value;
         }
 
         public static Inventory GetInventoriesContainer()
@@ -231,7 +232,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static Inventory.SubInventory GetInventory(ulong id)
         {
-            return GetInventoriesContainer().SubInventories.Where(x => x.InventoryId == id).FirstOrDefault();
+            return GetInventoriesContainer().SubInventories.FirstOrDefault(x => x.InventoryId == id);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace CyberCAT.SimpleGUI
         public MainWindow()
         {
             InitializeComponent();
-            MainModel.NotificationOpened += MainModel_NotificationOpened;
+            MainModel.NotificationOpened += OpenNotification;
             SaveFileHelper.LoadComplete += SaveFileHelper_LoadComplete;
         }
 
@@ -58,7 +58,7 @@ namespace CyberCAT.SimpleGUI
             }
         }
 
-        private void MainModel_NotificationOpened(string text, string title, NotifyButtons buttons)
+        private void OpenNotification(string text, string title, NotifyButtons buttons)
         {
             notifyText.Text = text;
             notifyTitle.Text = title;
@@ -104,7 +104,7 @@ namespace CyberCAT.SimpleGUI
             notifyGrid.BeginAnimation(UIElement.OpacityProperty, fadeInAnim);
         }
 
-        private void HideNotifyGrid()
+        private void CloseNotification()
         {
             var blurAnim = new DoubleAnimation
             {
@@ -141,13 +141,13 @@ namespace CyberCAT.SimpleGUI
             {
                 MainModel.CloseNotification(NotifyResult.Yes);
             }
-            HideNotifyGrid();
+            CloseNotification();
         }
 
         private void notifyButton2_Click(object sender, RoutedEventArgs e)
         {
             MainModel.CloseNotification(NotifyResult.No);
-            HideNotifyGrid();
+            CloseNotification();
         }
 
         private async void loadSave_Click(object sender, RoutedEventArgs e)
