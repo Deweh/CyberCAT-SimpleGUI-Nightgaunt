@@ -1,5 +1,4 @@
-﻿using CyberCAT.Core.Classes.NodeRepresentations;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,6 +18,7 @@ using System.Windows.Shapes;
 using CyberCAT.SimpleGUI.MVVM.Model;
 using CyberCAT.SimpleGUI.MVVM.ViewModel;
 using CyberCAT.SimpleGUI.Core.Helpers;
+using WolvenKit.RED4.Save;
 
 namespace CyberCAT.SimpleGUI.MVVM.View
 {

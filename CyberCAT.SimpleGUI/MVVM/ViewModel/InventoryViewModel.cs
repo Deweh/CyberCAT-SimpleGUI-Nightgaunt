@@ -30,7 +30,7 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 
         public InventoryViewModel()
         {
-            ActiveInventory = SaveFileHelper.GetInventory(1);
+            //ActiveInventory = SaveFileHelper.GetInventory(1);
         }
     }
 }

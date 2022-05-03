@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CyberCAT.Core.Classes.DumpedClasses;
-using CyberCAT.Core.Classes.NodeRepresentations;
+using WolvenKit.RED4.Save;
 using CyberCAT.SimpleGUI.Core.Extensions;
 using CyberCAT.SimpleGUI.Core.Helpers;
-using static CyberCAT.Core.Classes.NodeRepresentations.CharacterCustomizationAppearances;
+using static WolvenKit.RED4.Save.CharacterCustomizationAppearances;
 using static CyberCAT.SimpleGUI.Core.Helpers.ResourceHelper;
 
 namespace CyberCAT.SimpleGUI.MVVM.Model
@@ -28,7 +27,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 }
 
                 appearanceNode.UnknownFirstBytes[4] = (byte)value;
-                var playerPuppet = SaveFileHelper.GetPSDataContainer().ClassList.Where(x => x is PlayerPuppetPS).FirstOrDefault() as PlayerPuppetPS;
+                var playerPuppet = SaveFileHelper.GetPSDataContainer().Entries.Where(x => x.Data is WolvenKit.RED4.Types.PlayerPuppetPS).Select(x => x.Data).FirstOrDefault() as WolvenKit.RED4.Types.PlayerPuppetPS;
 
                 if (value == Gender.Female)
                 {
@@ -92,11 +91,11 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.SkinTypes,
                 RetrievalModifier.PlusOne,
                 GetValue<ulong>,
-                "first.main.hash.skin_type_"
+                "first.main.Hash.DepotPath.skin_type_"
             ),
             SetSchema = (int value) =>
             {
-                SetAllEntries(EntryType.MainListEntry, "skin_type_", (object entry) => { ((HashValueEntry)entry).Hash = LL.SkinTypes[value - 1]; });
+                SetAllEntries(EntryType.MainListEntry, "skin_type_", (object entry) => { ((HashValueEntry)entry).Hash.DepotPath = LL.SkinTypes[value - 1]; });
             }
         };
 
@@ -110,14 +109,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.HairStyles.Values.ToList(),
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.hair_color"
+                "first.main.Hash.DepotPath.hair_color"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("hair_color", new HashValueEntry()
                 {
                     FirstString = LL.HairColors[0],
-                    Hash = LL.HairStyles.Values.ToList()[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.HairStyles.Values.ToList()[value] },
                     SecondString = "hair_color1"
                 },
                 new[] { "hairs" });
@@ -202,14 +201,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.Eyebrows,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.eyebrows_color"
+                "first.main.Hash.DepotPath.eyebrows_color"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("eyebrows_color", new HashValueEntry()
                 {
                     FirstString = $"heb_p{wmGender}a__basehead__01_black",
-                    Hash = LL.Eyebrows[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.Eyebrows[value] },
                     SecondString = "eyebrows_color1"
                 },
                 new[] { "TPP", "character_customization" }, Field.Hash, null, true);
@@ -291,7 +290,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("cyberware_", new HashValueEntry()
                 {
                     FirstString = value > 0 ? $"hx_000_p{wmGender}a__cyberware_{value:00}__{LL.SkinTones[SkinTone.Get() - 1]}" : null,
-                    Hash = 6513893019731746558,
+                    Hash = UlongToResource(6513893019731746558),
                     SecondString = "cyberware_" + value.ToString("00")
                 },
                 new[] { "TPP", "character_customization" }, Field.FirstString, null, true);
@@ -316,7 +315,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("scars", new HashValueEntry
                 {
                     FirstString = value > 0 ? $"h0_000_p{wmGender}a__scars_01__{LL.FacialScars[value - 1]}" : null,
-                    Hash = 5491315604699331944,
+                    Hash = UlongToResource(5491315604699331944),
                     SecondString = "scars"
                 },
                 new[] { "TPP", "character_customization" }, Field.FirstString);
@@ -332,14 +331,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.FacialTattoos,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.facial_tattoo_"
+                "first.main.Hash.DepotPath.facial_tattoo_"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("facial_tattoo_", new HashValueEntry
                 {
                     FirstString =  $"{wmGender}__{LL.SkinTones[SkinTone.Get() - 1]}",
-                    Hash = LL.FacialTattoos[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.FacialTattoos[value] },
                     SecondString = $"facial_tattoo_{value:00}"
                 },
                 new[] { "TPP", "character_customization" }, Field.Hash, null, false, true);
@@ -347,7 +346,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("tattoo", new HashValueEntry
                 {
                     FirstString = value == 0 ? null : $"h0_000_p{wmGender}a__tattoo_{value:00}",
-                    Hash = 2355758180805363120,
+                    Hash = UlongToResource(2355758180805363120),
                     SecondString = "tattoo"
                 },
                 new[] { "TPP", "character_customization" }, Field.FirstString);
@@ -360,7 +359,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             MinValue = 0,
             GetSchema = new CustomGet<int>(() =>
             {
-                var index = LL.Piercings.FindIndex(x => x == GetValue<ulong>("first.main.hash.piercings_"));
+                var index = LL.Piercings.FindIndex(x => x == GetValue<ulong>("first.main.Hash.DepotPath.piercings_"));
                 return index < 0 ? 1 : index;
             }),
             SetSchema = (int value) =>
@@ -368,7 +367,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("piercings_", new HashValueEntry
                 {
                     FirstString = $"i0_000_p{wmGender}a__earring__07_pearl",
-                    Hash = LL.Piercings[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.Piercings[value] },
                     SecondString = "piercings_01"
                 },
                 new[] { "TPP", "character_customization" }, Field.Hash);
@@ -416,14 +415,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.EyeMakeups,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.makeupEyes_"
+                "first.main.Hash.DepotPath.makeupEyes_"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("makeupEyes_", new HashValueEntry()
                 {
                     FirstString = $"hx_000_p{wmGender}a__basehead_makeup_eyes__01_black",
-                    Hash = LL.EyeMakeups[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.EyeMakeups[value] },
                     SecondString = "makeupEyes_01"
                 },
                 new[] { "TPP", "character_customization" }, Field.Hash, null, true);
@@ -456,7 +455,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.LipMakeups,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.makeupLips_"
+                "first.main.Hash.DepotPath.makeupLips_"
             ),
             SetSchema = (int value) =>
             {
@@ -474,7 +473,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("makeupLips_", new HashValueEntry()
                 {
                     FirstString = $"hx_000_p{wmGender}a__basehead__makeup_lips_01__01_black",
-                    Hash = LL.LipMakeups[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.LipMakeups[value] },
                     SecondString = "makeupLips_01"
                 },
                 new[] { "TPP", "character_customization" }, Field.Hash, null, true);
@@ -507,7 +506,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.CheekMakeups,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.makeupCheeks_"
+                "first.main.Hash.DepotPath.makeupCheeks_"
             ),
             SetSchema = (int value) =>
             {
@@ -524,7 +523,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("makeupCheeks_", new HashValueEntry
                 {
                     FirstString = $"hx_000_p{wmGender}a__morphs_makeup_freckles_01__{(value == 5 ? "02_pink" : "03_light_brown")}",
-                    Hash = LL.CheekMakeups[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.CheekMakeups[value] },
                     SecondString = "makeupCheeks_01"
                 },
                 new[] { "TPP", "character_customization" });
@@ -566,14 +565,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.Blemishes,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "first.main.hash.makeupPimples_"
+                "first.main.Hash.DepotPath.makeupPimples_"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("makeupPimples_", new HashValueEntry
                 {
                     FirstString = $"hx_000_p{wmGender}a__basehead_pimples_01__brown_01",
-                    Hash = LL.Blemishes[value],
+                    Hash = new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = LL.Blemishes[value] },
                     SecondString = "makeupPimples_01"
                 },
                 new[] { "TPP", "character_customization" });
@@ -760,7 +759,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("fpp_nipples_", new HashValueEntry
                 {
                     FirstString = first == null ? null : first.Replace("base", "fpp"),
-                    Hash = 8383615550749140678,
+                    Hash = UlongToResource(8383615550749140678),
                     SecondString = "fpp_nipples_01"
                 },
                 new[] { "FPP_Body" }, Field.FirstString, mainSections[2]);
@@ -768,7 +767,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("nipples_", new HashValueEntry
                 {
                     FirstString = first,
-                    Hash = 17949477145130904651,
+                    Hash = UlongToResource(17949477145130904651),
                     SecondString = "nipples_01"
                 },
                 new[] { "TPP_Body", "character_creation" }, Field.FirstString, mainSections[2]);
@@ -784,14 +783,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.BodyTattoos["TPP"],
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "third.main.hash.body_tattoo_"
+                "third.main.Hash.DepotPath.body_tattoo_"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("body_tattoo_", new HashValueEntry()
                 {
                     FirstString = $"{wmGender}__{LL.SkinTones[SkinTone.Get() - 1]}",
-                    Hash = LL.BodyTattoos["TPP"][value],
+                    Hash = UlongToResource(LL.BodyTattoos["TPP"][value]),
                     SecondString = "body_tattoo_01"
                 },
                 new[] { "TPP_Body", "character_creation" }, Field.Hash, mainSections[2]);
@@ -799,7 +798,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("fpp_body_tattoo_", new HashValueEntry()
                 {
                     FirstString = $"{wmGender}__{LL.SkinTones[SkinTone.Get() - 1]}",
-                    Hash = LL.BodyTattoos["FPP"][value],
+                    Hash = UlongToResource(LL.BodyTattoos["FPP"][value]),
                     SecondString = "fpp_body_tattoo_01"
                 },
                 new[] { "FPP_Body" }, Field.Hash, mainSections[2]);
@@ -815,14 +814,14 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 LL.BodyScars,
                 RetrievalModifier.None,
                 GetValue<ulong>,
-                "third.main.hash.body_scars_"
+                "third.main.Hash.DepotPath.body_scars_"
             ),
             SetSchema = (int value) =>
             {
                 SetNullableHashEntry("body_scars_", new HashValueEntry
                 {
                     FirstString = $"scars_p{wmGender}a_001__{LL.SkinTones[SkinTone.Get() - 1]}",
-                    Hash = LL.BodyScars[value],
+                    Hash = UlongToResource(LL.BodyScars[value]),
                     SecondString = "body_scars_" + value.ToString("00")
                 },
                 new[] { "FPP_Body", "TPP_Body", "character_creation" }, Field.Hash, mainSections[2], false, true);
@@ -880,7 +879,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry("genitals_", new HashValueEntry
                 {
                     FirstString = first,
-                    Hash = 3178724759333055970,
+                    Hash = UlongToResource(3178724759333055970),
                     SecondString = $"genitals_{value:00}"
                 },
                 new[] { "character_creation", "genitals" }, Field.FirstString, mainSections[2], false, true);
@@ -946,7 +945,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                     return -1;
                 }
 
-                var hash = GetValue<ulong>($"third.main.hash.{LL.Genitals[Genitals.Get() - 1]}_hairstyle_");
+                var hash = GetValue<ulong>($"third.main.Hash.DepotPath.{LL.Genitals[Genitals.Get() - 1]}_hairstyle_");
                 return hash == 0 ? 0 : LL.PubicHairStyles.FindIndex(x => x == hash);
             }),
             SetSchema = (int value) =>
@@ -954,7 +953,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 SetNullableHashEntry($"{LL.Genitals[Genitals.Get() - 1]}_hairstyle_", new HashValueEntry
                 {
                     FirstString = $"i0_000_p{wmGender}a_base__{LL.Genitals[Genitals.Get() - 1]}_hairstyle__01_black",
-                    Hash = LL.PubicHairStyles[value],
+                    Hash = UlongToResource(LL.PubicHairStyles[value]),
                     SecondString = $"{LL.Genitals[Genitals.Get() - 1]}_hairstyle_01"
                 },
                 new[] { "character_creation", "genitals" }, Field.Hash, mainSections[2]);
@@ -966,7 +965,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
         #region Body
 
         private static CharacterCustomizationAppearances appearanceNode;
-        private static Section[] mainSections;
+        private static CharacterCustomizationAppearances.Section[] mainSections;
         private static string wmGender;
 
         static AppearanceModel()
@@ -1127,7 +1126,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                             ((HashValueEntry)entry).FirstString = (string)value;
                             break;
                         case Field.Hash:
-                            ((HashValueEntry)entry).Hash = (ulong)value;
+                            ((HashValueEntry)entry).Hash.DepotPath = (ulong)value;
                             break;
                         case Field.SecondString:
                             ((HashValueEntry)entry).SecondString = (string)value;
@@ -1167,7 +1166,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
                 }
                 else if (fieldToGet == Field.Hash)
                 {
-                    return castedEntry.Hash.ToString();
+                    return castedEntry.Hash.DepotPath.ToString();
                 }
                 else
                 {
@@ -1198,7 +1197,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             }
 
             var castedEntry = (HashValueEntry)entries[0];
-            return castedEntry.Hash;
+            return castedEntry.Hash.DepotPath;
         }
 
         public static T GetValue<T>(string searchString, int compatibility = 0)
@@ -1372,7 +1371,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
         public static void SetNullableHashEntry(string searchString, HashValueEntry defaultEntry, string[] sectionNames, Field setValueField = Field.Hash, Section baseMainSection = null, bool createAllMainSections = false, bool allFields = false)
         {
             var entries = GetAllEntries(EntryType.MainListEntry, searchString);
-            if (defaultEntry.Hash == 0 || defaultEntry.FirstString == null || defaultEntry.SecondString == null)
+            if (defaultEntry.Hash.DepotPath == 0 || defaultEntry.FirstString == null || defaultEntry.SecondString == null)
             {
                 RemoveEntries(entries);
             }
@@ -1412,7 +1411,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
 
                         if (setValueField == Field.Hash || allFields == true)
                         {
-                            ((HashValueEntry)entry).Hash = defaultEntry.Hash;
+                            ((HashValueEntry)entry).Hash.DepotPath = defaultEntry.Hash.DepotPath;
                         }
                     });
                 }
@@ -1500,6 +1499,11 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
         public static bool CompareMainListAppearanceEntries(string entry1, string entry2)
         {
             return Regex.Replace(entry1, @"[\d-]", string.Empty) == Regex.Replace(entry2, @"[\d-]", string.Empty);
+        }
+
+        public static WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource> UlongToResource(ulong input)
+        {
+            return new WolvenKit.RED4.Types.CResourceReference<WolvenKit.RED4.Types.appearanceAppearanceResource>() { DepotPath = input };
         }
 
         #endregion

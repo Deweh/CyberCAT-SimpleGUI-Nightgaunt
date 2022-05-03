@@ -5,22 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Threading;
-using CyberCAT.Core.Classes;
-using CyberCAT.Core.Classes.DumpedClasses;
-using CyberCAT.Core.Classes.Interfaces;
-using CyberCAT.Core.Classes.Mapping;
-using CyberCAT.Core.Classes.NodeRepresentations;
-using CyberCAT.Core.Classes.Parsers;
 using CyberCAT.SimpleGUI.MVVM.Model;
-using CyberCAT.SimpleGUI.Core.Extensions;
+using WolvenKit.RED4.Save;
+using WolvenKit.RED4.Save.IO;
 
 namespace CyberCAT.SimpleGUI.Core.Helpers
 {
     public static class SaveFileHelper
     {
-        public static SaveFile ActiveFile { get; private set; }
+        public static CyberpunkSaveFile ActiveFile { get; private set; }
         public static bool DataAvailable { get; private set; } = false;
         public static bool IsLoading { get; private set; } = false;
         public static bool IsSaving { get; private set; } = false;
@@ -31,9 +25,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
         private static int _currentProgress;
         private static int _maxProgress;
         private static string _currentNode = string.Empty;
-        private static BinaryResolver _tdbidResolver;
         private static StringBuilder _statusBuilder = new();
-        private static WrongDefaultValueEventArgs _wrongDefaultBuffer;
 
         private static DispatcherTimer progressTimer = new DispatcherTimer();
         private static List<INodeParser> activeParsers = new()
@@ -56,12 +48,12 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             progressTimer.Interval = TimeSpan.FromMilliseconds(1);
 
             progressTimer.Tick += progressTimer_Tick;
-            SaveFile.ProgressChanged += SaveFile_ProgressChanged;
-            GenericUnknownStructParser.WrongDefaultValue += (object sender, WrongDefaultValueEventArgs e) =>
-            {
-                e.Ignore = true;
-                _wrongDefaultBuffer = e;
-            };
+            //SaveFile.ProgressChanged += SaveFile_ProgressChanged;
+            //GenericUnknownStructParser.WrongDefaultValue += (object sender, WrongDefaultValueEventArgs e) =>
+            //{
+            //    e.Ignore = true;
+            //    _wrongDefaultBuffer = e;
+            //};
         }
 
         public static async Task LoadFileAsync(string filePath)
@@ -71,19 +63,20 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
             progressTimer.Start();
 
-            if (_tdbidResolver == null)
-            {
-                _tdbidResolver = await Task.Run(() => new BinaryResolver(ResourceHelper.ItemsDB));
-                NameResolver.TweakDbResolver = _tdbidResolver;
-            }
-
-            FactResolver.UseDictionary(ResourceHelper.Facts);
-
-            var bufferFile = new SaveFile(activeParsers);
+            CyberpunkSaveFile bufferFile = null;
 
             try
             {
-                await Task.Run(() => bufferFile.Load(new MemoryStream(File.ReadAllBytes(filePath))));
+                await Task.Run(() =>
+                {
+                    using var ms = new MemoryStream(File.ReadAllBytes(filePath));
+                    var reader = new CyberpunkSaveReader(ms);
+
+                    if (reader.ReadFile(out var save) == WolvenKit.RED4.Save.IO.EFileReadErrorCodes.NoError)
+                    {
+                        bufferFile = save;
+                    }
+                });
             }
             catch (Exception e)
             {
@@ -94,11 +87,11 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             progressTimer.Stop();
             IsLoading = false;
 
-            if (_wrongDefaultBuffer != null)
-            {
-                await MainModel.OpenNotification($"WrongDefaultValue\n\nClass Name: {_wrongDefaultBuffer.ClassName}\nProperty Name: {_wrongDefaultBuffer.PropertyName}\nValue: {_wrongDefaultBuffer.Value}\n\nYou can safely ignore this warning.", "Warning");
-                _wrongDefaultBuffer = null;
-            }
+            //if (_wrongDefaultBuffer != null)
+            //{
+            //    await MainModel.OpenNotification($"WrongDefaultValue\n\nClass Name: {_wrongDefaultBuffer.ClassName}\nProperty Name: {_wrongDefaultBuffer.PropertyName}\nValue: {_wrongDefaultBuffer.Value}\n\nYou can safely ignore this warning.", "Warning");
+            //    _wrongDefaultBuffer = null;
+            //}
 
             if (error != null)
             {
@@ -124,12 +117,15 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
         {
             IsSaving = true;
             progressTimer.Start();
-            byte[] newFile = Array.Empty<byte>();
             Exception error = null;
 
             try
             {
-                newFile = await Task.Run(() => ActiveFile.Save());
+
+                var writer = new CyberpunkSaveWriter(new MemoryStream());
+                var data = await Task.Run(() => writer.WriteFile(ActiveFile));
+
+                File.WriteAllBytes(filePath, data);
             }
             catch(Exception e)
             {
@@ -154,24 +150,23 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                 return;
             }
 
-            File.WriteAllBytes(filePath, newFile);
             MainModel.Status = "File saved.";
         }
 
-        private static void SaveFile_ProgressChanged(object sender, SaveProgressChangedEventArgs e)
-        {
-            if (e.NodeName != string.Empty)
-            {
-                _currentProgress = 0;
-                _maxProgress = 0;
-                _currentNode = e.NodeName;
-            }
-            else if (e.Maximum > 0)
-            {
-                Interlocked.Exchange(ref _currentProgress, e.CurrentProgress);
-                Interlocked.Exchange(ref _maxProgress, e.Maximum);
-            }
-        }
+        //private static void SaveFile_ProgressChanged(object sender, SaveProgressChangedEventArgs e)
+        //{
+        //    if (e.NodeName != string.Empty)
+        //    {
+        //        _currentProgress = 0;
+        //        _maxProgress = 0;
+        //        _currentNode = e.NodeName;
+        //    }
+        //    else if (e.Maximum > 0)
+        //    {
+        //        Interlocked.Exchange(ref _currentProgress, e.CurrentProgress);
+        //        Interlocked.Exchange(ref _maxProgress, e.Maximum);
+        //    }
+        //}
 
         private static void progressTimer_Tick(object sender, EventArgs e)
         {
@@ -204,25 +199,26 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             return GetNode("CharacetrCustomization_Appearances").Value as CharacterCustomizationAppearances;
         }
 
-        public static GenericUnknownStruct GetScriptableContainer()
+        public static WolvenKit.RED4.Archive.Buffer.Package04 GetScriptableContainer()
         {
-            return GetNode("ScriptableSystemsContainer").Value as GenericUnknownStruct;
+            return GetNode("ScriptableSystemsContainer").Value as WolvenKit.RED4.Archive.Buffer.Package04;
         }
 
-        public static Handle<PlayerDevelopmentData> GetPlayerDevelopmentData()
-        {
-            var devSystem = GetScriptableContainer().ClassList.FirstOrDefault(x => x is PlayerDevelopmentSystem) as PlayerDevelopmentSystem;
-            return devSystem.PlayerData.FirstOrDefault(x => x.Value.OwnerID.Hash == 1);
-        }
+        //public static WolvenKit.RED4.Archive.Buffer.Package04 GetPlayerDevelopmentData()
+        //{
+        //    var devSystem = GetScriptableContainer().ClassList.FirstOrDefault(x => x is PlayerDevelopmentSystem) as PlayerDevelopmentSystem;
+        //    return devSystem.PlayerData.FirstOrDefault(x => x.Value.OwnerID.Hash == 1);
+        //}
 
         public static bool PSDataEnabled()
         {
-            return activeParsers.Any(x => x is PSDataParser);
+            return false;
+            //return activeParsers.Any(x => x is PSDataParser);
         }
 
-        public static GenericUnknownStruct GetPSDataContainer()
+        public static PersistencySystem2 GetPSDataContainer()
         {
-            return (GenericUnknownStruct)GetNode("PersistencySystem").Children.FirstOrDefault(x => x.Name == "PSData").Value;
+            return (PersistencySystem2)GetNode("PersistencySystem2").Value;
         }
 
         public static Inventory GetInventoriesContainer()
@@ -230,9 +226,9 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             return GetNode("inventory").Value as Inventory;
         }
 
-        public static Inventory.SubInventory GetInventory(ulong id)
-        {
-            return GetInventoriesContainer().SubInventories.FirstOrDefault(x => x.InventoryId == id);
-        }
+        //public static Inventory GetInventory(ulong id)
+        //{
+        //    return GetInventoriesContainer().SubInventories.FirstOrDefault(x => x.InventoryId == id);
+        //}
     }
 }

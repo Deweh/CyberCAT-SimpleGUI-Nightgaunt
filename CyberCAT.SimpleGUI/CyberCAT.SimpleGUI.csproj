@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CyberCAT\CyberCAT.Core\CyberCAT.Core.csproj" />
     <ProjectReference Include="..\CyberCAT\CyberCAT.Extra\CyberCAT.Extra.csproj" />
+    <ProjectReference Include="..\WolvenKit\WolvenKit.RED4.Save\WolvenKit.RED4.Save.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

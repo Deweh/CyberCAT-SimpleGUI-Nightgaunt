@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using CyberCAT.Core.Classes.NodeRepresentations;
+using WolvenKit.RED4.Save;
 using System.Windows;
 
 namespace CyberCAT.SimpleGUI.Core.Helpers
