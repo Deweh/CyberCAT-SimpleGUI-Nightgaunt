@@ -46,8 +46,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             {
                 if (essential)
                 {
-                    MessageBox.Show("Failed to load required resource: " + name, "Critical Error");
-                    Application.Current.Shutdown();
+                    MessageBox.Show("Failed to load required resource: " + name + ". This may cause the application to crash during use.", "Warning");
                 }
             }
         }
@@ -62,8 +61,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             {
                 if (essential)
                 {
-                    MessageBox.Show("Failed to load required resource: " + name, "Critical Error");
-                    Application.Current.Shutdown();
+                    MessageBox.Show("Failed to load required resource: " + name + ". This may cause the application to crash during use.", "Warning");
                 }
             }
         }

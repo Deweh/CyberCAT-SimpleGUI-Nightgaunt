@@ -1,3 +1,7 @@
 [submodule "CyberCAT"]
 	path = CyberCAT
 	url = git://github.com/Deweh/CyberCAT.git
+[submodule "WolvenKit"]
+	path = WolvenKit
+	url = https://github.com/WolvenKit/WolvenKit.git
+	branch = feature/savegame
