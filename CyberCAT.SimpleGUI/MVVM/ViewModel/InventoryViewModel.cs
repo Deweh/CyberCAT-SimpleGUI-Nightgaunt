@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using CyberCAT.SimpleGUI.Core;
 using CyberCAT.SimpleGUI.Core.Helpers;
-using CyberCAT.Core.Classes.NodeRepresentations;
+using WolvenKit.RED4.Save;
 
 namespace CyberCAT.SimpleGUI.MVVM.ViewModel
 {
     class InventoryViewModel : ObservableObject
     {
-        private Inventory.SubInventory _activeInventory;
+        private InventoryHelper.SubInventory _activeInventory;
 
-        public Inventory.SubInventory ActiveInventory
+        public InventoryHelper.SubInventory ActiveInventory
         {
             get
             {
@@ -23,14 +23,14 @@ namespace CyberCAT.SimpleGUI.MVVM.ViewModel
             set
             {
                 _activeInventory = value;
-                _activeInventory.Items.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => OnPropertyChanged("ActiveInventory");
+                //_activeInventory.Items.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => OnPropertyChanged("ActiveInventory");
                 OnPropertyChanged();
             }
         }
 
         public InventoryViewModel()
         {
-            //ActiveInventory = SaveFileHelper.GetInventory(1);
+            ActiveInventory = SaveFileHelper.GetInventory(1);
         }
     }
 }

@@ -62,6 +62,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             Exception error = null;
 
             progressTimer.Start();
+            _ = MainModel.OpenNotification("", "Loading", NotifyButtons.TaskNone);
 
             CyberpunkSaveFile bufferFile = null;
 
@@ -72,10 +73,12 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                     using var ms = new MemoryStream(File.ReadAllBytes(filePath));
                     var reader = new CyberpunkSaveReader(ms);
 
-                    if (reader.ReadFile(out var save) == WolvenKit.RED4.Save.IO.EFileReadErrorCodes.NoError)
+                    if (reader.ReadFile(out var save) == EFileReadErrorCodes.NoError)
                     {
                         bufferFile = save;
                     }
+
+                    reader = null;
                 });
             }
             catch (Exception e)
@@ -98,10 +101,12 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                 try
                 {
                     File.WriteAllText("error.txt", error.Message + Environment.NewLine + error.StackTrace);
+                    MainModel.CloseNotification(NotifyResult.OK);
                     await MainModel.OpenNotification("Failed to parse save file: " + error.Message + " An error.txt file has been generated with additional information.", "Error");
                 }
                 catch (Exception)
                 {
+                    MainModel.CloseNotification(NotifyResult.OK);
                     await MainModel.OpenNotification("Failed to parse save file: " + error.Message + " \n\n Stack Trace: \n" + error.StackTrace, "Error");
                 }
                 return;
@@ -111,12 +116,16 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             DataAvailable = true;
             LoadComplete?.Invoke();
             MainModel.Status = "Save file loaded.";
+            MainModel.CloseNotification(NotifyResult.OK);
+
+            GC.Collect();
         }
 
         public static async Task SaveFileAsync(string filePath)
         {
             IsSaving = true;
-            progressTimer.Start();
+            //progressTimer.Start();
+            _ = MainModel.OpenNotification("", "Saving", NotifyButtons.TaskNone);
             Exception error = null;
 
             try
@@ -150,6 +159,10 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
                 return;
             }
 
+            GC.Collect();
+
+            MainModel.CloseNotification(NotifyResult.OK);
+            _ = MainModel.OpenNotification($"Saved {filePath}");
             MainModel.Status = "File saved.";
         }
 
@@ -201,14 +214,13 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static WolvenKit.RED4.Archive.Buffer.Package04 GetScriptableContainer()
         {
-            return GetNode("ScriptableSystemsContainer").Value as WolvenKit.RED4.Archive.Buffer.Package04;
+            return (GetNode("ScriptableSystemsContainer").Value as Package).Content as WolvenKit.RED4.Archive.Buffer.Package04;
         }
 
-        //public static WolvenKit.RED4.Archive.Buffer.Package04 GetPlayerDevelopmentData()
-        //{
-        //    var devSystem = GetScriptableContainer().ClassList.FirstOrDefault(x => x is PlayerDevelopmentSystem) as PlayerDevelopmentSystem;
-        //    return devSystem.PlayerData.FirstOrDefault(x => x.Value.OwnerID.Hash == 1);
-        //}
+        public static WolvenKit.RED4.Types.PlayerDevelopmentData GetPlayerDevelopmentData()
+        {
+            return (GetScriptableContainer().Chunks.FirstOrDefault(x => x is WolvenKit.RED4.Types.PlayerDevelopmentSystem) as WolvenKit.RED4.Types.PlayerDevelopmentSystem).PlayerData.FirstOrDefault(x => x.Chunk.OwnerID.Hash == 1).Chunk;
+        }
 
         public static bool PSDataEnabled()
         {
@@ -226,9 +238,9 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
             return GetNode("inventory").Value as Inventory;
         }
 
-        //public static Inventory GetInventory(ulong id)
-        //{
-        //    return GetInventoriesContainer().SubInventories.FirstOrDefault(x => x.InventoryId == id);
-        //}
+        public static InventoryHelper.SubInventory GetInventory(ulong id)
+        {
+            return GetInventoriesContainer().SubInventories.FirstOrDefault(x => x.InventoryId == id);
+        }
     }
 }

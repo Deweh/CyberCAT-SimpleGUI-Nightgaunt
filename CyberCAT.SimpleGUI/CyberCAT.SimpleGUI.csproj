@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CyberCAT\CyberCAT.Core\CyberCAT.Core.csproj" />
     <ProjectReference Include="..\CyberCAT\CyberCAT.Extra\CyberCAT.Extra.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.RED4.Save\WolvenKit.RED4.Save.csproj" />

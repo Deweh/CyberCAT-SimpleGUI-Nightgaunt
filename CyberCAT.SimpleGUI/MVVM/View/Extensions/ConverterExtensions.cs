@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using CyberCAT.Core.Classes.NodeRepresentations;
+using WolvenKit.RED4.Save;
 using CyberCAT.SimpleGUI.Core.Helpers;
 
 namespace CyberCAT.SimpleGUI.MVVM.View
@@ -31,12 +31,12 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         }
     }
 
-    [ValueConversion(typeof(ItemData), typeof(string))]
+    [ValueConversion(typeof(InventoryHelper.ItemData), typeof(string))]
     public class ItemToTypeStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var valItm = value as ItemData;
+            var valItm = value as InventoryHelper.ItemData;
             var itmClass = "Unknown";
             var strTdbid = valItm.ItemTdbId.ToString();
             if (ResourceHelper.ItemClasses.ContainsKey(strTdbid))
@@ -44,11 +44,11 @@ namespace CyberCAT.SimpleGUI.MVVM.View
                 itmClass = ResourceHelper.ItemClasses[strTdbid];
             }
 
-            if (valItm.Data is ItemData.ModableItemData)
+            if (valItm.Data is InventoryHelper.ModableItemData)
             {
                 return $"[M] {itmClass}";
             }
-            else if (valItm.Data is ItemData.ModableItemWithQuantityData)
+            else if (valItm.Data is InventoryHelper.ModableItemWithQuantityData)
             {
                 return $"[M+] {itmClass}";
             }

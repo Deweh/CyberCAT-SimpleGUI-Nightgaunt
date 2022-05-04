@@ -46,6 +46,7 @@ namespace CyberCAT.SimpleGUI
         {
             InitializeComponent();
             MainModel.NotificationOpened += OpenNotification;
+            MainModel.NotificationClosed += (NotifyResult result) => CloseNotification();
             SaveFileHelper.LoadComplete += SaveFileHelper_LoadComplete;
         }
 
@@ -60,6 +61,8 @@ namespace CyberCAT.SimpleGUI
 
         private void OpenNotification(string text, string title, NotifyButtons buttons)
         {
+            loadingSpinner.Visibility = Visibility.Collapsed;
+
             notifyText.Text = text;
             notifyTitle.Text = title;
             _notifyButtons = buttons;
@@ -70,6 +73,7 @@ namespace CyberCAT.SimpleGUI
                 notifyButton1.Content = "OK";
                 notifyButton1.Style = FindResource("BottomButtonTheme") as Style;
 
+                notifyButton1.Visibility = Visibility.Visible;
                 notifyButton2.Visibility = Visibility.Hidden;
             }
             else if (buttons == NotifyButtons.YesNo)
@@ -78,7 +82,14 @@ namespace CyberCAT.SimpleGUI
                 notifyButton1.Content = "Yes";
                 notifyButton1.Style = FindResource("LeftBottomButtonTheme") as Style;
 
+                notifyButton1.Visibility = Visibility.Visible;
                 notifyButton2.Visibility = Visibility.Visible;
+            }
+            else if (buttons == NotifyButtons.TaskNone)
+            {
+                loadingSpinner.Visibility = Visibility.Visible;
+                notifyButton1.Visibility = Visibility.Collapsed;
+                notifyButton2.Visibility = Visibility.Collapsed;
             }
 
             var blurAnim = new DoubleAnimation
@@ -115,7 +126,11 @@ namespace CyberCAT.SimpleGUI
 
             blurAnim.Completed += (object o, EventArgs e) =>
             {
-                notifyGrid.Visibility = Visibility.Hidden;
+                if (!MainModel._notifyOpen)
+                {
+                    notifyGrid.Visibility = Visibility.Hidden;
+                }
+                
             };
 
             var scaleAnim = new DoubleAnimation
@@ -141,13 +156,11 @@ namespace CyberCAT.SimpleGUI
             {
                 MainModel.CloseNotification(NotifyResult.Yes);
             }
-            CloseNotification();
         }
 
         private void notifyButton2_Click(object sender, RoutedEventArgs e)
         {
             MainModel.CloseNotification(NotifyResult.No);
-            CloseNotification();
         }
 
         private async void loadSave_Click(object sender, RoutedEventArgs e)

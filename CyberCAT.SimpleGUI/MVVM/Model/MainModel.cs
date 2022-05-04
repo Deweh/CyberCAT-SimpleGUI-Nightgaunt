@@ -11,7 +11,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
     {
         private static string _status = "No save file selected.";
         private static TaskCompletionSource<NotifyResult> _notifyCompleted;
-        private static bool _notifyOpen = false;
+        public static bool _notifyOpen = false;
         private static Queue<TaskCompletionSource> _notifyQueue = new Queue<TaskCompletionSource>();
 
         public delegate void StatusChangedHandler(string status);
@@ -76,6 +76,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
     public enum NotifyButtons
     {
         OK,
-        YesNo
+        YesNo,
+        TaskNone
     }
 }
