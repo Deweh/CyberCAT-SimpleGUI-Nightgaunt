@@ -22,7 +22,7 @@ namespace CyberCAT.SimpleGUI.MVVM.Model
             {"AthleticsProfic", Enums.gamedataProficiencyType.Athletics},
             {"AnnihilationProfic", Enums.gamedataProficiencyType.Demolition},
             {"StreetBrawlerProfic", Enums.gamedataProficiencyType.Brawling},
-            {"AssaultProfic", null},
+            {"AssaultProfic", Enums.gamedataProficiencyType.Assault},
             {"HandgunsProfic", Enums.gamedataProficiencyType.Gunslinger},
             {"BladesProfic", Enums.gamedataProficiencyType.Kenjutsu},
             {"CraftingProfic", Enums.gamedataProficiencyType.Crafting},
