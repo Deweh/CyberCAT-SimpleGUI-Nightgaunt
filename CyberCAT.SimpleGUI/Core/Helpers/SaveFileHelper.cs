@@ -224,7 +224,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         public static bool PSDataEnabled()
         {
-            return false;
+            return true;
             //return activeParsers.Any(x => x is PSDataParser);
         }
 

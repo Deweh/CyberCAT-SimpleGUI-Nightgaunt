@@ -44,7 +44,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
                 CharacterCustomizationAppearances preset = null;
                 try
                 {
-                    preset = JsonConvert.DeserializeObject<CharacterCustomizationAppearances>(File.ReadAllText(openDialog.FileName));
+                    preset = JsonConvert.DeserializeObject<CharacterCustomizationAppearances>(File.ReadAllText(openDialog.FileName), new Core.Extensions.JsonConverters.AppearanceResourceConverter());
                 }
                 catch(Exception error)
                 {
@@ -84,7 +84,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
 
             if (saveDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveDialog.FileName, JsonConvert.SerializeObject(SaveFileHelper.GetAppearanceContainer()));
+                File.WriteAllText(saveDialog.FileName, JsonConvert.SerializeObject(SaveFileHelper.GetAppearanceContainer(), new Core.Extensions.JsonConverters.AppearanceResourceConverter()));
                 await MainModel.OpenNotification("Appearance preset saved.");
             }
         }

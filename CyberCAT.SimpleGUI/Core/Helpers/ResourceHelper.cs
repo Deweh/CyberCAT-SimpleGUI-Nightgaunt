@@ -38,17 +38,17 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         private static void LoadJsonResource<T>(string name, ref T output, bool essential = true)
         {
-            try
-            {
-                output = JsonConvert.DeserializeObject<T>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", name)));
-            }
-            catch(Exception)
-            {
-                if (essential)
-                {
-                    MessageBox.Show("Failed to load required resource: " + name + ". This may cause the application to crash during use.", "Warning");
-                }
-            }
+            //try
+            //{
+                output = JsonConvert.DeserializeObject<T>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources", name)), new Extensions.JsonConverters.AppearanceResourceConverter());
+            //}
+            //catch(Exception)
+            //{
+            //    if (essential)
+            //    {
+            //        MessageBox.Show("Failed to load required resource: " + name + ". This may cause the application to crash during use.", "Warning");
+            //    }
+            //}
         }
 
         private static void LoadBinaryResource(string name, ref byte[] output, bool essential = true)
