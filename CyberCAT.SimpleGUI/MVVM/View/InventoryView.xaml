@@ -43,15 +43,16 @@
         <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=ActiveInventory.Items}" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.Resources>
                 <local:ItemToTypeStringConverter x:Key="ItemToTypeStringConverter"/>
+                <local:ItemToQuantityConverter x:Key="ItemToQuantityConverter"/>
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Item Name" Width="180" DisplayMemberBinding="{Binding Path=ItemTdbId.GameNameFallback}"/>
+                    <GridViewColumn Header="Item Name" Width="180" DisplayMemberBinding="{Binding Path=ItemTdbId.ResolvedText}"/>
                     <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Converter={StaticResource ItemToTypeStringConverter}}"/>
-                    <GridViewColumn Header="ID" Width="150" DisplayMemberBinding="{Binding Path=ItemTdbId.Name}"/>
+                    <GridViewColumn Header="ID" Width="150" DisplayMemberBinding="{Binding Path=ItemTdbId.ResolvedText}"/>
                     <GridViewColumn Header="Slot" Width="100"/>
-                    <GridViewColumn Header="Quantity" Width="50"/>
-                    <GridViewColumn Header="Description" Width="300" DisplayMemberBinding="{Binding Path=ItemTdbId.GameDescription}"/>
+                    <GridViewColumn Header="Quantity" Width="50" DisplayMemberBinding="{Binding Converter={StaticResource ItemToQuantityConverter}}"/>
+                    <GridViewColumn Header="Description" Width="300"/>
                 </GridView>
             </ListView.View>
         </ListView>

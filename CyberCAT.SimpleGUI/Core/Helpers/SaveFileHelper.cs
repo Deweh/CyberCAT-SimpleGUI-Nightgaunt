@@ -24,6 +24,8 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
         private static int _currentProgress;
         private static int _maxProgress;
+        public static WolvenKit.Common.Services.TweakDBService tdbService;
+        public static WolvenKit.Common.Services.HashService hashService;
         private static string _currentNode = string.Empty;
         private static StringBuilder _statusBuilder = new();
 
@@ -63,6 +65,23 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
             progressTimer.Start();
             _ = MainModel.OpenNotification("", "Loading", NotifyButtons.TaskNone);
+
+            if (tdbService == null)
+            {
+                await Task.Run(() => tdbService = new());
+            }
+
+            
+
+            //foreach (var propName in record.GetDynamicPropertyNames())
+            //{
+            //    System.Windows.MessageBox.Show(propName);
+            //}
+
+            if (hashService == null)
+            {
+                await Task.Run(() => hashService = new());
+            }
 
             CyberpunkSaveFile bufferFile = null;
 
@@ -163,6 +182,7 @@ namespace CyberCAT.SimpleGUI.Core.Helpers
 
             MainModel.CloseNotification(NotifyResult.OK);
             _ = MainModel.OpenNotification($"Saved {filePath}");
+            
             MainModel.Status = "File saved.";
         }
 

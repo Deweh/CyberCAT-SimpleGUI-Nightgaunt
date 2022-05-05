@@ -37,8 +37,10 @@ namespace CyberCAT.SimpleGUI.MVVM.View
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var valItm = value as InventoryHelper.ItemData;
+
             var itmClass = "Unknown";
             var strTdbid = valItm.ItemTdbId.ToString();
+
             if (ResourceHelper.ItemClasses.ContainsKey(strTdbid))
             {
                 itmClass = ResourceHelper.ItemClasses[strTdbid];
@@ -57,6 +59,31 @@ namespace CyberCAT.SimpleGUI.MVVM.View
                 return $"[S] {itmClass}";
             }
 
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [ValueConversion(typeof(InventoryHelper.ItemData), typeof(int))]
+    public class ItemToQuantityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var valItm = value as InventoryHelper.ItemData;
+
+            if (valItm.Data is InventoryHelper.ModableItemWithQuantityData mData)
+            {
+                return mData.Quantity;
+            }
+            else if (valItm.Data is InventoryHelper.SimpleItemData sData)
+            {
+                return sData.Quantity;
+            }
+
+            return 1;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.RED4.Types", "Wol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Core", "WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj", "{7B5DACC6-2FCA-479F-B473-D4C1613CA1E8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.RED4.TweakDB", "WolvenKit\WolvenKit.RED4.TweakDB\WolvenKit.RED4.TweakDB.csproj", "{EA4CDCD7-456A-4833-9B29-D2D01619321B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Common", "WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj", "{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,22 @@ Global
 		{7B5DACC6-2FCA-479F-B473-D4C1613CA1E8}.Release|Any CPU.Build.0 = Release|x64
 		{7B5DACC6-2FCA-479F-B473-D4C1613CA1E8}.Release|x64.ActiveCfg = Release|x64
 		{7B5DACC6-2FCA-479F-B473-D4C1613CA1E8}.Release|x64.Build.0 = Release|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Debug|Any CPU.Build.0 = Debug|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Debug|x64.ActiveCfg = Debug|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Debug|x64.Build.0 = Debug|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Release|Any CPU.ActiveCfg = Release|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Release|Any CPU.Build.0 = Release|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Release|x64.ActiveCfg = Release|x64
+		{EA4CDCD7-456A-4833-9B29-D2D01619321B}.Release|x64.Build.0 = Release|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Debug|Any CPU.Build.0 = Debug|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Debug|x64.ActiveCfg = Debug|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Debug|x64.Build.0 = Debug|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Release|Any CPU.ActiveCfg = Release|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Release|Any CPU.Build.0 = Release|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Release|x64.ActiveCfg = Release|x64
+		{AB28BBEB-BAFF-45A7-B571-89D75CDCEF9A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
