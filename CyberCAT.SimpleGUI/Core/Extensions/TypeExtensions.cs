@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CyberCAT.SimpleGUI.Core.Extensions
@@ -18,6 +19,14 @@ namespace CyberCAT.SimpleGUI.Core.Extensions
             {
                 return arr[position];
             }
+        }
+    }
+
+    public static class JsonElementExtensions
+    {
+        public static T ToObject<T>(this JsonElement ele)
+        {
+            return JsonSerializer.Deserialize<T>(ele);
         }
     }
 }

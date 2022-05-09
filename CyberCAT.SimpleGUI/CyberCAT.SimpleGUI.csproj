@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CyberCAT\CyberCAT.Core\CyberCAT.Core.csproj" />
-    <ProjectReference Include="..\CyberCAT\CyberCAT.Extra\CyberCAT.Extra.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.RED4.Save\WolvenKit.RED4.Save.csproj" />
   </ItemGroup>

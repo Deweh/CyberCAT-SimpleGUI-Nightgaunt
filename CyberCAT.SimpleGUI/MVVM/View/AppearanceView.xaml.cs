@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
 using CyberCAT.SimpleGUI.MVVM.Model;
 using CyberCAT.SimpleGUI.MVVM.ViewModel;
 using CyberCAT.SimpleGUI.Core.Helpers;
@@ -44,7 +44,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
                 CharacterCustomizationAppearances preset = null;
                 try
                 {
-                    preset = JsonConvert.DeserializeObject<CharacterCustomizationAppearances>(File.ReadAllText(openDialog.FileName), new Core.Extensions.JsonConverters.AppearanceResourceConverter());
+                    preset = JsonSerializer.Deserialize<CharacterCustomizationAppearances>(File.ReadAllText(openDialog.FileName), ResourceHelper.GetSerializerOptions());
                 }
                 catch(Exception error)
                 {
@@ -84,7 +84,7 @@ namespace CyberCAT.SimpleGUI.MVVM.View
 
             if (saveDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveDialog.FileName, JsonConvert.SerializeObject(SaveFileHelper.GetAppearanceContainer(), new Core.Extensions.JsonConverters.AppearanceResourceConverter()));
+                File.WriteAllText(saveDialog.FileName, JsonSerializer.Serialize(SaveFileHelper.GetAppearanceContainer(), ResourceHelper.GetSerializerOptions()));
                 await MainModel.OpenNotification("Appearance preset saved.");
             }
         }

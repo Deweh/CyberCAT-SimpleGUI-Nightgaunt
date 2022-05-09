@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using WolvenKit.RED4.Types;
+using System.Text.Json;
 
 namespace CyberCAT.SimpleGUI.Core.Extensions
 {
@@ -13,26 +14,14 @@ namespace CyberCAT.SimpleGUI.Core.Extensions
     {
         public class AppearanceResourceConverter : JsonConverter<CResourceReference<appearanceAppearanceResource>>
         {
-            public override void WriteJson(JsonWriter writer, CResourceReference<appearanceAppearanceResource> value, JsonSerializer serializer)
+            public override void Write(Utf8JsonWriter writer, CResourceReference<appearanceAppearanceResource> value, JsonSerializerOptions options)
             {
-                writer.WriteValue((ulong)value.DepotPath);
+                writer.WriteStringValue(((ulong)value.DepotPath).ToString());
             }
 
-            public override CResourceReference<appearanceAppearanceResource> ReadJson(JsonReader reader, Type objectType, CResourceReference<appearanceAppearanceResource> existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override CResourceReference<appearanceAppearanceResource> Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
             {
-                object value = reader.Value;
-                ulong final;
-
-                if (value is BigInteger bigVal)
-                {
-                    final = (ulong)bigVal;
-                }
-                else
-                {
-                    final = Convert.ToUInt64(value);
-                }
-
-                return new CResourceReference<appearanceAppearanceResource>() { DepotPath = final };
+                return new CResourceReference<appearanceAppearanceResource>() { DepotPath = reader.GetUInt64() };
             }
         }
     }
